@@ -29,8 +29,13 @@ export class FasePage implements OnInit {
   ]
   // Url das imagens que vão ser utilizadas no jogo
   imgs: string[] = [
+    '../../assets/imgs/desenhos/andando-direita.png',
+    '../../assets/imgs/desenhos/andando-esquerda.png',
+    '../../assets/imgs/desenhos/bracos-lado-cima-direita.png',
+    '../../assets/imgs/desenhos/bracos-lado-cima-esquerda.png',
     '../../assets/imgs/desenhos/bracos-levantados.png',
-    '../../assets/imgs/desenhos/pulando-bracos-baixos.png'
+    '../../assets/imgs/desenhos/pulando-bracos-baixos.png',
+    '../../assets/imgs/desenhos/pulando-bracos-cima.png'
   ];
   // Imagens que o jogador deve buscar na fase
   imgs_fase: any[] = [];
@@ -88,7 +93,7 @@ export class FasePage implements OnInit {
         // Possui a imagem e a classe css
         var col = {
           'classe': this.classes_css[this.gerarNumeroAleatorio(9)],
-          'img': this.imgs[this.gerarNumeroAleatorio(2)]
+          'img': this.imgs[this.gerarNumeroAleatorio(7)]
         }
         //Adiciona a coluna para a linha
         dados_linha.push(col);

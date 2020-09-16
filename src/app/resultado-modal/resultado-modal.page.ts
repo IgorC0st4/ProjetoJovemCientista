@@ -10,7 +10,6 @@ export class ResultadoModalPage implements OnInit {
   @Input() tempos :any[];
 
   constructor() { 
-    console.error(this.tempos);
   }
 
   ngOnInit() {
