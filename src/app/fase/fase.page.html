@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Fase {{contador_fase}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid style="height: 95%;">
+    <ion-row *ngFor="let dados_linha of dados_linhas" style="height: 20%;">
+      <ion-col *ngFor="let dado_coluna of dados_linha.data">
+        <ion-item >
+          <div class="fundo-verde">
+            {{dado_coluna}}
+          </div>
+          
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button class="bottom" shape="round" expand="block">Próxima fase</ion-button>
+</ion-content>
