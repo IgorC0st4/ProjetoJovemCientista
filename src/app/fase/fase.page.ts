@@ -1,5 +1,6 @@
+import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
 import { Component, OnInit } from '@angular/core';
-import { MbscTimerOptions } from '@mobiscroll/angular';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-fase',
@@ -10,11 +11,9 @@ export class FasePage implements OnInit {
 
   // Contador da fase atual
   contador_fase: number = 1;
-
   // Array em que os dados da fase ficam armazenados
   // (Cor e imagem de cada bloco)
   dados_linhas: any[] = [];
-
   // Classes css com os diferentes fundos que pode ser
   // utilizados
   classes_css: string[] = [
@@ -28,17 +27,31 @@ export class FasePage implements OnInit {
     'fundo-cinza',
     'fundo-laranja'
   ]
-
   // Url das imagens que vão ser utilizadas no jogo
   imgs: string[] = [
     '../../assets/imgs/desenhos/bracos-levantados.png',
     '../../assets/imgs/desenhos/pulando-bracos-baixos.png'
   ];
-
   // Imagens que o jogador deve buscar na fase
   imgs_fase: any[] = [];
+  // Quando o contador de tempo foi iniciado
+  public tempoInicial = null
+  // Quando o contador de tempo foi parado
+  public timeStopped: any = null
+  // O tempo que o contador ficou parado
+  public duracaoParada: any = 0
+  // Se o contador de tempo foi iniciado
+  public iniciado = null
+  // Se o tempo está passando (jogo ativo)
+  public contando = false
+  // Modelo de tempo inicial
+  public modeloTempo = "00:00"
+  // Tempo transcorrido na fase
+  public tempo = "00:00"
+  // Tempos das fases
+  tempos: any[] = [];
 
-  constructor() {
+  constructor(public modalController: ModalController) {
   }
 
   ngOnInit() {
@@ -49,15 +62,16 @@ export class FasePage implements OnInit {
   // Inicializa cada fase com as imagens e cores
   // de cada bloco
   inicializarJogo() {
-    this.inicializarImagensFase();
-
     this.inicializarTabuleiro();
+    this.inicializarImagensFase();
+    this.start()
   }
 
   inicializarImagensFase() {
     this.imgs_fase = [];
     for (var i = 0; i < this.contador_fase; i++) {
-      this.imgs_fase.push(this.imgs[this.gerarNumeroAleatorio(2)]);
+      var linha = this.dados_linhas[this.gerarNumeroAleatorio(5)];
+      this.imgs_fase.push(linha[this.gerarNumeroAleatorio(5)]);
     }
   }
 
@@ -93,9 +107,18 @@ export class FasePage implements OnInit {
 
   // Chama a próxima fase
   proximaFase() {
+    // Para o tempo transcorrido na fase
+    this.stop();
+    var tempoFase = {
+      'fase': this.contador_fase,
+      'tempo': this.tempo
+    }
+    this.tempos.push(tempoFase);
     if (this.contador_fase == 7) {
-      alert('Fim do jogo');
+      this.apresentarResultado();
     } else {
+      // Reinicia o contador para 0
+      this.reset();
       // Aumenta o número da fase
       this.contador_fase++;
       // Inicializa a nova fase
@@ -103,4 +126,66 @@ export class FasePage implements OnInit {
     }
   }
 
+  async apresentarResultado(){
+    const modal = await this.modalController.create({
+      component: ResultadoModalPage,
+      componentProps:{
+        'tempos' : this.tempos
+      }
+    });
+    return await modal.present();
+  }
+
+  // Métodos de controle do tempo
+  // Inicializa a contagem do tempo
+  start() {
+    if (this.contando) return;
+    if (this.tempoInicial === null) {
+      this.reset();
+      this.tempoInicial = new Date();
+    }
+    if (this.timeStopped !== null) {
+      let newStoppedDuration: any = (+new Date() - this.timeStopped)
+      this.duracaoParada = this.duracaoParada + newStoppedDuration;
+    }
+    this.iniciado = setInterval(this.clockRunning.bind(this), 10);
+    this.contando = true;
+  }
+
+  // Para a contagem do tempo
+  stop() {
+    this.contando = false;
+    this.timeStopped = new Date();
+    clearInterval(this.iniciado);
+  }
+
+  // Reinicia o contador e limpa o tempo transcorrido
+  reset() {
+    this.contando = false;
+    clearInterval(this.iniciado);
+    this.duracaoParada = 0;
+    this.tempoInicial = null;
+    this.timeStopped = null;
+    this.tempo = this.modeloTempo;
+  }
+
+  // Adiciona o prefixo 0
+  zeroPrefix(num, digit) {
+    let zero = '';
+    for (let i = 0; i < digit; i++) {
+      zero += '0';
+    }
+    return (zero + num).slice(-digit);
+  }
+
+  // Efetua a computação da passagem do tempo
+  clockRunning() {
+    let currentTime: any = new Date()
+    let timeElapsed: any = new Date(currentTime - this.tempoInicial - this.duracaoParada)
+    let min = timeElapsed.getUTCMinutes()
+    let sec = timeElapsed.getUTCSeconds()
+    this.tempo =
+      this.zeroPrefix(min, 2) + ":" +
+      this.zeroPrefix(sec, 2);
+  };
 }

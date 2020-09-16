@@ -23,7 +23,7 @@
 }
 
 .fundo-preto {
-    background-color: black;
+    background-color: #000;
 }
 
 .fundo-cinza {
@@ -36,4 +36,8 @@
 
 ion-button{
     margin: 0;
+}
+
+div{
+    border-radius: 5px;
 }

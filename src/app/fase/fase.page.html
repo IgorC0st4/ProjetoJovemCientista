@@ -6,22 +6,32 @@
         <ion-title>Fase {{contador_fase}}</ion-title>
       </ion-col>
       <ion-col>
-        <ion-title class="ion-text-end" size="small">00:00:00</ion-title>
+        <ion-title class="ion-text-end" size="small">{{tempo}}</ion-title>
       </ion-col>
     </ion-row>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let img of imgs_fase">
-        <div class="fundo-cinza">
-          <ion-img [src]="img"></ion-img>
-        </div>
-      </ion-col>
-    </ion-row>
+  <ion-card>
+    <ion-card-header >
+      <ion-card-title class="ion-text-center">Encontre as figuras</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+     <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let img of imgs_fase" size="3">
+          <div [class]="img.classe">
+            <ion-img [src]="img.img"></ion-img>
+          </div>
+        </ion-col>
+      </ion-row>
+     </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
+  <ion-grid>
     <ion-row *ngFor="let linha of dados_linhas">
       <ion-col *ngFor="let dado_coluna of linha">
         <div [class]="dado_coluna.classe">
@@ -35,4 +45,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
 </ion-content>

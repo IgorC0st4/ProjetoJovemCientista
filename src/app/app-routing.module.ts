@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'fase',
     loadChildren: () => import('./fase/fase.module').then( m => m.FasePageModule)
   },
+  {
+    path: 'resultado-modal',
+    loadChildren: () => import('./resultado-modal/resultado-modal.module').then( m => m.ResultadoModalPageModule)
+  },
 ];
 
 @NgModule({
