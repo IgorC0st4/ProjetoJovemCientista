@@ -21,9 +21,9 @@ export class FasePage implements OnInit {
     'fundo-verde',
     'fundo-amarelo',
     'fundo-vermelho',
-    'fundo-braco',
+    'fundo-branco',
     'fundo-rosa',
-    'fundo-preto',
+    'fundo-marrom',
     'fundo-cinza',
     'fundo-laranja'
   ]
