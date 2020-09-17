@@ -23,7 +23,7 @@
       <ion-row>
         <ion-col *ngFor="let img of imgs_fase" size="3">
           <div [class]="img.classe">
-            <ion-img [src]="img.img"></ion-img>
+            <ion-img [src]="img.img" ></ion-img>
           </div>
         </ion-col>
       </ion-row>
@@ -34,14 +34,14 @@
   <ion-grid>
     <ion-row *ngFor="let linha of dados_linhas">
       <ion-col *ngFor="let dado_coluna of linha">
-        <div [class]="dado_coluna.classe">
+        <div [class]="dado_coluna.classe" (click)="testarBlocoSelecionado(dado_coluna)">
           <ion-img [src]="dado_coluna.img"></ion-img>
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button shape="round" expand="block" (click)='proximaFase()'>Próxima fase</ion-button>
+        <ion-button [disabled]="!pode_continuar" shape="round" expand="block" (click)='proximaFase()'>Próxima fase</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -40,21 +40,26 @@ export class FasePage implements OnInit {
   // Imagens que o jogador deve buscar na fase
   imgs_fase: any[] = [];
   // Quando o contador de tempo foi iniciado
-  public tempoInicial = null
+  public tempo_inicial = null
   // Quando o contador de tempo foi parado
-  public timeStopped: any = null
+  public tempo_parado: any = null
   // O tempo que o contador ficou parado
-  public duracaoParada: any = 0
+  public duracao_parada: any = 0
   // Se o contador de tempo foi iniciado
   public iniciado = null
   // Se o tempo está passando (jogo ativo)
   public contando = false
   // Modelo de tempo inicial
-  public modeloTempo = "00:00"
+  public modelo_tempo = "00:00"
   // Tempo transcorrido na fase
   public tempo = "00:00"
   // Tempos das fases
   tempos: any[] = [];
+  // Quantas imagens foram encontradas na fase
+  imagens_encontradas: number = 0;
+  // Se o jogador encontrou todas as imagens 
+  // para ir para a próxima fase
+  pode_continuar = false;
 
   constructor(public modalController: ModalController) {
   }
@@ -67,6 +72,8 @@ export class FasePage implements OnInit {
   // Inicializa cada fase com as imagens e cores
   // de cada bloco
   inicializarJogo() {
+    this.pode_continuar = false;
+    this.imagens_encontradas = 0;
     this.inicializarTabuleiro();
     this.inicializarImagensFase();
     this.start()
@@ -110,6 +117,23 @@ export class FasePage implements OnInit {
     return Math.floor((Math.random() * limite));
   }
 
+  // Verifica se o bloco que foi clicado é uma das imagens
+  // a ser procurada
+  async testarBlocoSelecionado(img) {
+    if (this.imgs_fase.find(item => (item.img === img.img && item.classe === img.classe))) {
+      this.imagens_encontradas++;
+      const index = this.imgs_fase.indexOf(img);
+      if (index > -1) {
+        this.imgs_fase.splice(index, 1);
+      }
+      if (this.imagens_encontradas == this.contador_fase) {
+        this.pode_continuar = true;
+      }
+    } else {
+
+    }
+  }
+
   // Chama a próxima fase
   proximaFase() {
     // Para o tempo transcorrido na fase
@@ -131,11 +155,11 @@ export class FasePage implements OnInit {
     }
   }
 
-  async apresentarResultado(){
+  async apresentarResultado() {
     const modal = await this.modalController.create({
       component: ResultadoModalPage,
-      componentProps:{
-        'tempos' : this.tempos
+      componentProps: {
+        'tempos': this.tempos
       }
     });
     return await modal.present();
@@ -145,13 +169,13 @@ export class FasePage implements OnInit {
   // Inicializa a contagem do tempo
   start() {
     if (this.contando) return;
-    if (this.tempoInicial === null) {
+    if (this.tempo_inicial === null) {
       this.reset();
-      this.tempoInicial = new Date();
+      this.tempo_inicial = new Date();
     }
-    if (this.timeStopped !== null) {
-      let newStoppedDuration: any = (+new Date() - this.timeStopped)
-      this.duracaoParada = this.duracaoParada + newStoppedDuration;
+    if (this.tempo_parado !== null) {
+      let newStoppedDuration: any = (+new Date() - this.tempo_parado)
+      this.duracao_parada = this.duracao_parada + newStoppedDuration;
     }
     this.iniciado = setInterval(this.clockRunning.bind(this), 10);
     this.contando = true;
@@ -160,7 +184,7 @@ export class FasePage implements OnInit {
   // Para a contagem do tempo
   stop() {
     this.contando = false;
-    this.timeStopped = new Date();
+    this.tempo_parado = new Date();
     clearInterval(this.iniciado);
   }
 
@@ -168,10 +192,10 @@ export class FasePage implements OnInit {
   reset() {
     this.contando = false;
     clearInterval(this.iniciado);
-    this.duracaoParada = 0;
-    this.tempoInicial = null;
-    this.timeStopped = null;
-    this.tempo = this.modeloTempo;
+    this.duracao_parada = 0;
+    this.tempo_inicial = null;
+    this.tempo_parado = null;
+    this.tempo = this.modelo_tempo;
   }
 
   // Adiciona o prefixo 0
@@ -186,7 +210,7 @@ export class FasePage implements OnInit {
   // Efetua a computação da passagem do tempo
   clockRunning() {
     let currentTime: any = new Date()
-    let timeElapsed: any = new Date(currentTime - this.tempoInicial - this.duracaoParada)
+    let timeElapsed: any = new Date(currentTime - this.tempo_inicial - this.duracao_parada)
     let min = timeElapsed.getUTCMinutes()
     let sec = timeElapsed.getUTCSeconds()
     this.tempo =
