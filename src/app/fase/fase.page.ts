@@ -120,17 +120,19 @@ export class FasePage implements OnInit {
   // Verifica se o bloco que foi clicado é uma das imagens
   // a ser procurada
   async testarBlocoSelecionado(img) {
-    if (this.imgs_fase.find(item => (item.img === img.img && item.classe === img.classe))) {
-      this.imagens_encontradas++;
-      const index = this.imgs_fase.indexOf(img);
-      if (index > -1) {
-        this.imgs_fase.splice(index, 1);
-      }
-      if (this.imagens_encontradas == this.contador_fase) {
-        this.pode_continuar = true;
-      }
-    } else {
+    for (var i = 0; i < this.imgs_fase.length; i++) {
+      var item = this.imgs_fase[i];
+      if (item.img === img.img && item.classe === img.classe) {
+        this.imagens_encontradas++;
+        const index = this.imgs_fase.indexOf(item);
 
+        if (index > -1) {
+          this.imgs_fase.splice(index, 1);
+        }
+        if (this.imagens_encontradas == this.contador_fase) {
+          this.pode_continuar = true;
+        }
+      }
     }
   }
 
