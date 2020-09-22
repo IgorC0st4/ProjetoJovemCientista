@@ -130,8 +130,9 @@ export class FasePage implements OnInit {
           this.imgs_fase.splice(index, 1);
         }
         if (this.imagens_encontradas == this.contador_fase) {
-          this.pode_continuar = true;
+          this.proximaFase();
         }
+        return;
       }
     }
   }
@@ -218,5 +219,6 @@ export class FasePage implements OnInit {
     this.tempo =
       this.zeroPrefix(min, 2) + ":" +
       this.zeroPrefix(sec, 2);
+    
   };
 }
