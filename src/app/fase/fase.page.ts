@@ -1,13 +1,14 @@
+import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-fase',
   templateUrl: './fase.page.html',
   styleUrls: ['./fase.page.scss'],
 })
-export class FasePage implements OnInit {
+export class FasePage {
 
   // Contador da fase atual
   contador_fase: number = 1;
@@ -39,44 +40,42 @@ export class FasePage implements OnInit {
   ];
   // Imagens que o jogador deve buscar na fase
   imgs_fase: any[] = [];
-  // Quando o contador de tempo foi iniciado
-  public tempo_inicial = null
-  // Quando o contador de tempo foi parado
-  public tempo_parado: any = null
-  // O tempo que o contador ficou parado
-  public duracao_parada: any = 0
-  // Se o contador de tempo foi iniciado
-  public iniciado = null
-  // Se o tempo está passando (jogo ativo)
-  public contando = false
-  // Modelo de tempo inicial
-  public modelo_tempo = "00:00"
-  // Tempo transcorrido na fase
-  public tempo = "00:00"
   // Tempos das fases
   tempos: any[] = [];
   // Quantas imagens foram encontradas na fase
   imagens_encontradas: number = 0;
-  // Se o jogador encontrou todas as imagens 
-  // para ir para a próxima fase
-  pode_continuar = false;
+  
+  game_over: boolean = false;
 
-  constructor(public modalController: ModalController) {
-  }
+  eh_ios:boolean = false;
 
-  ngOnInit() {
+  constructor(
+    private alertController: AlertController,
+    public modalController: ModalController,
+    public timerService: TimerService,
+    public platform: Platform) {
     // Inicializa o jogo pela primeira vez
+
+    if (platform.is('ios')) {
+      this.eh_ios = true;
+    }else{
+      this.eh_ios = false;
+    }
+
     this.inicializarJogo();
   }
 
   // Inicializa cada fase com as imagens e cores
   // de cada bloco
-  inicializarJogo() {
-    this.pode_continuar = false;
+  async inicializarJogo() {
+    this.game_over = false;
     this.imagens_encontradas = 0;
     this.inicializarTabuleiro();
     this.inicializarImagensFase();
-    this.start()
+    this.timerService = new TimerService();
+    this.timerService.initTimer();
+    this.timerService.startTimer();
+
   }
 
   inicializarImagensFase() {
@@ -87,7 +86,7 @@ export class FasePage implements OnInit {
     }
   }
 
-  inicializarTabuleiro() {
+  async inicializarTabuleiro() {
     // Limpa o array de dados
     this.dados_linhas = [];
     // Array com os dados de uma linha de blocos
@@ -138,19 +137,17 @@ export class FasePage implements OnInit {
   }
 
   // Chama a próxima fase
-  proximaFase() {
+  async proximaFase() {
     // Para o tempo transcorrido na fase
-    this.stop();
+    this.timerService.pauseTimer();
     var tempoFase = {
       'fase': this.contador_fase,
-      'tempo': this.tempo
+      'tempo': this.timerService.timer.displayTime
     }
     this.tempos.push(tempoFase);
     if (this.contador_fase == 7) {
       this.apresentarResultado();
     } else {
-      // Reinicia o contador para 0
-      this.reset();
       // Aumenta o número da fase
       this.contador_fase++;
       // Inicializa a nova fase
@@ -168,57 +165,26 @@ export class FasePage implements OnInit {
     return await modal.present();
   }
 
-  // Métodos de controle do tempo
-  // Inicializa a contagem do tempo
-  start() {
-    if (this.contando) return;
-    if (this.tempo_inicial === null) {
-      this.reset();
-      this.tempo_inicial = new Date();
-    }
-    if (this.tempo_parado !== null) {
-      let newStoppedDuration: any = (+new Date() - this.tempo_parado)
-      this.duracao_parada = this.duracao_parada + newStoppedDuration;
-    }
-    this.iniciado = setInterval(this.clockRunning.bind(this), 10);
-    this.contando = true;
+  async gameOver() {
+    this.game_over = true;
+    this.timerService.pauseTimer();
+    const alert = await this.alertController.create({
+      header: 'FIM DE JOGO',
+      message: 'O seu tempo acabou',
+      buttons: [{
+        text: 'Recomeçar',
+        handler: () => {
+          this.reinicarJogo();
+        }
+      }
+      ]
+    });
+
+    await alert.present();
   }
 
-  // Para a contagem do tempo
-  stop() {
-    this.contando = false;
-    this.tempo_parado = new Date();
-    clearInterval(this.iniciado);
+  async reinicarJogo() {
+    this.contador_fase = 1;
+    this.inicializarJogo();
   }
-
-  // Reinicia o contador e limpa o tempo transcorrido
-  reset() {
-    this.contando = false;
-    clearInterval(this.iniciado);
-    this.duracao_parada = 0;
-    this.tempo_inicial = null;
-    this.tempo_parado = null;
-    this.tempo = this.modelo_tempo;
-  }
-
-  // Adiciona o prefixo 0
-  zeroPrefix(num, digit) {
-    let zero = '';
-    for (let i = 0; i < digit; i++) {
-      zero += '0';
-    }
-    return (zero + num).slice(-digit);
-  }
-
-  // Efetua a computação da passagem do tempo
-  clockRunning() {
-    let currentTime: any = new Date()
-    let timeElapsed: any = new Date(currentTime - this.tempo_inicial - this.duracao_parada)
-    let min = timeElapsed.getUTCMinutes()
-    let sec = timeElapsed.getUTCSeconds()
-    this.tempo =
-      this.zeroPrefix(min, 2) + ":" +
-      this.zeroPrefix(sec, 2);
-    
-  };
 }

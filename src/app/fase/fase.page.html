@@ -1,33 +1,48 @@
 <ion-header>
+  <div *ngIf="!eh_ios; then android; else ios"></div>
 
-  <ion-toolbar>
-    <ion-row>
-      <ion-col>
-        <ion-title>Fase {{contador_fase}}</ion-title>
-      </ion-col>
-      <ion-col>
-        <ion-title class="ion-text-end" size="small">{{tempo}}</ion-title>
-      </ion-col>
-    </ion-row>
-  </ion-toolbar>
+  <ng-template #android>
+    <ion-toolbar>
+      <ion-row>
+        <ion-col>
+          <ion-title>Fase {{contador_fase}}</ion-title>
+        </ion-col>
+        <ion-col>
+          <ion-title class="ion-text-end">{{timerService.timer.displayTime}}s</ion-title>
+        </ion-col>
+      </ion-row>
+    </ion-toolbar>
+  </ng-template>
+
+  <ng-template #ios>
+    <ion-toolbar>
+      <ion-title>Fase {{contador_fase}}</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-title>{{timerService.timer.displayTime}}s</ion-title>
+    </ion-toolbar>
+  </ng-template>
+
+
 </ion-header>
+
 
 <ion-content class="ion-padding">
   <ion-card>
-    <ion-card-header >
+    <ion-card-header>
       <ion-card-title class="ion-text-center">Encontre as figuras</ion-card-title>
     </ion-card-header>
-  
+
     <ion-card-content>
-     <ion-grid>
-      <ion-row>
-        <ion-col *ngFor="let img of imgs_fase" size="3">
-          <div [class]="img.classe">
-            <ion-img [src]="img.img" ></ion-img>
-          </div>
-        </ion-col>
-      </ion-row>
-     </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let img of imgs_fase" size="3">
+            <div [class]="img.classe">
+              <ion-img [src]="img.img"></ion-img>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card-content>
   </ion-card>
 
@@ -41,4 +56,7 @@
     </ion-row>
   </ion-grid>
 
+  <div *ngIf="timerService.hasFinished()&&!game_over?gameOver():false">
+
+  </div>
 </ion-content>
