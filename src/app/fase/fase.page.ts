@@ -1,6 +1,7 @@
+import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
 
 @Component({
@@ -8,7 +9,7 @@ import { AlertController, ModalController, Platform } from '@ionic/angular';
   templateUrl: './fase.page.html',
   styleUrls: ['./fase.page.scss'],
 })
-export class FasePage {
+export class FasePage implements AfterViewInit {
 
   // Contador da fase atual
   contador_fase: number = 1;
@@ -44,25 +45,28 @@ export class FasePage {
   tempos: any[] = [];
   // Quantas imagens foram encontradas na fase
   imagens_encontradas: number = 0;
-  
+
   game_over: boolean = false;
 
-  eh_ios:boolean = false;
+  eh_ios: boolean = false;
 
   constructor(
     private alertController: AlertController,
     public modalController: ModalController,
     public timerService: TimerService,
-    public platform: Platform) {
-    // Inicializa o jogo pela primeira vez
-
+    public platform: Platform,
+    private audioService: AudioService) {
     if (platform.is('ios')) {
       this.eh_ios = true;
-    }else{
+    } else {
       this.eh_ios = false;
     }
 
     this.inicializarJogo();
+  }
+
+  ngAfterViewInit() {
+    this.audioService.preload('fase', 'assets/audio/click.wav');
   }
 
   // Inicializa cada fase com as imagens e cores
@@ -119,6 +123,7 @@ export class FasePage {
   // Verifica se o bloco que foi clicado é uma das imagens
   // a ser procurada
   async testarBlocoSelecionado(img) {
+    this.audioService.play('fase');
     for (var i = 0; i < this.imgs_fase.length; i++) {
       var item = this.imgs_fase[i];
       if (item.img === img.img && item.classe === img.classe) {
