@@ -1,3 +1,4 @@
+import { StopwatchService } from './../services/stopwatch/stopwatch.service';
 import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
@@ -54,6 +55,7 @@ export class FasePage implements AfterViewInit {
     private alertController: AlertController,
     public modalController: ModalController,
     public timerService: TimerService,
+    public stopwatchService: StopwatchService,
     public platform: Platform,
     private audioService: AudioService) {
     if (platform.is('ios')) {
@@ -74,11 +76,17 @@ export class FasePage implements AfterViewInit {
   async inicializarJogo() {
     this.game_over = false;
     this.imagens_encontradas = 0;
+
     this.inicializarTabuleiro();
     this.inicializarImagensFase();
+
     this.timerService = new TimerService();
     this.timerService.initTimer();
     this.timerService.startTimer();
+
+    if (!this.stopwatchService.running) {
+      this.stopwatchService.start();
+    }
 
   }
 
@@ -90,7 +98,7 @@ export class FasePage implements AfterViewInit {
     }
   }
 
-  async inicializarTabuleiro() {
+  inicializarTabuleiro() {
     // Limpa o array de dados
     this.dados_linhas = [];
     // Array com os dados de uma linha de blocos
@@ -133,7 +141,7 @@ export class FasePage implements AfterViewInit {
         if (index > -1) {
           this.imgs_fase.splice(index, 1);
         }
-        if (this.imagens_encontradas == this.contador_fase) {
+        if (this.imagens_encontradas == this.contador_fase && !this.game_over) {
           this.proximaFase();
         }
         return;
@@ -161,10 +169,12 @@ export class FasePage implements AfterViewInit {
   }
 
   async apresentarResultado() {
+    this.stopwatchService.stop();
     const modal = await this.modalController.create({
       component: ResultadoModalPage,
       componentProps: {
-        'tempos': this.tempos
+        'tempos': this.tempos,
+        'total': this.stopwatchService.time
       }
     });
     return await modal.present();
@@ -188,8 +198,9 @@ export class FasePage implements AfterViewInit {
     await alert.present();
   }
 
-  async reinicarJogo() {
+  reinicarJogo() {
     this.contador_fase = 1;
     this.inicializarJogo();
   }
+
 }

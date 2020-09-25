@@ -3,14 +3,22 @@
 
   <ng-template #android>
     <ion-toolbar>
-      <ion-row>
-        <ion-col>
-          <ion-title>Fase {{contador_fase}}</ion-title>
-        </ion-col>
-        <ion-col>
-          <ion-title class="ion-text-end">{{timerService.timer.displayTime}}s</ion-title>
-        </ion-col>
-      </ion-row>
+      <ion-grid>
+        <ion-row class="ion-align-items-center">
+          <ion-col >
+            <ion-title>Fase {{contador_fase}}</ion-title>
+          </ion-col>
+
+          <ion-col>
+            <ion-item class="ion-text-end">
+              <ion-title style="margin-right: 0; padding-right: 0;">
+                {{timerService.timer.displayTime}}
+              </ion-title>
+              <ion-icon name="hourglass" slot="end" style="margin-left: 0;"></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-toolbar>
   </ng-template>
 
@@ -46,7 +54,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-grid>
+  <ion-grid class="tabuleiro">
     <ion-row *ngFor="let linha of dados_linhas">
       <ion-col *ngFor="let dado_coluna of linha">
         <div [class]="dado_coluna.classe" (click)="testarBlocoSelecionado(dado_coluna)">
