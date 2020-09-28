@@ -40,4 +40,16 @@ ion-button {
 
 div {
     border-radius: 5px;
+    animation-name: aparecer;
+    animation-duration: 2s;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0.1;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
