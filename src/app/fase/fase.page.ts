@@ -35,7 +35,10 @@ export class FasePage implements AfterViewInit {
     '../../assets/imgs/desenhos/Imagem 1.PNG',
     '../../assets/imgs/desenhos/Imagem 2.PNG',
     '../../assets/imgs/desenhos/Imagem 3.PNG',
-    '../../assets/imgs/desenhos/Imagem 4.PNG'
+    '../../assets/imgs/desenhos/Imagem 4.PNG',
+    '../../assets/imgs/desenhos/Imagem 5.PNG',
+    '../../assets/imgs/desenhos/Imagem 6.PNG',
+    '../../assets/imgs/desenhos/Imagem 7.PNG'
   ];
   // Imagens que o jogador deve buscar na fase
   imgs_fase: any[] = [];
