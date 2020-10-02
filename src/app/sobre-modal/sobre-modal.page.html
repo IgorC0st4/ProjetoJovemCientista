@@ -1,9 +1,90 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>sobre-modal</ion-title>
+    <ion-title>Sobre o projeto</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-grid>
 
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>O projeto</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>
+              O aplicativo foi desenvolvido com o intuito de dar continuidade ao trabalho desenvolvido
+              pelos integrantes do projeto Jovem Cientista denominado:
+              A Influência dos Processos Atencionais nos Mecanismos de Memória e Aprendizagem.
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Participantes</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list>
+
+              <ion-item-divider color="primary">
+                <ion-label>
+                  INSG Castelo
+                </ion-label>
+              </ion-item-divider>
+
+              <ion-item>
+                <ion-label>Prof. Julio Cesar Vasconcelos Da Silva</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Julia Abreu Gazire</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Larissa Machado da Silva</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Dafne Bigasz de Araújo</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Artur Nagem Berbet Louzada</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Vinicius Fonseca Gorito Adriano</ion-label>
+              </ion-item>
+
+              <ion-item-divider color="primary">
+                <ion-label>
+                  FSMA
+                </ion-label>
+              </ion-item-divider>
+
+              <ion-item>
+                <ion-label>Prof. Mauro Dias de Carvalho</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Igor Carvalho Costa</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Lucas Rodrigues dos Santos</ion-label>
+              </ion-item>
+
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button *ngIf="mobile" expand="block" (click)="voltar()">Voltar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

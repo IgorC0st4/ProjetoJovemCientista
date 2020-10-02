@@ -1,7 +1,7 @@
 <ion-header>
-  <div *ngIf="!eh_ios; then android; else ios"></div>
+  <div *ngIf="!ios; then android_template; else ios_template"></div>
 
-  <ng-template #android>
+  <ng-template #android_template>
     <ion-toolbar>
       <ion-grid>
         <ion-row class="ion-align-items-center">
@@ -22,7 +22,7 @@
     </ion-toolbar>
   </ng-template>
 
-  <ng-template #ios>
+  <ng-template #ios_template>
     <ion-toolbar>
       <ion-title>Fase {{contador_fase}}</ion-title>
     </ion-toolbar>
@@ -31,36 +31,40 @@
     </ion-toolbar>
   </ng-template>
 
-
 </ion-header>
 
 
 <ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">Encontre as figuras</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col *ngFor="let img of imgs_fase" size="3">
-            <div [class]="img.classe">
-              <ion-img [src]="img.img"></ion-img>
+  <div class="container">
+    <div class="box">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title class="ion-text-center">Encontre as figuras</ion-card-title>
+        </ion-card-header>
+    
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let img of imgs_fase" size="3">
+                <div [class]="img.classe">
+                  <ion-img [src]="img.img"></ion-img>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    
+      <ion-grid class="tabuleiro">
+        <ion-row *ngFor="let linha of dados_linhas">
+          <ion-col *ngFor="let dado_coluna of linha">
+            <div [class]="dado_coluna.classe" (click)="testarBlocoSelecionado(dado_coluna)">
+              <ion-img [src]="dado_coluna.img"></ion-img>
             </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-grid class="tabuleiro">
-    <ion-row *ngFor="let linha of dados_linhas">
-      <ion-col *ngFor="let dado_coluna of linha">
-        <div [class]="dado_coluna.classe" (click)="testarBlocoSelecionado(dado_coluna)">
-          <ion-img [src]="dado_coluna.img"></ion-img>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+    </div>
+  </div>
+  
 </ion-content>

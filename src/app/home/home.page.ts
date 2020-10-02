@@ -1,3 +1,4 @@
+import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
 import { InstrucoesModalPage } from './../instrucoes-modal/instrucoes-modal.page';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
@@ -14,6 +15,13 @@ export class HomePage {
   async instrucoes(){
     const modal = await this.modalController.create({
       component: InstrucoesModalPage,
+    });
+    return await modal.present();
+  }
+
+  async sobre(){
+    const modal = await this.modalController.create({
+      component: SobreModalPage
     });
     return await modal.present();
   }

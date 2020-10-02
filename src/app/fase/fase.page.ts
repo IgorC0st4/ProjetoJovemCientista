@@ -46,7 +46,8 @@ export class FasePage implements AfterViewInit {
 
   game_over: boolean = false;
 
-  eh_ios: boolean = false;
+  ios: boolean = false;
+  desktop: boolean = false;
 
   constructor(
     private alertController: AlertController,
@@ -55,17 +56,15 @@ export class FasePage implements AfterViewInit {
     public stopwatchService: StopwatchService,
     public platform: Platform,
     private audioService: AudioService) {
-    if (platform.is('ios')) {
-      this.eh_ios = true;
-    } else {
-      this.eh_ios = false;
-    }
 
     this.inicializarJogo();
   }
 
   ngAfterViewInit() {
     this.audioService.preload('fase', 'assets/audio/click.wav');
+
+    this.ios = this.platform.is('ios');
+    this.desktop = this.platform.is('desktop');
   }
 
   // Inicializa cada fase com as imagens e cores
@@ -142,9 +141,6 @@ export class FasePage implements AfterViewInit {
           this.proximaFase();
         }
         return;
-      }
-      else{
-        this.reinicarJogo();
       }
     }
   }

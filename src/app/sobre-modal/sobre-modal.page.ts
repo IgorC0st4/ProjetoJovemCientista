@@ -1,3 +1,4 @@
+import { Platform, ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SobreModalPage implements OnInit {
 
-  constructor() { }
+  mobile=false;
+
+  constructor(public platform:Platform, public modalController:ModalController) { }
 
   ngOnInit() {
+    if(this.platform.is("mobile")){
+      this.mobile=true;
+    }
   }
-
+  async voltar() {
+    this.modalController.dismiss({
+      'dismissed': true
+    });
+  }
 }
