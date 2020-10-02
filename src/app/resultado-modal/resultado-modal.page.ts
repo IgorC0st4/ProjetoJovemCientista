@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Platform, ModalController } from '@ionic/angular';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-resultado-modal',
@@ -7,16 +8,42 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ResultadoModalPage implements OnInit {
 
-  @Input() tempos :any[];
-  @Input() total :string;
+  @Input() tempos: any[];
 
-  constructor() { 
+  tempo_total: string = "";
+  mobile = false;
+
+  constructor(public platform: Platform, public modalController: ModalController) {
+    this.mobile = platform.is('mobile');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    var segundos: number = 0;
+    var minutos: number = 0;
+    for (var i = 0; i < this.tempos.length; i++) {
+      let tempo = this.tempos[i].tempo.split(':');
+      if (parseInt(tempo[0]) > 0) {
+        minutos += parseInt(tempo[0]);
+      }
+      segundos += parseInt(tempo[1]);
+    }
+    if (segundos > 59) {
+      minutos += (segundos - (segundos % 60)) / 60;
+      segundos = segundos % 60;
+    }
+    if (minutos < 10) {
+      this.tempo_total += '0';
+    }
+    this.tempo_total += minutos + ':';
+    if (segundos < 10) {
+      this.tempo_total += '0';
+    }
+    this.tempo_total += segundos;
   }
 
-  teste(){
-    console.error(this.tempos);
+  async voltar() {
+    this.modalController.dismiss({
+      'dismissed': true
+    });
   }
 }

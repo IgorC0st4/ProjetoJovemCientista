@@ -65,7 +65,6 @@ export class FasePage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.audioService.preload('fase', 'assets/audio/click.wav');
-
     this.ios = this.platform.is('ios');
     this.desktop = this.platform.is('desktop');
   }
@@ -79,9 +78,9 @@ export class FasePage implements AfterViewInit {
     this.inicializarTabuleiro();
     this.inicializarImagensFase();
 
-    this.timerService = new TimerService();
-    this.timerService.initTimer();
-    this.timerService.startTimer();
+    //this.timerService = new TimerService();
+    //this.timerService.initTimer();
+    //this.timerService.startTimer();
 
     if (!this.stopwatchService.running) {
       this.stopwatchService.start();
@@ -151,15 +150,17 @@ export class FasePage implements AfterViewInit {
   // Chama a próxima fase
   async proximaFase() {
     // Para o tempo transcorrido na fase
-    this.timerService.pauseTimer();
+    //this.timerService.pauseTimer();
+    this.stopwatchService.stop();
     var tempoFase = {
       'fase': this.contador_fase,
-      'tempo': this.timerService.timer.displayTime
+      'tempo': this.stopwatchService.time
     }
     this.tempos.push(tempoFase);
     if (this.contador_fase == 7) {
       this.apresentarResultado();
     } else {
+      this.stopwatchService.reset();
       // Aumenta o número da fase
       this.contador_fase++;
       // Inicializa a nova fase
@@ -168,12 +169,12 @@ export class FasePage implements AfterViewInit {
   }
 
   async apresentarResultado() {
+    this.game_over = true;
     this.stopwatchService.stop();
     const modal = await this.modalController.create({
       component: ResultadoModalPage,
       componentProps: {
-        'tempos': this.tempos,
-        'total': this.stopwatchService.time
+        'tempos': this.tempos
       }
     });
     return await modal.present();
@@ -199,6 +200,8 @@ export class FasePage implements AfterViewInit {
 
   reinicarJogo() {
     this.contador_fase = 1;
+    this.stopwatchService = new StopwatchService();
+    this.tempos = [];
     this.inicializarJogo();
   }
 
