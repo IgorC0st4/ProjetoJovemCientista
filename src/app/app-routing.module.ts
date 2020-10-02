@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'fase',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -14,6 +14,18 @@ const routes: Routes = [
   {
     path: 'resultado-modal',
     loadChildren: () => import('./resultado-modal/resultado-modal.module').then( m => m.ResultadoModalPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: 'instrucoes-modal',
+    loadChildren: () => import('./instrucoes-modal/instrucoes-modal.module').then( m => m.InstrucoesModalPageModule)
+  },
+  {
+    path: 'sobre-modal',
+    loadChildren: () => import('./sobre-modal/sobre-modal.module').then( m => m.SobreModalPageModule)
   },
 ];
 

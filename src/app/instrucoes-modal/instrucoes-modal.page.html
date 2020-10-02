@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Como Jogar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Instruções do jogo</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <p>1. Clique em Iniciar jogo</p>
+        </ion-item>
+
+        <ion-item>
+          <p>2. Um tabuleiro com 25 imagens será carregado</p>
+        </ion-item>
+
+        <ion-item>
+          <p>3. Encontre as imagens que são solicitadas na parte de cima da tela</p>
+        </ion-item>
+
+        <ion-item>
+          <p>4. A cada fase o número de imagens a serem encontradas vai aumentar</p>
+        </ion-item>
+
+        <ion-item>
+          <p>5. Tente finalizar o jogo no menor tempo possível e divirta-se!</p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-button *ngIf="mobile" expand="block" (click)="voltar()">Voltar</ion-button>
+</ion-content>

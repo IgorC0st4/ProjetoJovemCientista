@@ -32,13 +32,10 @@ export class FasePage implements AfterViewInit {
   ]
   // Url das imagens que vão ser utilizadas no jogo
   imgs: string[] = [
-    '../../assets/imgs/desenhos/andando-direita.png',
-    '../../assets/imgs/desenhos/andando-esquerda.png',
-    '../../assets/imgs/desenhos/bracos-lado-cima-direita.png',
-    '../../assets/imgs/desenhos/bracos-lado-cima-esquerda.png',
-    '../../assets/imgs/desenhos/bracos-levantados.png',
-    '../../assets/imgs/desenhos/pulando-bracos-baixos.png',
-    '../../assets/imgs/desenhos/pulando-bracos-cima.png'
+    '../../assets/imgs/desenhos/Imagem 1.PNG',
+    '../../assets/imgs/desenhos/Imagem 2.PNG',
+    '../../assets/imgs/desenhos/Imagem 3.PNG',
+    '../../assets/imgs/desenhos/Imagem 4.PNG'
   ];
   // Imagens que o jogador deve buscar na fase
   imgs_fase: any[] = [];
@@ -111,7 +108,7 @@ export class FasePage implements AfterViewInit {
         // Possui a imagem e a classe css
         var col = {
           'classe': this.classes_css[this.gerarNumeroAleatorio(9)],
-          'img': this.imgs[this.gerarNumeroAleatorio(7)]
+          'img': this.imgs[this.gerarNumeroAleatorio(this.imgs.length)]
         }
         //Adiciona a coluna para a linha
         dados_linha.push(col);
@@ -145,6 +142,9 @@ export class FasePage implements AfterViewInit {
           this.proximaFase();
         }
         return;
+      }
+      else{
+        this.reinicarJogo();
       }
     }
   }
