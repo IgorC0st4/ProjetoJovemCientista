@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'sobre-modal',
     loadChildren: () => import('./sobre-modal/sobre-modal.module').then( m => m.SobreModalPageModule)
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
 ];
 
 @NgModule({

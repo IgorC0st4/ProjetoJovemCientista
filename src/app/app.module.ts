@@ -11,10 +11,19 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, 
+    HttpClientModule,
+    IonicModule.forRoot(), 
+    AppRoutingModule, 
+    FormsModule, 
+    ReactiveFormsModule],
   providers: [
     StatusBar,
     NativeAudio,
