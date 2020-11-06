@@ -1,12 +1,20 @@
-p {
-    font-size: 0.8em;
-    color: #d2d2d2;
-}
-
-ion-label, .select-text {
+ion-label,
+.select-text {
     margin-left: 10px;
 }
 
 .invalid {
     border: 1px solid #ea6153;
+}
+
+ion-slides {
+    height: 100%;
+}
+
+.container{
+    background-color: #D4F3E9;
+}
+
+ion-card{
+    opacity: 0.9;
 }

@@ -1,58 +1,85 @@
-import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IdadeValidator } from  '../validators/idade';
+import { IdadeValidator } from '../validators/idade';
+import { UsuarioHttpService } from '../services/usuarioHttp/usuario-http.service';
+import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
-  public myForm: FormGroup;
-  public tentativaDeSubmissao: boolean = false;
+export class LoginPage {
 
-  constructor(public formBuilder: FormBuilder, public http: HttpClient) {
-    this.myForm = formBuilder.group({
+  @ViewChild('signupSlider') signupSlider;
+
+  public loginForm: FormGroup;
+  public singupForm: FormGroup;
+
+  public tentativaDeCadastro: boolean = false;
+  public tentativaDeLogin: boolean = false;
+
+  public ehMobile: boolean = false;
+
+  constructor(
+    public formBuilder: FormBuilder,
+    private platform: Platform,
+    public usuarioHttpService: UsuarioHttpService,
+    public usuarioLocalService: UsuarioLocalService) {
+    this.ehMobile = this.platform.is("mobile");
+
+    this.singupForm = formBuilder.group({
       nick: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
       idade: ['', IdadeValidator.ehValido],
       escolaridade: [''],
       genero: [''],
       senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`)]]
     });
+
+    this.loginForm = formBuilder.group({
+      nick: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
+      senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`)]]
+    });
   }
 
-  ngOnInit() {
-  }
-
-  salvar() {
-    this.tentativaDeSubmissao = true;
-
-    if(!this.myForm.valid){
+  async efetuarCadastro() {
+    this.tentativaDeCadastro = true;
+    if (!this.singupForm.valid) {
       return;
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-
-    let postData = JSON.stringify(this.myForm.value);
-    console.log(postData);
-    this.http.post('http://localhost:8080/usuario/', postData, httpOptions).subscribe(data=>{
-      console.log(data);
-     },error =>{
-      console.log(error);
+    this.usuarioHttpService.efetuarCadastro(JSON.stringify(this.singupForm.value)).subscribe((response) => {
+      this.usuarioLocalService.inserir(response).then(() => {
+        alert('Cadastrado com sucesso!');
+      }).catch((error) => {
+        alert(error);
+      });
+    }, (error) => {
+      this.usuarioHttpService.handleError(error).subscribe((response) => {
+        alert(response);
+      });
     });
-    /**
-     * 
 
-    this.http.get('http://localhost:8080/usuario/1').subscribe((response)=>{
-      console.log(response);
-    })
-     */
-    
-    
+  }
+
+  async efetuarLogin() {
+    this.tentativaDeLogin = true;
+    if (!this.loginForm.valid) {
+      return;
+    }
+
+    this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value)).subscribe((response) => {
+      this.usuarioLocalService.inserir(response).then(() => {
+        alert('Login efetuado sucesso!');
+      }).catch((error) => {
+        alert(error);
+      });
+    }, (error) => {
+      this.usuarioHttpService.handleError(error).subscribe((response) => {
+        alert(response);
+      });
+    });
+
   }
 }
