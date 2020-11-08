@@ -2,24 +2,20 @@ import { StopwatchService } from './../services/stopwatch/stopwatch.service';
 import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-fase',
   templateUrl: './fase.page.html',
   styleUrls: ['./fase.page.scss'],
 })
-export class FasePage implements AfterViewInit {
+export class FasePage implements OnInit {
 
-  // Contador da fase atual
-  contador_fase: number = 1;
-  // Array em que os dados da fase ficam armazenados
-  // (Cor e imagem de cada bloco)
-  dados_linhas: any[] = [];
-  // Classes css com os diferentes fundos que pode ser
-  // utilizados
-  classes_css: string[] = [
+  contadorFase: number = 1;
+  tabuleiro: any[] = [];
+  classesCss: string[] = [
     'fundo-azul',
     'fundo-verde',
     'fundo-amarelo',
@@ -30,7 +26,6 @@ export class FasePage implements AfterViewInit {
     'fundo-cinza',
     'fundo-laranja'
   ]
-  // Url das imagens que vão ser utilizadas no jogo
   imgs: string[] = [
     '../../assets/imgs/desenhos/Imagem 1.PNG',
     '../../assets/imgs/desenhos/Imagem 2.PNG',
@@ -40,15 +35,10 @@ export class FasePage implements AfterViewInit {
     '../../assets/imgs/desenhos/Imagem 6.PNG',
     '../../assets/imgs/desenhos/Imagem 7.PNG'
   ];
-  // Imagens que o jogador deve buscar na fase
-  imgs_fase: any[] = [];
-  // Tempos das fases
+  imagensProcuradas: any[] = [];
   tempos: any[] = [];
-  // Quantas imagens foram encontradas na fase
-  imagens_encontradas: number = 0;
-
-  game_over: boolean = false;
-
+  imagensEncontradas: number = 0;
+  fimDeJogo: boolean = false;
   ios: boolean = false;
   desktop: boolean = false;
 
@@ -58,22 +48,26 @@ export class FasePage implements AfterViewInit {
     public timerService: TimerService,
     public stopwatchService: StopwatchService,
     public platform: Platform,
-    private audioService: AudioService) {
-
-    this.inicializarJogo();
+    private audioService: AudioService,
+    private route: ActivatedRoute, private router:Router) {
+    
   }
 
-  ngAfterViewInit() {
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params=>{
+      if(params && params.numero){
+        this.contadorFase = params.numero
+        this.inicializarJogo();
+      }
+    })
     this.audioService.preload('fase', 'assets/audio/click.wav');
     this.ios = this.platform.is('ios');
     this.desktop = this.platform.is('desktop');
   }
 
-  // Inicializa cada fase com as imagens e cores
-  // de cada bloco
   async inicializarJogo() {
-    this.game_over = false;
-    this.imagens_encontradas = 0;
+    this.fimDeJogo = false;
+    this.imagensEncontradas = 0;
 
     this.inicializarTabuleiro();
     this.inicializarImagensFase();
@@ -89,16 +83,16 @@ export class FasePage implements AfterViewInit {
   }
 
   inicializarImagensFase() {
-    this.imgs_fase = [];
-    for (var i = 0; i < this.contador_fase; i++) {
-      var linha = this.dados_linhas[this.gerarNumeroAleatorio(5)];
-      this.imgs_fase.push(linha[this.gerarNumeroAleatorio(5)]);
+    this.imagensProcuradas = [];
+    for (var i = 0; i < this.contadorFase; i++) {
+      var linha = this.tabuleiro[this.gerarNumeroAleatorio(5)];
+      this.imagensProcuradas.push(linha[this.gerarNumeroAleatorio(5)]);
     }
   }
 
   inicializarTabuleiro() {
     // Limpa o array de dados
-    this.dados_linhas = [];
+    this.tabuleiro = [];
     // Array com os dados de uma linha de blocos
     var dados_linha: any[] = [];
     for (var i = 0; i < 5; i++) {
@@ -108,7 +102,7 @@ export class FasePage implements AfterViewInit {
         // Variável de cada bloco
         // Possui a imagem e a classe css
         var col = {
-          'classe': this.classes_css[this.gerarNumeroAleatorio(9)],
+          'classe': this.classesCss[this.gerarNumeroAleatorio(9)],
           'img': this.imgs[this.gerarNumeroAleatorio(this.imgs.length)]
         }
         //Adiciona a coluna para a linha
@@ -116,30 +110,26 @@ export class FasePage implements AfterViewInit {
       }
       // Adiciona a linha para o array de dados
       // da tabela
-      this.dados_linhas.push(dados_linha);
+      this.tabuleiro.push(dados_linha);
     }
   }
 
-  // Gera uma número aleatório que será utilizado
-  // para determinar a imagem e a cor de cada bloco
   gerarNumeroAleatorio(limite: number) {
     return Math.floor((Math.random() * limite));
   }
 
-  // Verifica se o bloco que foi clicado é uma das imagens
-  // a ser procurada
   async testarBlocoSelecionado(img) {
     this.audioService.play('fase');
-    for (var i = 0; i < this.imgs_fase.length; i++) {
-      var item = this.imgs_fase[i];
+    for (var i = 0; i < this.imagensProcuradas.length; i++) {
+      var item = this.imagensProcuradas[i];
       if (item.img === img.img && item.classe === img.classe) {
-        this.imagens_encontradas++;
-        const index = this.imgs_fase.indexOf(item);
+        this.imagensEncontradas++;
+        const index = this.imagensProcuradas.indexOf(item);
 
         if (index > -1) {
-          this.imgs_fase.splice(index, 1);
+          this.imagensProcuradas.splice(index, 1);
         }
-        if (this.imagens_encontradas == this.contador_fase && !this.game_over) {
+        if (this.imagensEncontradas == this.contadorFase && !this.fimDeJogo) {
           this.proximaFase();
         }
         return;
@@ -147,29 +137,28 @@ export class FasePage implements AfterViewInit {
     }
   }
 
-  // Chama a próxima fase
   async proximaFase() {
     // Para o tempo transcorrido na fase
     //this.timerService.pauseTimer();
     this.stopwatchService.stop();
     var tempoFase = {
-      'fase': this.contador_fase,
+      'fase': this.contadorFase,
       'tempo': this.stopwatchService.time
     }
     this.tempos.push(tempoFase);
-    if (this.contador_fase == 7) {
+    if (this.contadorFase == 7) {
       this.apresentarResultado();
     } else {
       this.stopwatchService.reset();
       // Aumenta o número da fase
-      this.contador_fase++;
+      this.contadorFase++;
       // Inicializa a nova fase
       this.inicializarJogo();
     }
   }
 
   async apresentarResultado() {
-    this.game_over = true;
+    this.fimDeJogo = true;
     this.stopwatchService.stop();
     const modal = await this.modalController.create({
       component: ResultadoModalPage,
@@ -181,7 +170,7 @@ export class FasePage implements AfterViewInit {
   }
 
   async gameOver() {
-    this.game_over = true;
+    this.fimDeJogo = true;
     this.timerService.pauseTimer();
     const alert = await this.alertController.create({
       header: 'FIM DE JOGO',
@@ -199,7 +188,7 @@ export class FasePage implements AfterViewInit {
   }
 
   reinicarJogo() {
-    this.contador_fase = 1;
+    this.contadorFase = 1;
     this.stopwatchService = new StopwatchService();
     this.tempos = [];
     this.inicializarJogo();

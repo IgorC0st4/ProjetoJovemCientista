@@ -1,5 +1,5 @@
-import { Platform } from '@ionic/angular';
-import { Component, ViewChild } from '@angular/core';
+import { NavController, Platform } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IdadeValidator } from '../validators/idade';
 import { UsuarioHttpService } from '../services/usuarioHttp/usuario-http.service';
@@ -10,9 +10,7 @@ import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.serv
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
-
-  @ViewChild('signupSlider') signupSlider;
+export class LoginPage implements OnInit {
 
   public loginForm: FormGroup;
   public singupForm: FormGroup;
@@ -26,7 +24,9 @@ export class LoginPage {
     public formBuilder: FormBuilder,
     private platform: Platform,
     public usuarioHttpService: UsuarioHttpService,
-    public usuarioLocalService: UsuarioLocalService) {
+    public usuarioLocalService: UsuarioLocalService,
+    public navCtrl: NavController) {
+    
     this.ehMobile = this.platform.is("mobile");
 
     this.singupForm = formBuilder.group({
@@ -41,6 +41,15 @@ export class LoginPage {
       nick: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
       senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`)]]
     });
+  
+  }
+
+  ngOnInit(): void {
+    this.usuarioLocalService.getAll().then((data)=>{
+      if(data.length>0){
+        this.navCtrl.navigateRoot('/home');
+      }
+    })
   }
 
   async efetuarCadastro() {
@@ -51,7 +60,8 @@ export class LoginPage {
 
     this.usuarioHttpService.efetuarCadastro(JSON.stringify(this.singupForm.value)).subscribe((response) => {
       this.usuarioLocalService.inserir(response).then(() => {
-        alert('Cadastrado com sucesso!');
+        console.log('Cadastrado com sucesso!');
+        this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
         alert(error);
       });
@@ -71,7 +81,8 @@ export class LoginPage {
 
     this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value)).subscribe((response) => {
       this.usuarioLocalService.inserir(response).then(() => {
-        alert('Login efetuado sucesso!');
+        console.log('Login efetuado sucesso!');
+        this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
         alert(error);
       });

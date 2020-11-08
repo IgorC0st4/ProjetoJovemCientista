@@ -5,28 +5,26 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <div class="container">
-    <div class="box">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-button color="primary" expand="block" href="/fase">Iniciar jogo</ion-button>
-          </ion-col>
-        </ion-row>
 
-        <ion-row>
-          <ion-col>
-            <ion-button color="secondary" expand="block" (click)="instrucoes()">Como jogar</ion-button>
-          </ion-col>
-        </ion-row>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let fase of fases; let i = index">
+        <ion-button size="large" (click)="iniciarFase(i+1)">{{i+1}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-        <ion-row>
-          <ion-col>
-            <ion-button color="tertiary" expand="block" (click)="sobre()">Sobre o projeto</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-
-  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" size="large">
+    <ion-fab-button color="danger" >
+      <ion-icon name="menu"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button color="primary">
+        <ion-icon name="game-controller" (click)="instrucoes()"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="secondary">
+        <ion-icon name="information" (click)="sobre()"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
