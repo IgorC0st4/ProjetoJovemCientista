@@ -6,7 +6,7 @@
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col >
-            <ion-title>Fase {{contador_fase}}</ion-title>
+            <ion-title>Fase {{contadorFase}}</ion-title>
           </ion-col>
 
           <ion-col>
@@ -24,7 +24,7 @@
 
   <ng-template #ios_template>
     <ion-toolbar>
-      <ion-title>Fase {{contador_fase}}</ion-title>
+      <ion-title>Fase {{contadorFase}}</ion-title>
     </ion-toolbar>
     <ion-toolbar>
       <ion-title>{{stopwatchService.time}}s</ion-title>
@@ -45,7 +45,7 @@
         <ion-card-content>
           <ion-grid>
             <ion-row>
-              <ion-col *ngFor="let img of imgs_fase" size="3">
+              <ion-col *ngFor="let img of imagensProcuradas" size="3">
                 <div [class]="img.classe">
                   <ion-img [src]="img.img"></ion-img>
                 </div>
@@ -56,7 +56,7 @@
       </ion-card>
     
       <ion-grid class="tabuleiro">
-        <ion-row *ngFor="let linha of dados_linhas">
+        <ion-row *ngFor="let linha of tabuleiro">
           <ion-col *ngFor="let dado_coluna of linha">
             <div [class]="dado_coluna.classe" (click)="testarBlocoSelecionado(dado_coluna)">
               <ion-img [src]="dado_coluna.img"></ion-img>
@@ -66,7 +66,7 @@
       </ion-grid>
     </div>
   </div>
-  <ion-fab *ngIf='game_over' vertical="bottom" horizontal="end" slot="fixed" (click)='reinicarJogo()'>
+  <ion-fab *ngIf='fimDeJogo' vertical="bottom" horizontal="end" slot="fixed" (click)='reinicarJogo()'>
     <ion-fab-button>
       <ion-icon name="reload"></ion-icon>
     </ion-fab-button>

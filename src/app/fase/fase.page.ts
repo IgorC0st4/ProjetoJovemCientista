@@ -3,7 +3,7 @@ import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, Platform, NavController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -49,23 +49,30 @@ export class FasePage implements OnInit {
     public stopwatchService: StopwatchService,
     public platform: Platform,
     private audioService: AudioService,
-    private route: ActivatedRoute, private router:Router) {
-    
+    private route: ActivatedRoute,
+    private navController:NavController) {
+
   }
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params=>{
-      if(params && params.numero){
-        this.contadorFase = params.numero
+  ionViewWillLeave() {
+    this.audioService.stop(this.contadorFase.toString());
+    this.stopwatchService.reset();
+  }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params && params.numero) {
+        this.contadorFase = params.numero;
         this.inicializarJogo();
       }
-    })
-    this.audioService.preload('fase', 'assets/audio/click.wav');
+    });
     this.ios = this.platform.is('ios');
     this.desktop = this.platform.is('desktop');
   }
 
   async inicializarJogo() {
+    this.audioService.playMusic(this.contadorFase.toString());
+
     this.fimDeJogo = false;
     this.imagensEncontradas = 0;
 
@@ -86,7 +93,12 @@ export class FasePage implements OnInit {
     this.imagensProcuradas = [];
     for (var i = 0; i < this.contadorFase; i++) {
       var linha = this.tabuleiro[this.gerarNumeroAleatorio(5)];
-      this.imagensProcuradas.push(linha[this.gerarNumeroAleatorio(5)]);
+      var bloco = linha[this.gerarNumeroAleatorio(5)];
+      if(!this.imagensProcuradas.find(e => e.classe===bloco.classe && e.img === bloco.img)){
+        this.imagensProcuradas.push(bloco);
+      }else{
+        i--;
+      }
     }
   }
 
@@ -119,7 +131,7 @@ export class FasePage implements OnInit {
   }
 
   async testarBlocoSelecionado(img) {
-    this.audioService.play('fase');
+    //this.audioService.playSound('click');
     for (var i = 0; i < this.imagensProcuradas.length; i++) {
       var item = this.imagensProcuradas[i];
       if (item.img === img.img && item.classe === img.classe) {
@@ -130,7 +142,7 @@ export class FasePage implements OnInit {
           this.imagensProcuradas.splice(index, 1);
         }
         if (this.imagensEncontradas == this.contadorFase && !this.fimDeJogo) {
-          this.proximaFase();
+          this.apresentarResultado();
         }
         return;
       }
@@ -140,12 +152,13 @@ export class FasePage implements OnInit {
   async proximaFase() {
     // Para o tempo transcorrido na fase
     //this.timerService.pauseTimer();
-    this.stopwatchService.stop();
-    var tempoFase = {
+    //this.stopwatchService.stop();
+    /*var tempoFase = {
       'fase': this.contadorFase,
       'tempo': this.stopwatchService.time
     }
-    this.tempos.push(tempoFase);
+    */
+    //this.tempos.push(tempoFase);
     if (this.contadorFase == 7) {
       this.apresentarResultado();
     } else {
@@ -163,7 +176,14 @@ export class FasePage implements OnInit {
     const modal = await this.modalController.create({
       component: ResultadoModalPage,
       componentProps: {
-        'tempos': this.tempos
+        'tempo': this.stopwatchService.time
+      }
+    });
+    modal.onDidDismiss().then((data)=>{
+      if(data['data'].comando === 'voltar'){
+        this.navController.back();
+      }else{
+        this.proximaFase();
       }
     });
     return await modal.present();

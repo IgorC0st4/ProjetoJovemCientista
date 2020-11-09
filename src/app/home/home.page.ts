@@ -1,19 +1,26 @@
 import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
 import { InstrucoesModalPage } from './../instrucoes-modal/instrucoes-modal.page';
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { AudioService } from '../services/audio/audio.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements AfterViewInit {
 
-  fases = new Array(45);
+  constructor(public modalController: ModalController, private router: Router, private audioService: AudioService) { }
 
-  constructor(public modalController: ModalController, private router: Router) { }
+  ngAfterViewInit(): void {
+    this.audioService.preloadSounds().then(()=>{
+      console.log('Audio loaded');
+    }).catch((error)=>{
+      console.error(error);
+    });
+  }
 
   async instrucoes() {
     const modal = await this.modalController.create({

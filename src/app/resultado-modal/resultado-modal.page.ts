@@ -6,17 +6,18 @@ import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
   templateUrl: './resultado-modal.page.html',
   styleUrls: ['./resultado-modal.page.scss'],
 })
-export class ResultadoModalPage implements OnInit {
+export class ResultadoModalPage {
 
-  @Input() tempos: any[];
+  @Input() tempo:string;
 
-  tempo_total: string = "";
   mobile = false;
 
   constructor(public platform: Platform, public modalController: ModalController) {
     this.mobile = platform.is('mobile');
   }
 
+/*
+* 
   ngOnInit(): void {
     var segundos: number = 0;
     var minutos: number = 0;
@@ -40,10 +41,17 @@ export class ResultadoModalPage implements OnInit {
     }
     this.tempo_total += segundos;
   }
-
+  */
+ 
   async voltar() {
     this.modalController.dismiss({
-      'dismissed': true
+      'comando': 'voltar'
+    });
+  }
+  
+  async chamarProximaFase() {
+    this.modalController.dismiss({
+      'comando': 'continuar'
     });
   }
 }

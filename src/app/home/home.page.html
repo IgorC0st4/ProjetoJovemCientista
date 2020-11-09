@@ -8,8 +8,98 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let fase of fases; let i = index">
-        <ion-button size="large" (click)="iniciarFase(i+1)">{{i+1}}</ion-button>
+      <ion-col>
+        <ion-card style="background-color: #CAE8A2;">
+          <ion-card-header>
+            <ion-card-title>Iniciais</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(1)">1</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(2)">2</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(3)">3</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(4)">4</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(5)">5</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card style="background-color: #FFFF00;">
+          <ion-card-header>
+            <ion-card-title>Intermediárias</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(6)">6</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(7)">7</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(8)">8</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(9)">9</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(10)">10</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-card  style="background-color: #FF404B;">
+          <ion-card-header>
+            <ion-card-title>Difíceis</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(11)">11</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(12)">12</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(13)">13</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(14)">14</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button size="large" (click)="iniciarFase(15)">15</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
