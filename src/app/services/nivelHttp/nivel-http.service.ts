@@ -1,14 +1,14 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Nivel } from 'src/app/models/nivel';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError, Observable } from 'rxjs';
-import { Usuario } from 'src/app/models/usuario';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioHttpService {
+export class NivelHttpService {
 
-  base_path = 'http://localhost:8080/usuario'
+  base_path = 'http://localhost:8080/nivel'
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -34,14 +34,7 @@ export class UsuarioHttpService {
       'Something bad happened; please try again later.');
   };
 
-  efetuarCadastro(postData): Observable<Usuario> {
-    return this.http.
-      post<Usuario>(this.base_path + '/cadastro', postData, this.httpOptions)
-      .pipe();
-  }
-
-  efetuarLogin(postData): Observable<Usuario> {
-    return this.http.post<Usuario>(this.base_path + '/login', postData, this.httpOptions)
-    .pipe();
+  listarNiveis():Observable<Nivel[]>{
+    return this.http.get<Nivel[]>(this.base_path, this.httpOptions).pipe();
   }
 }

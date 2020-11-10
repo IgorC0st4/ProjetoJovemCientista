@@ -1,3 +1,6 @@
+import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
+import { Resultado } from './../models/resultado';
+import { ResultadoHttpService } from './../services/resultadoHttp/resultado-http.service';
 import { Platform, ModalController } from '@ionic/angular';
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 
@@ -6,14 +9,39 @@ import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
   templateUrl: './resultado-modal.page.html',
   styleUrls: ['./resultado-modal.page.scss'],
 })
-export class ResultadoModalPage {
+export class ResultadoModalPage implements AfterViewInit {
 
-  @Input() tempo:string;
+  @Input() resultado:Resultado;
+
+  resultadoMaisRapido:string = "";
 
   mobile = false;
 
-  constructor(public platform: Platform, public modalController: ModalController) {
+  constructor(
+    public platform: Platform, 
+    public modalController: ModalController,
+    private resultadoHttpService: ResultadoHttpService,
+    private resultadoLocalService:ResultadoLocalService) {
     this.mobile = platform.is('mobile');
+  }
+  ngAfterViewInit(): void {
+    this.resultadoLocalService.get(this.resultado.nivel.numero).then((result)=>{
+      if(result){
+        this.resultadoMaisRapido = result;
+      }else{
+        this.resultadoMaisRapido = this.resultado.tempoFinal;
+      }
+    }).catch((error)=>{
+      this.resultadoMaisRapido = this.resultado.tempoFinal;
+    });
+
+    this.resultadoHttpService.enviarResultado(this.resultado).subscribe((response)=>{
+    }, (error)=>{
+      console.error(error);
+    })
+  }
+  ngOnInit(): void {
+    
   }
 
 /*

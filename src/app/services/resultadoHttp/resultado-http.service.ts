@@ -1,4 +1,5 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Resultado } from './../../models/resultado';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError, Observable } from 'rxjs';
 import { Usuario } from 'src/app/models/usuario';
@@ -6,9 +7,9 @@ import { Usuario } from 'src/app/models/usuario';
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioHttpService {
+export class ResultadoHttpService {
 
-  base_path = 'http://localhost:8080/usuario'
+  base_path = 'http://localhost:8080/resultado'
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -34,14 +35,12 @@ export class UsuarioHttpService {
       'Something bad happened; please try again later.');
   };
 
-  efetuarCadastro(postData): Observable<Usuario> {
-    return this.http.
-      post<Usuario>(this.base_path + '/cadastro', postData, this.httpOptions)
-      .pipe();
+  enviarResultado(postData):Observable<Resultado>{
+    return this.http.post<Resultado>(this.base_path, postData, this.httpOptions).pipe();
   }
 
-  efetuarLogin(postData): Observable<Usuario> {
-    return this.http.post<Usuario>(this.base_path + '/login', postData, this.httpOptions)
-    .pipe();
+  solicitarResultadoMaisRapido(id:number):Observable<Resultado>{
+    return this.http.get<Resultado>(this.base_path + '/maisRapido/' + id, this.httpOptions).pipe();
   }
+
 }

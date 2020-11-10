@@ -18,6 +18,8 @@ export class LoginPage implements OnInit {
   public tentativaDeCadastro: boolean = false;
   public tentativaDeLogin: boolean = false;
 
+  public submissaoComSucesso:boolean = false;
+
   public ehMobile: boolean = false;
 
   constructor(
@@ -45,11 +47,13 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuarioLocalService.getAll().then((data)=>{
-      if(data.length>0){
+    this.usuarioLocalService.get(this.usuarioLocalService.key).then((result)=>{
+      if(result){
         this.navCtrl.navigateRoot('/home');
       }
-    })
+    }).catch((error)=>{
+      console.log(error);
+    });
   }
 
   async efetuarCadastro() {
@@ -60,7 +64,7 @@ export class LoginPage implements OnInit {
 
     this.usuarioHttpService.efetuarCadastro(JSON.stringify(this.singupForm.value)).subscribe((response) => {
       this.usuarioLocalService.inserir(response).then(() => {
-        console.log('Cadastrado com sucesso!');
+        this.submissaoComSucesso = true;
         this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
         alert(error);
@@ -68,6 +72,7 @@ export class LoginPage implements OnInit {
     }, (error) => {
       this.usuarioHttpService.handleError(error).subscribe((response) => {
         alert(response);
+        this.submissaoComSucesso = false;
       });
     });
 
@@ -81,7 +86,7 @@ export class LoginPage implements OnInit {
 
     this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value)).subscribe((response) => {
       this.usuarioLocalService.inserir(response).then(() => {
-        console.log('Login efetuado sucesso!');
+        this.submissaoComSucesso = true;
         this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
         alert(error);
@@ -89,6 +94,7 @@ export class LoginPage implements OnInit {
     }, (error) => {
       this.usuarioHttpService.handleError(error).subscribe((response) => {
         alert(response);
+        this.submissaoComSucesso = false;
       });
     });
 

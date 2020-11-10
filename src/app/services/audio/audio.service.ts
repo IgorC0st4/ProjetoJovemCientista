@@ -50,7 +50,6 @@ export class AudioService {
     if (this.platform.is('cordova') && !this.forceWebAudio) {
 
       this.nativeAudio.preloadSimple(key, asset).then(() => {
-        console.error('audio loaded');
       }).catch((error) => {
         console.error(JSON.stringify(error))
       });

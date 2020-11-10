@@ -103,7 +103,7 @@
             <ion-card-title>Cadastro</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <p *ngIf="tentativaDeCadastro" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
+            <p *ngIf="tentativaDeCadastro  && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
             </p>
 
             <ion-list lines="none">
@@ -174,7 +174,7 @@
             <ion-card-title>Login</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <p *ngIf="tentativaDeLogin" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
+            <p *ngIf="tentativaDeLogin && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
             </p>
 
             <ion-list lines="none">

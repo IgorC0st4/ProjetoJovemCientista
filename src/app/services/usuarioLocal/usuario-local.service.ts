@@ -21,6 +21,10 @@ export class UsuarioLocalService {
     return this.storage.remove(key);
   }
 
+  public async get(key:string){
+    return this.storage.get(key);
+  }
+
   public async getAll() {
     let usuarios: UsuarioList[] = [];
     return this.storage.forEach((value: Usuario, key: string, iterationNumber: Number) => {

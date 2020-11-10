@@ -1,3 +1,6 @@
+import { NivelLocalService } from './../services/nivelLocal/nivel-local.service';
+import { UsuarioLocalService } from './../services/usuarioLocal/usuario-local.service';
+import { Resultado } from './../models/resultado';
 import { StopwatchService } from './../services/stopwatch/stopwatch.service';
 import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
@@ -50,7 +53,9 @@ export class FasePage implements OnInit {
     public platform: Platform,
     private audioService: AudioService,
     private route: ActivatedRoute,
-    private navController:NavController) {
+    private navController:NavController,
+    private usuarioLocalService:UsuarioLocalService,
+    private nivelLocalService:NivelLocalService) {
 
   }
 
@@ -173,10 +178,24 @@ export class FasePage implements OnInit {
   async apresentarResultado() {
     this.fimDeJogo = true;
     this.stopwatchService.stop();
+
+    let resultado = new Resultado();
+    this.nivelLocalService.get(this.contadorFase).then((result)=>{
+      resultado.nivel = result;
+    }).catch((error)=>{
+      console.error(error);
+    });
+    resultado.tempoFinal = this.stopwatchService.time;
+    await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result)=>{
+      resultado.usuario = result;
+    }).catch((error)=>{
+      console.error(error);
+    });
+
     const modal = await this.modalController.create({
       component: ResultadoModalPage,
       componentProps: {
-        'tempo': this.stopwatchService.time
+        'resultado': resultado
       }
     });
     modal.onDidDismiss().then((data)=>{
