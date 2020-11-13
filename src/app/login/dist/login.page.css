@@ -1,0 +1,16 @@
+ion-label,
+.select-text {
+  margin-left: 10px;
+}
+
+.invalid {
+  border: 1px solid #ea6153;
+}
+
+ion-card {
+  opacity: 0.9;
+}
+
+ion-slides {
+  background-color: #27A89A;
+}

@@ -16,8 +16,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class FasePage implements OnInit {
 
-  contadorFase: number = 1;
-  tabuleiro: any[] = [];
   classesCss: string[] = [
     'fundo-azul',
     'fundo-verde',
@@ -29,6 +27,10 @@ export class FasePage implements OnInit {
     'fundo-cinza',
     'fundo-laranja'
   ]
+  contadorFase: number = 1;
+  contadorErros: number = 0;
+  desktop: boolean = false;
+  fimDeJogo: boolean = false;
   imgs: string[] = [
     '../../assets/imgs/desenhos/Imagem 1.PNG',
     '../../assets/imgs/desenhos/Imagem 2.PNG',
@@ -38,12 +40,11 @@ export class FasePage implements OnInit {
     '../../assets/imgs/desenhos/Imagem 6.PNG',
     '../../assets/imgs/desenhos/Imagem 7.PNG'
   ];
-  imagensProcuradas: any[] = [];
-  tempos: any[] = [];
   imagensEncontradas: number = 0;
-  fimDeJogo: boolean = false;
   ios: boolean = false;
-  desktop: boolean = false;
+  imagensProcuradas: any[] = [];
+  tabuleiro: any[] = [];
+  tempos: any[] = [];
 
   constructor(
     private alertController: AlertController,
@@ -99,7 +100,7 @@ export class FasePage implements OnInit {
     for (var i = 0; i < this.contadorFase; i++) {
       var linha = this.tabuleiro[this.gerarNumeroAleatorio(5)];
       var bloco = linha[this.gerarNumeroAleatorio(5)];
-      if(!this.imagensProcuradas.find(e => e.classe===bloco.classe && e.img === bloco.img)){
+      if(!this.ehImagemProcurada(bloco)){
         this.imagensProcuradas.push(bloco);
       }else{
         i--;
@@ -131,17 +132,19 @@ export class FasePage implements OnInit {
     }
   }
 
+  ehImagemProcurada(img:any):boolean{
+    return this.imagensProcuradas.find(e => e.classe===img.classe && e.img === img.img);
+  }
+
   gerarNumeroAleatorio(limite: number) {
     return Math.floor((Math.random() * limite));
   }
 
   async testarBlocoSelecionado(img) {
     //this.audioService.playSound('click');
-    for (var i = 0; i < this.imagensProcuradas.length; i++) {
-      var item = this.imagensProcuradas[i];
-      if (item.img === img.img && item.classe === img.classe) {
-        this.imagensEncontradas++;
-        const index = this.imagensProcuradas.indexOf(item);
+    if(this.ehImagemProcurada(img)){
+      this.imagensEncontradas++;
+        const index = this.imagensProcuradas.indexOf(img);
 
         if (index > -1) {
           this.imagensProcuradas.splice(index, 1);
@@ -150,7 +153,8 @@ export class FasePage implements OnInit {
           this.apresentarResultado();
         }
         return;
-      }
+    }else{
+      this.contadorErros++;
     }
   }
 
@@ -186,6 +190,7 @@ export class FasePage implements OnInit {
       console.error(error);
     });
     resultado.tempoFinal = this.stopwatchService.time;
+    resultado.erros = this.contadorErros;
     await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result)=>{
       resultado.usuario = result;
     }).catch((error)=>{

@@ -10,11 +10,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
-
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
 import { HttpClientModule } from '@angular/common/http';
-
 import { IonicStorageModule } from '@ionic/storage';
 
 
@@ -26,7 +23,7 @@ import { IonicStorageModule } from '@ionic/storage';
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(), 
     AppRoutingModule, 
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule],
   providers: [
     StatusBar,

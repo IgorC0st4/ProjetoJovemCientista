@@ -1,436 +1,305 @@
 <ion-content class="padding">
 
-  <div class="container">
-    <ion-slides>
-      <ion-slide>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Bem-vindo!</ion-card-title>
-            <ion-card-subtitle>Projeto Jovem Cientista</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list lines="none">
-              <ion-item-divider color="primary">
-                <ion-label>
-                  O Projeto
-                </ion-label>
-              </ion-item-divider>
-              <ion-item>
-                <p>
-                  O aplicativo foi desenvolvido com o intuito de dar continuidade ao trabalho desenvolvido
-                  pelos integrantes do projeto Jovem Cientista denominado:
-                  A Influência dos Processos Atencionais nos Mecanismos de Memória e Aprendizagem.
-                </p>
-              </ion-item>
-              <ion-item-divider color="primary">
-                <ion-label>
-                  O Aplicativo
-                </ion-label>
-              </ion-item-divider>
-              <ion-item>
-                <p>
-                  O aplicativo foi criado como um jogo com o intuito de medir a velocidade de raciocínio e
-                  o tempo que o jogador consegue manter a atenção em uma atividade. Os dados coletados serão utilizados
-                  para futura análise com base na idade, escolaridade e gênero do jogador.</p>
-              </ion-item>
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-slide>
-
-      <ion-slide>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Projeto Jovem Cientista</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-list lines="none">
-              <ion-item-divider color="primary">
-                <ion-label>
-                  Participantes
-                </ion-label>
-              </ion-item-divider>
-
-              <ion-item-divider color="secondary">
-                <ion-label>
-                  INSG Castelo
-                </ion-label>
-              </ion-item-divider>
-
-              <ion-item>
-                <ion-label>Prof. Julio Cesar Vasconcelos Da Silva</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Julia Abreu Gazire</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Larissa Machado da Silva</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Dafne Bigasz de Araújo</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Artur Nagem Berbet Louzada</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Vinicius Fonseca Gorito Adriano</ion-label>
-              </ion-item>
-
-              <ion-item-divider color="secondary">
-                <ion-label>
-                  FSMA
-                </ion-label>
-              </ion-item-divider>
-
-              <ion-item>
-                <ion-label>Prof. Mauro Dias de Carvalho</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Igor Carvalho Costa</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-label>Lucas Rodrigues dos Santos</ion-label>
-              </ion-item>
-
-            </ion-list>
-          </ion-card-content>
-        </ion-card>
-      </ion-slide>
-
-      <ion-slide>
-        <ion-card style="width: 400px;">
-          <ion-card-header>
-            <ion-card-title>Cadastro</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <p *ngIf="tentativaDeCadastro  && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
-            </p>
-
-            <ion-list lines="none">
-
-              <form [formGroup]="singupForm">
-
-                <ion-item>
-                  <ion-label position="floating">Nick</ion-label>
-                  <ion-input formControlName="nick" type="text"></ion-input>
-                </ion-item>
-
-                <ion-item
-                  *ngIf="!singupForm.controls.nick.valid  && (singupForm.controls.nick.dirty || tentativaDeCadastro)">
-                  <p>Por favor entre um nick válido.</p>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label position="floating">Idade</ion-label>
-                  <ion-input formControlName="idade" type="number"></ion-input>
-                </ion-item>
-
-                <ion-item
-                  *ngIf="!singupForm.controls.idade.valid  && (singupForm.controls.idade.dirty || tentativaDeCadastro)">
-                  <p>Por favor entre uma idade válida.</p>
-                </ion-item>
-
-                <ion-item>
-                  <ion-label>Escolaridade</ion-label>
-                  <ion-select formControlName="escolaridade" placeholder="Selecione um">
-                    <ion-select-option value="F">Fundamental</ion-select-option>
-                    <ion-select-option value="M">Médio</ion-select-option>
-                    <ion-select-option value="S">Superior</ion-select-option>
-                  </ion-select>
-                </ion-item>
-
-
-                <ion-item>
-                  <ion-label>Gênero</ion-label>
-                  <ion-select formControlName="genero" placeholder="Selecione um">
-                    <ion-select-option value="F">Feminino</ion-select-option>
-                    <ion-select-option value="M">Masculino</ion-select-option>
-                  </ion-select>
-                </ion-item>
-
-
-                <ion-item>
-                  <ion-label position="floating">Senha</ion-label>
-                  <ion-input formControlName="senha" type="password"></ion-input>
-                </ion-item>
-
-                <ion-item
-                  *ngIf="!singupForm.controls.senha.valid  && (singupForm.controls.senha.dirty || tentativaDeCadastro)">
-                  <p>Por favor entre uma senha válida.</p>
-                </ion-item>
-              </form>
-
-            </ion-list>
-            <ion-button expand="full" color="primary" (click)="efetuarCadastro()">Cadastrar</ion-button>
-
-          </ion-card-content>
-          <p style="color: #1693A5;">Caso já tenha cadastro arraste para o lado --></p>
-        </ion-card>
-      </ion-slide>
-
-      <ion-slide>
-        <ion-card style="width: 400px;">
-          <ion-card-header>
-            <ion-card-title>Login</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <p *ngIf="tentativaDeLogin && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
-            </p>
-
-            <ion-list lines="none">
-
-              <form [formGroup]="loginForm">
-
-                <ion-item>
-                  <ion-label position="floating">Nick</ion-label>
-                  <ion-input formControlName="nick" type="text"></ion-input>
-                </ion-item>
-
-                <ion-item
-                  *ngIf="!loginForm.controls.nick.valid  && (loginForm.controls.nick.dirty || tentativaDeLogin)">
-                  <p style="color: #ea6153;">Por favor entre um nick válido.</p>
-                </ion-item>
-
-
-                <ion-item>
-                  <ion-label position="floating">Senha</ion-label>
-                  <ion-input formControlName="senha" type="password"></ion-input>
-                </ion-item>
-
-                <ion-item
-                  *ngIf="!loginForm.controls.senha.valid  && (loginForm.controls.senha.dirty || tentativaDeLogin)">
-                  <p style="color: #ea6153;">Por favor entre uma senha válida.</p>
-                </ion-item>
-              </form>
-
-            </ion-list>
-            <ion-button expand="full" color="primary" (click)="efetuarLogin()">Login</ion-button>
-
-          </ion-card-content>
-        </ion-card>
-
-      </ion-slide>
-    </ion-slides>
-  </div>
-
-  <!--
-  <ion-slides #signupSlider>
+  <ion-slides 
+  pager="true" 
+  scrollbar="true" 
+  (ionSlideTransitionEnd)="ionSlideTransitionEnd($event)"
+  #mySlider>
 
     <ion-slide>
-      <p *ngIf="tentativaDeSubmissao" style="color: #ea6153;">Please fill out all details accurately.</p>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Bem-vindo!</ion-card-title>
+                <ion-card-subtitle>Projeto Jovem Cientista</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-list lines="none">
+                  <ion-item-divider color="primary">
+                    <ion-label>
+                      O Projeto
+                    </ion-label>
+                  </ion-item-divider>
+                  <ion-item>
+                    <div class="ion-text-justify">
+                      <p>
+                        O aplicativo foi desenvolvido com o intuito de dar continuidade ao trabalho desenvolvido
+                        pelos integrantes do projeto Jovem Cientista Salesiano, denominado:
+                        A Influência dos Processos Atencionais nos Mecanismos de Memória e Aprendizagem.
+                      </p>
+                    </div>
+                    
+                  </ion-item>
+                  <ion-item-divider color="primary">
+                    <ion-label>
+                      O Aplicativo
+                    </ion-label>
+                  </ion-item-divider>
+                  <ion-item>
+                    <div class="ion-text-justify">
+                      <p>
+                        O aplicativo foi desenvolvido como um jogo com o intuito de medir a velocidade de raciocínio e
+                        o tempo que o jogador consegue manter a atenção em uma atividade. Os dados coletados serão
+                        utilizados para futura análise com base na idade, escolaridade e gênero do jogador. <br>
+                        Os resultados serão mantidos em sigilo, sendo destinados apenas para fins científicos. <br>
+                        <b>Caso aceite participar, favor aceitar os termos abaixo.</b>
+                      </p>
+                    </div>
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+            </ion-card>
 
-      <ion-list lines="none">
-      
-          <form [formGroup]="slideOneForm">
-      
-              <ion-item>
-                  <ion-label position="floating">First Name</ion-label>
-                  <ion-input formControlName="firstName" type="text"></ion-input>
-              </ion-item>
-      
-              <ion-item>
-                  <ion-label position="floating">Last Name</ion-label>
-                  <ion-input formControlName="lastName" type="text"></ion-input>
-              </ion-item>
-      
-              <ion-item>
-                  <ion-label position="floating">Age</ion-label>
-                  <ion-input formControlName="age" type="number"></ion-input>
-              </ion-item>
-      
-          </form>
-      
-      </ion-list>
+          </ion-col>
+
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Termos e condições de uso</ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col>
+                      <div class="ion-text-justify">
+                        <p>
+                          <ion-text color="dark">
+                            TERMOS
+                          </ion-text>
+                        </p>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item>
+                        <ion-label>
+                          Aceito os termos e condições de uso
+                        </ion-label>
+                        <ion-checkbox slot="end" [(ngModel)]="aceitouTermos"></ion-checkbox>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Projeto Jovem Cientista</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-list lines="none">
+                  <ion-item-divider color="primary">
+                    <ion-label>
+                      Participantes
+                    </ion-label>
+                  </ion-item-divider>
+
+                  <ion-item-divider color="secondary">
+                    <ion-label>
+                      INSG Castelo
+                    </ion-label>
+                  </ion-item-divider>
+
+                  <ion-item>
+                    <ion-label>Prof. Julio Cesar Vasconcelos Da Silva</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Julia Abreu Gazire</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Larissa Machado da Silva</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Dafne Bigasz de Araújo</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Artur Nagem Berbet Louzada</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Vinicius Fonseca Gorito Adriano</ion-label>
+                  </ion-item>
+
+                  <ion-item-divider color="secondary">
+                    <ion-label>
+                      FSMA
+                    </ion-label>
+                  </ion-item-divider>
+
+                  <ion-item>
+                    <ion-label>Prof. Mauro Dias de Carvalho</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Igor Carvalho Costa</ion-label>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label>Lucas Rodrigues dos Santos</ion-label>
+                  </ion-item>
+
+                </ion-list>
+              </ion-card-content>
+            </ion-card>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
     </ion-slide>
 
     <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Login</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p *ngIf="tentativaDeLogin && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos
+                  os dados
+                  corretamente.
+                </p>
 
+                <ion-list lines="none">
+
+                  <form [formGroup]="loginForm">
+
+                    <ion-item>
+                      <ion-label position="floating">Nick</ion-label>
+                      <ion-input formControlName="nick" type="text"></ion-input>
+                    </ion-item>
+
+                    <ion-item
+                      *ngIf="!loginForm.controls.nick.valid  && (loginForm.controls.nick.dirty || tentativaDeLogin)">
+                      <p style="color: #ea6153;">Por favor entre um nick válido.</p>
+                    </ion-item>
+
+
+                    <ion-item>
+                      <ion-label position="floating">Senha</ion-label>
+                      <ion-input formControlName="senha" type="password"></ion-input>
+                    </ion-item>
+
+                    <ion-item
+                      *ngIf="!loginForm.controls.senha.valid  && (loginForm.controls.senha.dirty || tentativaDeLogin)">
+                      <p style="color: #ea6153;">Por favor entre uma senha válida.</p>
+                    </ion-item>
+                  </form>
+
+                </ion-list>
+                <ion-button expand="full" color="primary" (click)="efetuarLogin()">Login</ion-button>
+
+              </ion-card-content>
+            </ion-card>
+
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Cadastro</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p *ngIf="tentativaDeCadastro  && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha
+                  todos os
+                  dados corretamente.
+                </p>
+
+                <ion-list lines="none">
+
+                  <form [formGroup]="singupForm">
+
+                    <ion-item>
+                      <ion-label position="floating">Nick</ion-label>
+                      <ion-input formControlName="nick" type="text"></ion-input>
+                    </ion-item>
+
+                    <ion-item
+                      *ngIf="!singupForm.controls.nick.valid  && (singupForm.controls.nick.dirty || tentativaDeCadastro)">
+                      <p>Por favor entre um nick válido.</p>
+                    </ion-item>
+
+                    <ion-item>
+                      <ion-label position="floating">Idade</ion-label>
+                      <ion-input formControlName="idade" type="number"></ion-input>
+                    </ion-item>
+
+                    <ion-item
+                      *ngIf="!singupForm.controls.idade.valid  && (singupForm.controls.idade.dirty || tentativaDeCadastro)">
+                      <p>Por favor entre uma idade válida.</p>
+                    </ion-item>
+
+                    <ion-item>
+                      <ion-label>Escolaridade</ion-label>
+                      <ion-select formControlName="escolaridade" placeholder="Selecione um">
+                        <ion-select-option value="1">Fundamental - 1°</ion-select-option>
+                        <ion-select-option value="2">Fundamental - 2°</ion-select-option>
+                        <ion-select-option value="3">Fundamental - 3°</ion-select-option>
+                        <ion-select-option value="4">Fundamental - 4°</ion-select-option>
+                        <ion-select-option value="5">Fundamental - 5°</ion-select-option>
+                        <ion-select-option value="6">Fundamental - 6°</ion-select-option>
+                        <ion-select-option value="7">Fundamental - 7°</ion-select-option>
+                        <ion-select-option value="8">Fundamental - 8°</ion-select-option>
+                        <ion-select-option value="9">Fundamental - 9°</ion-select-option>
+                        <ion-select-option value="10">Médio - 1°</ion-select-option>
+                        <ion-select-option value="11">Médio - 2°</ion-select-option>
+                        <ion-select-option value="12">Médio - 3°</ion-select-option>
+                        <ion-select-option value="13">Superior</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+
+                    <ion-item>
+                      <ion-label>Tipo de escola</ion-label>
+                      <ion-select formControlName="tipoEscola" placeholder="Selecione um">
+                        <ion-select-option value="Pública">Pública</ion-select-option>
+                        <ion-select-option value="Privada">Privada</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+
+                    <ion-item>
+                      <ion-label>Gênero</ion-label>
+                      <ion-select formControlName="genero" placeholder="Selecione um">
+                        <ion-select-option value="F">Feminino</ion-select-option>
+                        <ion-select-option value="M">Masculino</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+
+                      <ion-item>
+                        <ion-label position="floating">Senha</ion-label>
+                        <ion-input formControlName="senha" type="password" tooltip="teste"></ion-input>
+                      </ion-item>                    
+                      <span><b>Utilize letras e números</b></span>
+
+                    <ion-item
+                      *ngIf="!singupForm.controls.senha.valid  && (singupForm.controls.senha.dirty || tentativaDeCadastro)">
+                      <p style="color: #ea6153;">Por favor entre uma senha válida.</p>
+                    </ion-item>
+                  </form>
+
+                </ion-list>
+                <ion-button expand="full" color="primary" (click)="efetuarCadastro()">Cadastrar</ion-button>
+
+              </ion-card-content>
+            </ion-card>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-slide>
 
   </ion-slides>
-
-
-  <div class="container">
-    <div class="box">
-
-      <p *ngIf="tentativaDeSubmissao" style="color: #ea6153;">Por favor preencha todos os dados corretamente.</p>
-
-      <ion-list lines="none">
-    
-        <form [formGroup]="myForm">
-    
-          <ion-item>
-            <ion-label position="floating">Nick</ion-label>
-            <ion-input formControlName="nick" type="text"></ion-input>
-          </ion-item>
-    
-          <ion-item *ngIf="!myForm.controls.nick.valid  && (myForm.controls.nick.dirty || tentativaDeSubmissao)">
-            <p>Por favor entre um nick válido.</p>
-          </ion-item>
-    
-          <ion-item>
-            <ion-label position="floating">Idade</ion-label>
-            <ion-input formControlName="idade" type="number"></ion-input>
-          </ion-item>
-    
-          <ion-item *ngIf="!myForm.controls.idade.valid  && (myForm.controls.idade.dirty || tentativaDeSubmissao)">
-            <p>Por favor entre uma idade válida.</p>
-          </ion-item>
-    
-          <ion-item>
-            <ion-label>Escolaridade</ion-label>
-            <ion-select formControlName="escolaridade" placeholder="Selecione um">
-              <ion-select-option value="F">Fundamental</ion-select-option>
-              <ion-select-option value="M">Médio</ion-select-option>
-              <ion-select-option value="S">Superior</ion-select-option>
-            </ion-select>
-          </ion-item>
-    
-    
-          <ion-item>
-            <ion-label>Gênero</ion-label>
-            <ion-select formControlName="genero" placeholder="Selecione um">
-              <ion-select-option value="F">Feminino</ion-select-option>
-              <ion-select-option value="M">Masculino</ion-select-option>
-            </ion-select>
-          </ion-item>
-    
-    
-          <ion-item>
-            <ion-label position="floating">Senha</ion-label>
-            <ion-input formControlName="senha" type="password"></ion-input>
-          </ion-item>
-    
-          <ion-item *ngIf="!myForm.controls.senha.valid  && (myForm.controls.senha.dirty || tentativaDeSubmissao)">
-            <p>Por favor entre uma senha válida.</p>
-          </ion-item>
-        </form>
-    
-      </ion-list>
-      <ion-button expand="full" color="primary" (click)="salvar()">Login</ion-button>
-    
-    </div>
-  </div>
--->
-
-  <!--
-  <div class="container">
-
-    <ion-grid>
-      <ion-row>
-        <ion-col size-sm="12" size-md="6" size-lg="3" offset-lg="3">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Cadastro</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p *ngIf="tentativaDeSubmissao" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
-              </p>
-
-              <ion-list lines="none">
-
-                <form [formGroup]="singupForm">
-
-                  <ion-item>
-                    <ion-label position="floating">Nick</ion-label>
-                    <ion-input formControlName="nick" type="text"></ion-input>
-                  </ion-item>
-
-                  <ion-item
-                    *ngIf="!myForm.controls.nick.valid  && (myForm.controls.nick.dirty || tentativaDeSubmissao)">
-                    <p>Por favor entre um nick válido.</p>
-                  </ion-item>
-
-                  <ion-item>
-                    <ion-label position="floating">Idade</ion-label>
-                    <ion-input formControlName="idade" type="number"></ion-input>
-                  </ion-item>
-
-                  <ion-item
-                    *ngIf="!myForm.controls.idade.valid  && (myForm.controls.idade.dirty || tentativaDeSubmissao)">
-                    <p>Por favor entre uma idade válida.</p>
-                  </ion-item>
-
-                  <ion-item>
-                    <ion-label>Escolaridade</ion-label>
-                    <ion-select formControlName="escolaridade" placeholder="Selecione um">
-                      <ion-select-option value="F">Fundamental</ion-select-option>
-                      <ion-select-option value="M">Médio</ion-select-option>
-                      <ion-select-option value="S">Superior</ion-select-option>
-                    </ion-select>
-                  </ion-item>
-
-
-                  <ion-item>
-                    <ion-label>Gênero</ion-label>
-                    <ion-select formControlName="genero" placeholder="Selecione um">
-                      <ion-select-option value="F">Feminino</ion-select-option>
-                      <ion-select-option value="M">Masculino</ion-select-option>
-                    </ion-select>
-                  </ion-item>
-
-
-                  <ion-item>
-                    <ion-label position="floating">Senha</ion-label>
-                    <ion-input formControlName="senha" type="password"></ion-input>
-                  </ion-item>
-
-                  <ion-item
-                    *ngIf="!myForm.controls.senha.valid  && (myForm.controls.senha.dirty || tentativaDeSubmissao)">
-                    <p>Por favor entre uma senha válida.</p>
-                  </ion-item>
-                </form>
-
-              </ion-list>
-              <ion-button expand="full" color="primary" (click)="salvar()">Login</ion-button>
-
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-
-        <ion-col size-sm="12" size-md="6" size-lg="3">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Login</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p *ngIf="tentativaDeSubmissao" style="color: #ea6153;">Por favor preencha todos os dados corretamente.
-              </p>
-
-              <ion-list lines="none">
-
-                <form [formGroup]="loginForm">
-
-                  <ion-item>
-                    <ion-label position="floating">Nick</ion-label>
-                    <ion-input formControlName="nick" type="text"></ion-input>
-                  </ion-item>
-
-                  <ion-item
-                    *ngIf="!myForm.controls.nick.valid  && (myForm.controls.nick.dirty || tentativaDeSubmissao)">
-                    <p>Por favor entre um nick válido.</p>
-                  </ion-item>
-
-
-                  <ion-item>
-                    <ion-label position="floating">Senha</ion-label>
-                    <ion-input formControlName="senha" type="password"></ion-input>
-                  </ion-item>
-
-                  <ion-item
-                    *ngIf="!myForm.controls.senha.valid  && (myForm.controls.senha.dirty || tentativaDeSubmissao)">
-                    <p>Por favor entre uma senha válida.</p>
-                  </ion-item>
-                </form>
-
-              </ion-list>
-              <ion-button expand="full" color="primary" (click)="salvar()">Login</ion-button>
-
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-  -->
 </ion-content>
