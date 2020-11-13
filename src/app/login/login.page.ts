@@ -75,10 +75,8 @@ export class LoginPage implements OnInit {
         alert(error);
       });
     }, (error) => {
-      this.usuarioHttpService.handleError(error).subscribe((response) => {
-        alert(response);
-        this.submissaoComSucesso = false;
-      });
+      console.error('ERRO CADASTRO');
+      console.error(error);
     });
 
   }
@@ -97,10 +95,8 @@ export class LoginPage implements OnInit {
         alert(error);
       });
     }, (error) => {
-      this.usuarioHttpService.handleError(error).subscribe((response) => {
-        alert(response);
-        this.submissaoComSucesso = false;
-      });
+      console.error('ERRO LOGIN');
+      console.error(error);
     });
 
   }

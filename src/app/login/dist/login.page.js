@@ -99,10 +99,8 @@ var LoginPage = /** @class */ (function () {
                         alert(error);
                     });
                 }, function (error) {
-                    _this.usuarioHttpService.handleError(error).subscribe(function (response) {
-                        alert(response);
-                        _this.submissaoComSucesso = false;
-                    });
+                    console.error('ERRO CADASTRO');
+                    console.error(error);
                 });
                 return [2 /*return*/];
             });
@@ -124,10 +122,8 @@ var LoginPage = /** @class */ (function () {
                         alert(error);
                     });
                 }, function (error) {
-                    _this.usuarioHttpService.handleError(error).subscribe(function (response) {
-                        alert(response);
-                        _this.submissaoComSucesso = false;
-                    });
+                    console.error('ERRO LOGIN');
+                    console.error(error);
                 });
                 return [2 /*return*/];
             });
