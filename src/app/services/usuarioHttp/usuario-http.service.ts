@@ -8,7 +8,8 @@ import { Usuario } from 'src/app/models/usuario';
 })
 export class UsuarioHttpService {
 
-  base_path = 'http://186.219.4.245:8080/usuario'
+  basePath = 'http://186.219.4.245:8080/usuario'
+  proxyUrl = "https://cors-anywhere.herokuapp.com/";
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -20,12 +21,12 @@ export class UsuarioHttpService {
 
   efetuarCadastro(postData): Observable<Usuario> {
     return this.http.
-      post<Usuario>(this.base_path + '/cadastro', postData, this.httpOptions)
+      post<Usuario>(this.proxyUrl + this.basePath + '/cadastro', postData, this.httpOptions)
       .pipe();
   }
 
   efetuarLogin(postData): Observable<Usuario> {
-    return this.http.post<Usuario>(this.base_path + '/login', postData, this.httpOptions)
+    return this.http.post<Usuario>(this.proxyUrl + this.basePath + '/login', postData, this.httpOptions)
     .pipe();
   }
 }
