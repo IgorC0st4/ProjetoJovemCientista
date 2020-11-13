@@ -12,8 +12,8 @@ var core_1 = require("@angular/core");
 var ResultadoHttpService = /** @class */ (function () {
     function ResultadoHttpService(http) {
         this.http = http;
-        //base_path = 'http://186.219.4.245:8080/resultado'
-        this.basePath = 'http://localhost:8080/resultado';
+        this.basePath = 'http://186.219.4.245:8080/resultado';
+        //basePath = 'http://localhost:8080/resultado'
         this.httpOptions = {
             headers: new http_1.HttpHeaders({
                 'Content-Type': 'application/json'

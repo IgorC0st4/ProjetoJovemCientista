@@ -8,8 +8,8 @@ import { throwError, Observable } from 'rxjs';
 })
 export class NivelHttpService {
 
-  //base_path = 'http://186.219.4.245:8080/nivel'
-  basePath = 'http://localhost:8080/nivel'
+  basePath = 'http://186.219.4.245:8080/nivel'
+  //basePath = 'http://localhost:8080/nivel'
 
   httpOptions = {
     headers: new HttpHeaders({

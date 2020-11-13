@@ -12,8 +12,8 @@ var core_1 = require("@angular/core");
 var UsuarioHttpService = /** @class */ (function () {
     function UsuarioHttpService(http) {
         this.http = http;
-        //basePath = 'http://186.219.4.245:8080/usuario'
-        this.basePath = 'http://localhost:8080/usuario';
+        this.basePath = 'http://186.219.4.245:8080/usuario';
+        //basePath = 'http://localhost:8080/usuario'
         this.httpOptions = {
             headers: new http_1.HttpHeaders({
                 'Content-Type': 'application/json'

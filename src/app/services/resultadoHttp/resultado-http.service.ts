@@ -9,8 +9,8 @@ import { Usuario } from 'src/app/models/usuario';
 })
 export class ResultadoHttpService {
 
-  //base_path = 'http://186.219.4.245:8080/resultado'
-  basePath = 'http://localhost:8080/resultado'
+  basePath = 'http://186.219.4.245:8080/resultado'
+  //basePath = 'http://localhost:8080/resultado'
 
   httpOptions = {
     headers: new HttpHeaders({
