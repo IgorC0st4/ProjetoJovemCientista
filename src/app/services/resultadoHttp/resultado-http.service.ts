@@ -9,7 +9,8 @@ import { Usuario } from 'src/app/models/usuario';
 })
 export class ResultadoHttpService {
 
-  base_path = 'http://186.219.4.245:8080/resultado'
+  //base_path = 'http://186.219.4.245:8080/resultado'
+  basePath = 'http://localhost:8080/resultado'
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -20,11 +21,11 @@ export class ResultadoHttpService {
   constructor(public http: HttpClient) { }
 
   enviarResultado(postData):Observable<Resultado>{
-    return this.http.post<Resultado>(this.base_path, postData, this.httpOptions).pipe();
+    return this.http.post<Resultado>(this.basePath, postData, this.httpOptions).pipe();
   }
 
   solicitarResultadoMaisRapido(id:number):Observable<Resultado>{
-    return this.http.get<Resultado>(this.base_path + '/maisRapido/' + id, this.httpOptions).pipe();
+    return this.http.get<Resultado>(this.basePath + '/maisRapido/' + id, this.httpOptions).pipe();
   }
 
 }

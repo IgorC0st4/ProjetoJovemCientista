@@ -12,7 +12,8 @@ var core_1 = require("@angular/core");
 var ResultadoHttpService = /** @class */ (function () {
     function ResultadoHttpService(http) {
         this.http = http;
-        this.base_path = 'http://186.219.4.245:8080/resultado';
+        //base_path = 'http://186.219.4.245:8080/resultado'
+        this.basePath = 'http://localhost:8080/resultado';
         this.httpOptions = {
             headers: new http_1.HttpHeaders({
                 'Content-Type': 'application/json'
@@ -20,10 +21,10 @@ var ResultadoHttpService = /** @class */ (function () {
         };
     }
     ResultadoHttpService.prototype.enviarResultado = function (postData) {
-        return this.http.post(this.base_path, postData, this.httpOptions).pipe();
+        return this.http.post(this.basePath, postData, this.httpOptions).pipe();
     };
     ResultadoHttpService.prototype.solicitarResultadoMaisRapido = function (id) {
-        return this.http.get(this.base_path + '/maisRapido/' + id, this.httpOptions).pipe();
+        return this.http.get(this.basePath + '/maisRapido/' + id, this.httpOptions).pipe();
     };
     ResultadoHttpService = __decorate([
         core_1.Injectable({

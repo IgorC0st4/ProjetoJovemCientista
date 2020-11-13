@@ -8,8 +8,8 @@ import { Usuario } from 'src/app/models/usuario';
 })
 export class UsuarioHttpService {
 
-  basePath = 'http://186.219.4.245:8080/usuario'
-
+  //basePath = 'http://186.219.4.245:8080/usuario'
+  basePath = 'http://localhost:8080/usuario'
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'

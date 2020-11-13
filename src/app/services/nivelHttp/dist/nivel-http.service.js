@@ -12,7 +12,8 @@ var core_1 = require("@angular/core");
 var NivelHttpService = /** @class */ (function () {
     function NivelHttpService(http) {
         this.http = http;
-        this.base_path = 'http://186.219.4.245:8080/nivel';
+        //base_path = 'http://186.219.4.245:8080/nivel'
+        this.basePath = 'http://localhost:8080/nivel';
         this.httpOptions = {
             headers: new http_1.HttpHeaders({
                 'Content-Type': 'application/json'
@@ -20,7 +21,7 @@ var NivelHttpService = /** @class */ (function () {
         };
     }
     NivelHttpService.prototype.listarNiveis = function () {
-        return this.http.get(this.base_path, this.httpOptions).pipe();
+        return this.http.get(this.basePath, this.httpOptions).pipe();
     };
     NivelHttpService = __decorate([
         core_1.Injectable({

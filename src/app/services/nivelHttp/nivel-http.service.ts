@@ -8,7 +8,8 @@ import { throwError, Observable } from 'rxjs';
 })
 export class NivelHttpService {
 
-  base_path = 'http://186.219.4.245:8080/nivel'
+  //base_path = 'http://186.219.4.245:8080/nivel'
+  basePath = 'http://localhost:8080/nivel'
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -19,6 +20,6 @@ export class NivelHttpService {
   constructor(public http: HttpClient) { }
 
   listarNiveis():Observable<Nivel[]>{
-    return this.http.get<Nivel[]>(this.base_path, this.httpOptions).pipe();
+    return this.http.get<Nivel[]>(this.basePath, this.httpOptions).pipe();
   }
 }
