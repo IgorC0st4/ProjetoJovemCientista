@@ -13,7 +13,6 @@ var UsuarioHttpService = /** @class */ (function () {
     function UsuarioHttpService(http) {
         this.http = http;
         this.basePath = 'http://186.219.4.245:8080/usuario';
-        this.proxyUrl = "https://cors-anywhere.herokuapp.com/";
         this.httpOptions = {
             headers: new http_1.HttpHeaders({
                 'Content-Type': 'application/json'
@@ -22,11 +21,11 @@ var UsuarioHttpService = /** @class */ (function () {
     }
     UsuarioHttpService.prototype.efetuarCadastro = function (postData) {
         return this.http.
-            post(this.proxyUrl + this.basePath + '/cadastro', postData, this.httpOptions)
+            post(this.basePath + '/cadastro', postData, this.httpOptions)
             .pipe();
     };
     UsuarioHttpService.prototype.efetuarLogin = function (postData) {
-        return this.http.post(this.proxyUrl + this.basePath + '/login', postData, this.httpOptions)
+        return this.http.post(this.basePath + '/login', postData, this.httpOptions)
             .pipe();
     };
     UsuarioHttpService = __decorate([
