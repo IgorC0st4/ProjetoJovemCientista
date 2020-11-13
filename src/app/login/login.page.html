@@ -1,10 +1,6 @@
 <ion-content class="padding">
 
-  <ion-slides 
-  pager="true" 
-  scrollbar="true" 
-  (ionSlideTransitionEnd)="ionSlideTransitionEnd($event)"
-  #mySlider>
+  <ion-slides pager="true" scrollbar="true" (ionSlideTransitionEnd)="ionSlideTransitionEnd($event)" #mySlider>
 
     <ion-slide>
       <ion-grid>
@@ -30,7 +26,7 @@
                         A Influência dos Processos Atencionais nos Mecanismos de Memória e Aprendizagem.
                       </p>
                     </div>
-                    
+
                   </ion-item>
                   <ion-item-divider color="primary">
                     <ion-label>
@@ -91,6 +87,7 @@
             </ion-card>
           </ion-col>
         </ion-row>
+
         <ion-row>
           <ion-col>
             <ion-card>
@@ -145,17 +142,13 @@
                   <ion-item>
                     <ion-label>Lucas Rodrigues dos Santos</ion-label>
                   </ion-item>
-
+                  
                 </ion-list>
               </ion-card-content>
             </ion-card>
-
           </ion-col>
-
         </ion-row>
-
       </ion-grid>
-
     </ion-slide>
 
     <ion-slide>
@@ -278,11 +271,11 @@
                       </ion-select>
                     </ion-item>
 
-                      <ion-item>
-                        <ion-label position="floating">Senha</ion-label>
-                        <ion-input formControlName="senha" type="password" tooltip="teste"></ion-input>
-                      </ion-item>                    
-                      <span><b>Utilize letras e números</b></span>
+                    <ion-item>
+                      <ion-label position="floating">Senha</ion-label>
+                      <ion-input formControlName="senha" type="password" tooltip="teste"></ion-input>
+                    </ion-item>
+                    <span><b>Utilize letras e números</b></span>
 
                     <ion-item
                       *ngIf="!singupForm.controls.senha.valid  && (singupForm.controls.senha.dirty || tentativaDeCadastro)">

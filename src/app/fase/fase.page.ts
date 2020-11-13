@@ -54,9 +54,9 @@ export class FasePage implements OnInit {
     public platform: Platform,
     private audioService: AudioService,
     private route: ActivatedRoute,
-    private navController:NavController,
-    private usuarioLocalService:UsuarioLocalService,
-    private nivelLocalService:NivelLocalService) {
+    private navController: NavController,
+    private usuarioLocalService: UsuarioLocalService,
+    private nivelLocalService: NivelLocalService) {
 
   }
 
@@ -100,9 +100,9 @@ export class FasePage implements OnInit {
     for (var i = 0; i < this.contadorFase; i++) {
       var linha = this.tabuleiro[this.gerarNumeroAleatorio(5)];
       var bloco = linha[this.gerarNumeroAleatorio(5)];
-      if(!this.ehImagemProcurada(bloco)){
+      if (!this.ehImagemProcurada(bloco)) {
         this.imagensProcuradas.push(bloco);
-      }else{
+      } else {
         i--;
       }
     }
@@ -132,8 +132,8 @@ export class FasePage implements OnInit {
     }
   }
 
-  ehImagemProcurada(img:any):boolean{
-    return this.imagensProcuradas.find(e => e.classe===img.classe && e.img === img.img);
+  ehImagemProcurada(img: any): boolean {
+    return this.imagensProcuradas.find(e => e.classe === img.classe && e.img === img.img);
   }
 
   gerarNumeroAleatorio(limite: number) {
@@ -142,18 +142,19 @@ export class FasePage implements OnInit {
 
   async testarBlocoSelecionado(img) {
     //this.audioService.playSound('click');
-    if(this.ehImagemProcurada(img)){
+    if (this.ehImagemProcurada(img)) {
+      const index = this.imagensProcuradas.findIndex((item) => {
+        return (item.classe === img.classe && item.img === img.img);
+      });
       this.imagensEncontradas++;
-        const index = this.imagensProcuradas.indexOf(img);
-
-        if (index > -1) {
-          this.imagensProcuradas.splice(index, 1);
-        }
-        if (this.imagensEncontradas == this.contadorFase && !this.fimDeJogo) {
-          this.apresentarResultado();
-        }
-        return;
-    }else{
+      if (index > -1) {
+        this.imagensProcuradas.splice(index, 1);
+      }
+      if (this.imagensEncontradas == this.contadorFase && !this.fimDeJogo) {
+        this.apresentarResultado();
+      }
+      return;
+    } else {
       this.contadorErros++;
     }
   }
@@ -184,16 +185,16 @@ export class FasePage implements OnInit {
     this.stopwatchService.stop();
 
     let resultado = new Resultado();
-    this.nivelLocalService.get(this.contadorFase).then((result)=>{
+    this.nivelLocalService.get(this.contadorFase).then((result) => {
       resultado.nivel = result;
-    }).catch((error)=>{
+    }).catch((error) => {
       console.error(error);
     });
     resultado.tempoFinal = this.stopwatchService.time;
     resultado.erros = this.contadorErros;
-    await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result)=>{
+    await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
       resultado.usuario = result;
-    }).catch((error)=>{
+    }).catch((error) => {
       console.error(error);
     });
 
@@ -203,10 +204,10 @@ export class FasePage implements OnInit {
         'resultado': resultado
       }
     });
-    modal.onDidDismiss().then((data)=>{
-      if(data['data'].comando === 'voltar'){
+    modal.onDidDismiss().then((data) => {
+      if (data['data'].comando === 'voltar') {
         this.navController.back();
-      }else{
+      } else {
         this.proximaFase();
       }
     });

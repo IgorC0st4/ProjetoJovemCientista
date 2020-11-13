@@ -1,3 +1,5 @@
+import { CreditosModalPage } from './../creditos-modal/creditos-modal.page';
+import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
 import { NivelLocalService } from './../services/nivelLocal/nivel-local.service';
 import { NivelHttpService } from './../services/nivelHttp/nivel-http.service';
 import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
@@ -22,11 +24,13 @@ export class HomePage implements AfterViewInit {
     public usuarioLocalService: UsuarioLocalService,
     private navController: NavController,
     private nivelHttpService: NivelHttpService,
-    private nivelLocalService: NivelLocalService) { }
+    private nivelLocalService: NivelLocalService,
+    private resultadoLocalService: ResultadoLocalService) { }
 
   ngAfterViewInit(): void {
     this.carregarNiveis();
     this.carregarSons();
+    this.inicializarResultados();
   }
 
   async carregarSons() {
@@ -42,6 +46,16 @@ export class HomePage implements AfterViewInit {
       this.salvarNiveis(response['_embedded']['nivelList']);
     }, (error) => {
       console.error(error)
+    });
+  }
+
+  async inicializarResultados() {
+    this.resultadoLocalService.get(1).then((result) => {
+      if (!result) {
+        this.resultadoLocalService.inicializarResultados();
+      }
+    }).catch((error) => {
+      console.error(error);
     });
   }
 
@@ -63,6 +77,13 @@ export class HomePage implements AfterViewInit {
   async sobre() {
     const modal = await this.modalController.create({
       component: SobreModalPage
+    });
+    return await modal.present();
+  }
+
+  async creditos(){
+    const modal = await this.modalController.create({
+      component: CreditosModalPage
     });
     return await modal.present();
   }

@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'creditos-modal',
+    loadChildren: () => import('./creditos-modal/creditos-modal.module').then( m => m.CreditosModalPageModule)
+  },
 ];
 
 @NgModule({

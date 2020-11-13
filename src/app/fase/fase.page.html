@@ -5,7 +5,7 @@
     <ion-toolbar>
       <ion-grid>
         <ion-row class="ion-align-items-center">
-          <ion-col >
+          <ion-col>
             <ion-title>Fase {{contadorFase}}</ion-title>
           </ion-col>
 
@@ -41,7 +41,7 @@
         <ion-card-header>
           <ion-card-title class="ion-text-center">Encontre as figuras</ion-card-title>
         </ion-card-header>
-    
+
         <ion-card-content>
           <ion-grid>
             <ion-row>
@@ -54,7 +54,7 @@
           </ion-grid>
         </ion-card-content>
       </ion-card>
-    
+
       <ion-grid class="tabuleiro">
         <ion-row *ngFor="let linha of tabuleiro">
           <ion-col *ngFor="let dado_coluna of linha">
@@ -66,9 +66,4 @@
       </ion-grid>
     </div>
   </div>
-  <ion-fab *ngIf='fimDeJogo' vertical="bottom" horizontal="end" slot="fixed" (click)='reinicarJogo()'>
-    <ion-fab-button>
-      <ion-icon name="reload"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>

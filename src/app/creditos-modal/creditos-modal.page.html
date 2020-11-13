@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Créditos das músicas utilizadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Sonorização</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list lines="none">
+              <ion-item-divider color="primary">
+                <ion-label>Créditos</ion-label>
+              </ion-item-divider>
+              <ion-item>
+                <ion-label>Bensound.com</ion-label>
+                <a href="https://www.bensound.com/royalty-free-music">Website</a>
+              </ion-item>
+              
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button *ngIf="mobile" expand="block" (click)="voltar()">Voltar</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
