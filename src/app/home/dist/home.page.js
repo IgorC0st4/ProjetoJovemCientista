@@ -58,7 +58,15 @@ var HomePage = /** @class */ (function () {
         this.nivelLocalService = nivelLocalService;
         this.resultadoLocalService = resultadoLocalService;
     }
-    HomePage.prototype.ngAfterViewInit = function () {
+    HomePage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.usuarioLocalService.get(this.usuarioLocalService.key).then(function (result) {
+            if (!result) {
+                _this.sair();
+            }
+        })["catch"](function (error) {
+            console.error(error);
+        });
         this.carregarNiveis();
         this.carregarSons();
         this.inicializarResultados();

@@ -5,7 +5,7 @@ import { NivelHttpService } from './../services/nivelHttp/nivel-http.service';
 import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
 import { InstrucoesModalPage } from './../instrucoes-modal/instrucoes-modal.page';
 import { ModalController, NavController } from '@ionic/angular';
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AudioService } from '../services/audio/audio.service';
 import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.service';
@@ -15,7 +15,7 @@ import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.serv
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements AfterViewInit {
+export class HomePage implements OnInit {
 
   constructor(
     public modalController: ModalController,
@@ -27,12 +27,19 @@ export class HomePage implements AfterViewInit {
     private nivelLocalService: NivelLocalService,
     private resultadoLocalService: ResultadoLocalService) { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
+    this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
+      if (!result) {
+        this.sair();
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+
     this.carregarNiveis();
     this.carregarSons();
     this.inicializarResultados();
   }
-
   async carregarSons() {
     this.audioService.preloadSounds().then(() => {
       console.log('Audio loaded');
@@ -81,7 +88,7 @@ export class HomePage implements AfterViewInit {
     return await modal.present();
   }
 
-  async creditos(){
+  async creditos() {
     const modal = await this.modalController.create({
       component: CreditosModalPage
     });
