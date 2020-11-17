@@ -1,3 +1,4 @@
+import { ResultadoHttpService } from './../services/resultadoHttp/resultado-http.service';
 import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
 import { ParabensModalPage } from './../parabens-modal/parabens-modal.page';
 import { NivelLocalService } from './../services/nivelLocal/nivel-local.service';
@@ -8,8 +9,8 @@ import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, Platform, NavController } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ModalController, Platform, NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-fase',
@@ -31,8 +32,6 @@ export class FasePage implements OnInit {
   ]
   contadorFase: number = 1;
   contadorErros: number = 0;
-  desktop: boolean = false;
-  fimDeJogo: boolean = false;
   imgs: string[] = [
     '../../assets/imgs/desenhos/Imagem 1.PNG',
     '../../assets/imgs/desenhos/Imagem 2.PNG',
@@ -47,10 +46,9 @@ export class FasePage implements OnInit {
   imagensProcuradas: any[] = [];
   tabuleiro: any[] = [];
   tempos: any[] = [];
-  testeFinalizadoAntes:boolean = false;
+  testeFinalizadoAntes: boolean = false;
 
   constructor(
-    private alertController: AlertController,
     public modalController: ModalController,
     public timerService: TimerService,
     public stopwatchService: StopwatchService,
@@ -60,7 +58,8 @@ export class FasePage implements OnInit {
     private navController: NavController,
     private usuarioLocalService: UsuarioLocalService,
     private nivelLocalService: NivelLocalService,
-    private resultadoLocalService: ResultadoLocalService) {
+    private resultadoLocalService: ResultadoLocalService,
+    private resultadoHttpService: ResultadoHttpService) {
 
   }
 
@@ -77,14 +76,12 @@ export class FasePage implements OnInit {
       }
     });
     this.ios = this.platform.is('ios');
-    this.desktop = this.platform.is('desktop');
   }
 
   async inicializarJogo() {
     this.verificarSeJaFinalizouAntes();
     this.audioService.playMusic(this.contadorFase.toString());
 
-    this.fimDeJogo = false;
     this.imagensEncontradas = 0;
 
     this.inicializarTabuleiro();
@@ -100,14 +97,14 @@ export class FasePage implements OnInit {
 
   }
 
-  async verificarSeJaFinalizouAntes(){
-    this.resultadoLocalService.getSeJaFinalizouAntes().then((result)=>{
-      if(result){
+  async verificarSeJaFinalizouAntes() {
+    this.resultadoLocalService.getSeJaFinalizouAntes().then((result) => {
+      if (result) {
         this.testeFinalizadoAntes = result;
-      }else{
+      } else {
         this.resultadoLocalService.setTesteFinalizado(true);
       }
-    }).catch((error)=>{
+    }).catch((error) => {
       console.error(error);
     });
   }
@@ -167,16 +164,16 @@ export class FasePage implements OnInit {
       if (index > -1) {
         this.imagensProcuradas.splice(index, 1);
       }
-      if (this.imagensEncontradas == this.contadorFase && !this.fimDeJogo) {
-        this.apresentarResultado();
+      if (this.imagensEncontradas == this.contadorFase) {
+        await this.salvarResultado();
+        this.proximaFase();
       }
-      return;
     } else {
       this.contadorErros++;
     }
   }
 
-  async proximaFase() {
+  proximaFase() {
     // Para o tempo transcorrido na fase
     //this.timerService.pauseTimer();
     //this.stopwatchService.stop();
@@ -187,18 +184,73 @@ export class FasePage implements OnInit {
     */
     //this.tempos.push(tempoFase);
     if (this.contadorFase == 7) {
-      this.apresentarResultado();
+      this.apresentarParabens();
     } else {
       this.stopwatchService.reset();
-      // Aumenta o número da fase
       this.contadorFase++;
-      // Inicializa a nova fase
       this.inicializarJogo();
     }
   }
 
+  async salvarResultado() {
+    let resultado: Resultado;
+    await this.encapsularResultado().then((result) => {
+      resultado = result;
+    }).catch((error) => {
+      console.error(error);
+    });
+
+
+    this.resultadoLocalService.get(resultado.nivel.numero).then((result) => {
+      if (result != '-1') {
+        if (this.compararSeEhMenor(resultado.tempoFinal, result)) {
+          this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
+        }
+      } else {
+        this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+
+    this.resultadoHttpService.enviarResultado(resultado).subscribe((response) => {
+    }, (error) => {
+      console.error(error);
+    })
+  }
+
+  async encapsularResultado(): Promise<Resultado> {
+    this.stopwatchService.stop();
+
+    let resultado = new Resultado();
+    this.nivelLocalService.get(this.contadorFase).then((result) => {
+      resultado.nivel = result;
+    }).catch((error) => {
+      console.error(error);
+    });
+    resultado.tempoFinal = this.stopwatchService.time;
+    resultado.erros = this.contadorErros;
+    await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
+      resultado.usuario = result;
+    }).catch((error) => {
+      console.error(error);
+    });
+    return resultado;
+  }
+
+  compararSeEhMenor(tempoFinal: string, tempoMaisRapido: string): boolean {
+    let tempoFinalSplit = tempoFinal.split(':');
+    let tempoMaisRapidoSplit = tempoMaisRapido.split(':');
+
+    if (parseInt(tempoFinalSplit[0]) <= parseInt(tempoMaisRapidoSplit[0])) {
+      return (parseInt(tempoFinalSplit[1]) < parseInt(tempoMaisRapidoSplit[1]));
+    } else {
+      return false;
+    }
+
+  }
+
   async apresentarResultado() {
-    this.fimDeJogo = true;
     this.stopwatchService.stop();
 
     let resultado = new Resultado();
@@ -222,10 +274,10 @@ export class FasePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data) => {
-      if(this.contadorFase==7){
+      if (this.contadorFase == 7) {
         this.apresentarParabens();
         this.navController.back();
-      }else{
+      } else {
         if (data['data'].comando === 'voltar') {
           this.navController.back();
         } else {
@@ -234,31 +286,6 @@ export class FasePage implements OnInit {
       }
     });
     return await modal.present();
-  }
-
-  async gameOver() {
-    this.fimDeJogo = true;
-    this.timerService.pauseTimer();
-    const alert = await this.alertController.create({
-      header: 'FIM DE JOGO',
-      message: 'O seu tempo acabou',
-      buttons: [{
-        text: 'Recomeçar',
-        handler: () => {
-          this.reinicarJogo();
-        }
-      }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  reinicarJogo() {
-    this.contadorFase = 1;
-    this.stopwatchService = new StopwatchService();
-    this.tempos = [];
-    this.inicializarJogo();
   }
 
   async apresentarParabens() {

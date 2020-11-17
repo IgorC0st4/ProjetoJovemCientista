@@ -57,6 +57,7 @@ var HomePage = /** @class */ (function () {
         this.nivelHttpService = nivelHttpService;
         this.nivelLocalService = nivelLocalService;
         this.resultadoLocalService = resultadoLocalService;
+        this.desempenho = [];
     }
     HomePage.prototype.ngOnInit = function () {
         var _this = this;
@@ -70,6 +71,19 @@ var HomePage = /** @class */ (function () {
         this.carregarNiveis();
         this.carregarSons();
         this.inicializarResultados();
+        this.generateDesempenho();
+    };
+    HomePage.prototype.doRefresh = function (event) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                this.generateDesempenho().then(function () {
+                    event.target.complete();
+                })["catch"](function (error) {
+                    console.error(error);
+                });
+                return [2 /*return*/];
+            });
+        });
     };
     HomePage.prototype.carregarSons = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -120,6 +134,26 @@ var HomePage = /** @class */ (function () {
                     })["catch"](function (error) {
                         console.error(error);
                     });
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    HomePage.prototype.generateDesempenho = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.desempenho = [];
+                this.resultadoLocalService.getAll().then(function (result) {
+                    if (result.length > 0) {
+                        result.forEach(function (item) {
+                            if (item.key.includes(_this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
+                                _this.desempenho.push(item);
+                            }
+                        });
+                    }
+                })["catch"](function (error) {
+                    console.error(error);
                 });
                 return [2 /*return*/];
             });

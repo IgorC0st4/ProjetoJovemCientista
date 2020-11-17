@@ -3,6 +3,9 @@
 
   <ng-template #android_template>
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
       <ion-grid>
         <ion-row class="ion-align-items-center">
           <ion-col>
@@ -24,6 +27,9 @@
 
   <ng-template #ios_template>
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
       <ion-title>Fase {{contadorFase}}</ion-title>
     </ion-toolbar>
     <ion-toolbar>

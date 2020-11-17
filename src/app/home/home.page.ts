@@ -1,5 +1,5 @@
 import { CreditosModalPage } from './../creditos-modal/creditos-modal.page';
-import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
+import { ResultadoLocalService, ResultadoList } from './../services/resultadoLocal/resultado-local.service';
 import { NivelLocalService } from './../services/nivelLocal/nivel-local.service';
 import { NivelHttpService } from './../services/nivelHttp/nivel-http.service';
 import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
@@ -16,6 +16,8 @@ import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.serv
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+  desempenho: ResultadoList[] = [];
 
   constructor(
     public modalController: ModalController,
@@ -39,7 +41,17 @@ export class HomePage implements OnInit {
     this.carregarNiveis();
     this.carregarSons();
     this.inicializarResultados();
+    this.generateDesempenho();
   }
+
+  async doRefresh(event) {
+    this.generateDesempenho().then(() => {
+      event.target.complete();
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
   async carregarSons() {
     this.audioService.preloadSounds().then(() => {
       console.log('Audio loaded');
@@ -74,6 +86,22 @@ export class HomePage implements OnInit {
       });
     });
   }
+
+  async generateDesempenho() {
+    this.desempenho = [];
+    this.resultadoLocalService.getAll().then((result) => {
+      if (result.length > 0) {
+        result.forEach((item) => {
+          if (item.key.includes(this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
+            this.desempenho.push(item);
+          }
+        });
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
   async instrucoes() {
     const modal = await this.modalController.create({
       component: InstrucoesModalPage,

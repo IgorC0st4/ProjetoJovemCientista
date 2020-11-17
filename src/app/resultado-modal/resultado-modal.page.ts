@@ -29,13 +29,13 @@ export class ResultadoModalPage implements AfterViewInit {
       if (result != '-1') {
         if (this.compararSeEhMenor(this.resultado.tempoFinal, result)) {
           this.resultadoMaisRapido = this.resultado.tempoFinal;
-          this.resultadoLocalService.inserir(this.resultado.nivel.numero, this.resultado.tempoFinal);
+          this.resultadoLocalService.inserir(this.resultado.nivel.numero, this.resultado.tempoFinal, this.resultado.erros);
         }else{
           this.resultadoMaisRapido = result;
         }
       } else {
         this.resultadoMaisRapido = this.resultado.tempoFinal;
-        this.resultadoLocalService.inserir(this.resultado.nivel.numero, this.resultado.tempoFinal);
+        this.resultadoLocalService.inserir(this.resultado.nivel.numero, this.resultado.tempoFinal, this.resultado.erros);
       }
     }).catch((error) => {
       console.error(error);

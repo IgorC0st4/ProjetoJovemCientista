@@ -45,12 +45,10 @@ exports.__esModule = true;
 exports.FasePage = void 0;
 var parabens_modal_page_1 = require("./../parabens-modal/parabens-modal.page");
 var resultado_1 = require("./../models/resultado");
-var stopwatch_service_1 = require("./../services/stopwatch/stopwatch.service");
 var resultado_modal_page_1 = require("./../resultado-modal/resultado-modal.page");
 var core_1 = require("@angular/core");
 var FasePage = /** @class */ (function () {
-    function FasePage(alertController, modalController, timerService, stopwatchService, platform, audioService, route, navController, usuarioLocalService, nivelLocalService, resultadoLocalService) {
-        this.alertController = alertController;
+    function FasePage(modalController, timerService, stopwatchService, platform, audioService, route, navController, usuarioLocalService, nivelLocalService, resultadoLocalService, resultadoHttpService) {
         this.modalController = modalController;
         this.timerService = timerService;
         this.stopwatchService = stopwatchService;
@@ -61,6 +59,7 @@ var FasePage = /** @class */ (function () {
         this.usuarioLocalService = usuarioLocalService;
         this.nivelLocalService = nivelLocalService;
         this.resultadoLocalService = resultadoLocalService;
+        this.resultadoHttpService = resultadoHttpService;
         this.classesCss = [
             'fundo-azul',
             'fundo-verde',
@@ -74,8 +73,6 @@ var FasePage = /** @class */ (function () {
         ];
         this.contadorFase = 1;
         this.contadorErros = 0;
-        this.desktop = false;
-        this.fimDeJogo = false;
         this.imgs = [
             '../../assets/imgs/desenhos/Imagem 1.PNG',
             '../../assets/imgs/desenhos/Imagem 2.PNG',
@@ -105,14 +102,12 @@ var FasePage = /** @class */ (function () {
             }
         });
         this.ios = this.platform.is('ios');
-        this.desktop = this.platform.is('desktop');
     };
     FasePage.prototype.inicializarJogo = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 this.verificarSeJaFinalizouAntes();
                 this.audioService.playMusic(this.contadorFase.toString());
-                this.fimDeJogo = false;
                 this.imagensEncontradas = 0;
                 this.inicializarTabuleiro();
                 this.inicializarImagensFase();
@@ -190,52 +185,120 @@ var FasePage = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var index;
             return __generator(this, function (_a) {
-                //this.audioService.playSound('click');
-                if (this.ehImagemProcurada(img)) {
-                    index = this.imagensProcuradas.findIndex(function (item) {
-                        return (item.classe === img.classe && item.img === img.img);
-                    });
-                    this.imagensEncontradas++;
-                    if (index > -1) {
-                        this.imagensProcuradas.splice(index, 1);
-                    }
-                    if (this.imagensEncontradas == this.contadorFase && !this.fimDeJogo) {
-                        this.apresentarResultado();
-                    }
-                    return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        if (!this.ehImagemProcurada(img)) return [3 /*break*/, 3];
+                        index = this.imagensProcuradas.findIndex(function (item) {
+                            return (item.classe === img.classe && item.img === img.img);
+                        });
+                        this.imagensEncontradas++;
+                        if (index > -1) {
+                            this.imagensProcuradas.splice(index, 1);
+                        }
+                        if (!(this.imagensEncontradas == this.contadorFase)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.salvarResultado()];
+                    case 1:
+                        _a.sent();
+                        this.proximaFase();
+                        _a.label = 2;
+                    case 2: return [3 /*break*/, 4];
+                    case 3:
+                        this.contadorErros++;
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
                 }
-                else {
-                    this.contadorErros++;
-                }
-                return [2 /*return*/];
             });
         });
     };
     FasePage.prototype.proximaFase = function () {
+        // Para o tempo transcorrido na fase
+        //this.timerService.pauseTimer();
+        //this.stopwatchService.stop();
+        /*var tempoFase = {
+          'fase': this.contadorFase,
+          'tempo': this.stopwatchService.time
+        }
+        */
+        //this.tempos.push(tempoFase);
+        if (this.contadorFase == 7) {
+            this.apresentarParabens();
+        }
+        else {
+            this.stopwatchService.reset();
+            this.contadorFase++;
+            this.inicializarJogo();
+        }
+    };
+    FasePage.prototype.salvarResultado = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var resultado;
+            var _this = this;
             return __generator(this, function (_a) {
-                // Para o tempo transcorrido na fase
-                //this.timerService.pauseTimer();
-                //this.stopwatchService.stop();
-                /*var tempoFase = {
-                  'fase': this.contadorFase,
-                  'tempo': this.stopwatchService.time
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.encapsularResultado().then(function (result) {
+                            resultado = result;
+                        })["catch"](function (error) {
+                            console.error(error);
+                        })];
+                    case 1:
+                        _a.sent();
+                        this.resultadoLocalService.get(resultado.nivel.numero).then(function (result) {
+                            if (result != '-1') {
+                                if (_this.compararSeEhMenor(resultado.tempoFinal, result)) {
+                                    _this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
+                                }
+                            }
+                            else {
+                                _this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
+                            }
+                        })["catch"](function (error) {
+                            console.error(error);
+                        });
+                        this.resultadoHttpService.enviarResultado(resultado).subscribe(function (response) {
+                        }, function (error) {
+                            console.error(error);
+                        });
+                        return [2 /*return*/];
                 }
-                */
-                //this.tempos.push(tempoFase);
-                if (this.contadorFase == 7) {
-                    this.apresentarResultado();
-                }
-                else {
-                    this.stopwatchService.reset();
-                    // Aumenta o número da fase
-                    this.contadorFase++;
-                    // Inicializa a nova fase
-                    this.inicializarJogo();
-                }
-                return [2 /*return*/];
             });
         });
+    };
+    FasePage.prototype.encapsularResultado = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var resultado;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.stopwatchService.stop();
+                        resultado = new resultado_1.Resultado();
+                        this.nivelLocalService.get(this.contadorFase).then(function (result) {
+                            resultado.nivel = result;
+                        })["catch"](function (error) {
+                            console.error(error);
+                        });
+                        resultado.tempoFinal = this.stopwatchService.time;
+                        resultado.erros = this.contadorErros;
+                        return [4 /*yield*/, this.usuarioLocalService.get(this.usuarioLocalService.key).then(function (result) {
+                                resultado.usuario = result;
+                            })["catch"](function (error) {
+                                console.error(error);
+                            })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, resultado];
+                }
+            });
+        });
+    };
+    FasePage.prototype.compararSeEhMenor = function (tempoFinal, tempoMaisRapido) {
+        var tempoFinalSplit = tempoFinal.split(':');
+        var tempoMaisRapidoSplit = tempoMaisRapido.split(':');
+        if (parseInt(tempoFinalSplit[0]) <= parseInt(tempoMaisRapidoSplit[0])) {
+            return (parseInt(tempoFinalSplit[1]) < parseInt(tempoMaisRapidoSplit[1]));
+        }
+        else {
+            return false;
+        }
     };
     FasePage.prototype.apresentarResultado = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -244,7 +307,6 @@ var FasePage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        this.fimDeJogo = true;
                         this.stopwatchService.stop();
                         resultado = new resultado_1.Resultado();
                         this.nivelLocalService.get(this.contadorFase).then(function (result) {
@@ -288,42 +350,6 @@ var FasePage = /** @class */ (function () {
                 }
             });
         });
-    };
-    FasePage.prototype.gameOver = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var alert;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.fimDeJogo = true;
-                        this.timerService.pauseTimer();
-                        return [4 /*yield*/, this.alertController.create({
-                                header: 'FIM DE JOGO',
-                                message: 'O seu tempo acabou',
-                                buttons: [{
-                                        text: 'Recomeçar',
-                                        handler: function () {
-                                            _this.reinicarJogo();
-                                        }
-                                    }
-                                ]
-                            })];
-                    case 1:
-                        alert = _a.sent();
-                        return [4 /*yield*/, alert.present()];
-                    case 2:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    FasePage.prototype.reinicarJogo = function () {
-        this.contadorFase = 1;
-        this.stopwatchService = new stopwatch_service_1.StopwatchService();
-        this.tempos = [];
-        this.inicializarJogo();
     };
     FasePage.prototype.apresentarParabens = function () {
         return __awaiter(this, void 0, void 0, function () {

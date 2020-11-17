@@ -49,33 +49,24 @@ var ResultadoLocalService = /** @class */ (function () {
         this.storage = storage;
         this.key = 'resultado_local';
         this.resultados = [
-            { 'fase': 1, 'tempo': '-1' },
-            { 'fase': 2, 'tempo': '-1' },
-            { 'fase': 3, 'tempo': '-1' },
-            { 'fase': 4, 'tempo': '-1' },
-            { 'fase': 5, 'tempo': '-1' },
-            { 'fase': 6, 'tempo': '-1' },
-            { 'fase': 7, 'tempo': '-1' },
+            { 'fase': 1, 'tempo': '-1', 'erros': 0 },
+            { 'fase': 2, 'tempo': '-1', 'erros': 0 },
+            { 'fase': 3, 'tempo': '-1', 'erros': 0 },
+            { 'fase': 4, 'tempo': '-1', 'erros': 0 },
+            { 'fase': 5, 'tempo': '-1', 'erros': 0 },
+            { 'fase': 6, 'tempo': '-1', 'erros': 0 },
+            { 'fase': 7, 'tempo': '-1', 'erros': 0 },
         ];
     }
-    ResultadoLocalService.prototype.inserir = function (numeroNivel, tempo) {
+    ResultadoLocalService.prototype.inserir = function (numeroNivel, tempo, erros) {
         return __awaiter(this, void 0, void 0, function () {
+            var value;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.storage.set(this.key + '-' + numeroNivel, tempo)];
-            });
-        });
-    };
-    ResultadoLocalService.prototype.atualizar = function (numeroNivel, tempo) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.storage.set(this.key + '-' + numeroNivel, tempo)];
-            });
-        });
-    };
-    ResultadoLocalService.prototype.remover = function (numeroNivel) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.storage.remove(this.key + '-' + numeroNivel)];
+                value = {
+                    'tempo': tempo,
+                    'erros': erros
+                };
+                return [2 /*return*/, this.storage.set(this.key + '-' + numeroNivel, value)];
             });
         });
     };
@@ -91,7 +82,7 @@ var ResultadoLocalService = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.resultados.forEach(function (resultado) {
-                    _this.inserir(resultado.fase, resultado.tempo);
+                    _this.inserir(resultado.fase, resultado.tempo, resultado.erros);
                 });
                 return [2 /*return*/];
             });

@@ -10,7 +10,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <ion-grid>
     <ion-row>
       <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
@@ -62,6 +65,43 @@
 
             <ion-button size="large" (click)="iniciarFase(7)">7</ion-button>
 
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col  size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+        <ion-card style="background-color: #BAE4E5;">
+          <ion-card-header>
+            <ion-card-title>Resumo</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-grid class="ion-text-center">
+              <ion-row>
+                <ion-col>
+                  <h1>Nível</h1>
+                </ion-col>
+                <ion-col>
+                  <h1>Tempo</h1>
+                </ion-col>
+                <ion-col>
+                  <h1>Erros</h1>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngFor="let resumo of desempenho; let i = index">
+                <ion-col>
+                  <h2>{{i+1}}</h2>
+                </ion-col>
+                <ion-col>
+                  <h2>{{resumo.resultado.tempo}}</h2>
+                </ion-col>
+                <ion-col>
+                  <h2>{{resumo.resultado.erros}}</h2>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-card-content>
         </ion-card>
       </ion-col>

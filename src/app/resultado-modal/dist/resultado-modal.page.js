@@ -60,7 +60,7 @@ var ResultadoModalPage = /** @class */ (function () {
             if (result != '-1') {
                 if (_this.compararSeEhMenor(_this.resultado.tempoFinal, result)) {
                     _this.resultadoMaisRapido = _this.resultado.tempoFinal;
-                    _this.resultadoLocalService.inserir(_this.resultado.nivel.numero, _this.resultado.tempoFinal);
+                    _this.resultadoLocalService.inserir(_this.resultado.nivel.numero, _this.resultado.tempoFinal, _this.resultado.erros);
                 }
                 else {
                     _this.resultadoMaisRapido = result;
@@ -68,7 +68,7 @@ var ResultadoModalPage = /** @class */ (function () {
             }
             else {
                 _this.resultadoMaisRapido = _this.resultado.tempoFinal;
-                _this.resultadoLocalService.inserir(_this.resultado.nivel.numero, _this.resultado.tempoFinal);
+                _this.resultadoLocalService.inserir(_this.resultado.nivel.numero, _this.resultado.tempoFinal, _this.resultado.erros);
             }
         })["catch"](function (error) {
             console.error(error);
