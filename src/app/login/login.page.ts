@@ -1,3 +1,4 @@
+import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
 import { IonSlides, NavController, Platform, ToastController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -32,21 +33,22 @@ export class LoginPage implements OnInit {
     public usuarioHttpService: UsuarioHttpService,
     public usuarioLocalService: UsuarioLocalService,
     public navCtrl: NavController,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private resultadoLocalService:ResultadoLocalService) {
     this.ehMobile = this.platform.is("mobile");
 
     this.singupForm = formBuilder.group({
       nick: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
       idade: ['', IdadeValidator.ehValido],
-      escolaridade: [''],
-      tipoEscola: [''],
-      genero: [''],
-      senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$`)]]
+      escolaridade: ['', Validators.required],
+      tipoEscola: ['', Validators.required],
+      genero: ['', Validators.required],
+      senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[a-z])(?=.*?[0-9]).{5,}$`)]]
     });
 
     this.loginForm = formBuilder.group({
       nick: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
-      senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`)]]
+      senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[a-z])(?=.*?[0-9]).{5,}$`)]]
     });
 
   }
@@ -70,12 +72,12 @@ export class LoginPage implements OnInit {
     this.usuarioHttpService.efetuarCadastro(JSON.stringify(this.singupForm.value)).subscribe((response) => {
       this.usuarioLocalService.inserir(response).then(() => {
         this.submissaoComSucesso = true;
+        this.resultadoLocalService.setTesteFinalizado(false);
         this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
         alert(error);
       });
     }, (error) => {
-      console.error('ERRO CADASTRO');
       console.error(error);
     });
 
@@ -90,12 +92,17 @@ export class LoginPage implements OnInit {
     this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value)).subscribe((response) => {
       this.usuarioLocalService.inserir(response).then(() => {
         this.submissaoComSucesso = true;
+        this.resultadoLocalService.setTesteFinalizado(false);
         this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
         alert(error);
       });
     }, (error) => {
-      console.error('ERRO LOGIN');
+      if(typeof error.error == typeof ""){
+        alert(error.error);
+      }else{   
+        alert(error.error.message);
+      }
       console.error(error);
     });
 

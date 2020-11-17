@@ -43,6 +43,14 @@ export class ResultadoLocalService {
     });
   }
 
+  public async setTesteFinalizado(value:boolean){
+    return this.storage.set('finalizou-teste', value);
+  }
+
+  public async getSeJaFinalizouAntes(){
+    return this.storage.get('finalizou-teste');
+  }
+
   public async getAll() {
     let resultados: ResultadoList[] = [];
     return this.storage.forEach((value: Resultado, key: string, iterationNumber: Number) => {

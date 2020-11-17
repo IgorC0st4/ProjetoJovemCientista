@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Parabéns!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header class="ion-text-center">
+            <ion-card-title>
+              Você passou de todas as fases!
+            </ion-card-title>
+            <ion-card-subtitle>
+              Obrigado por participar!
+            </ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content class="ion-text-center">
+            <p>
+              Esperamos que tenha se divertido enquanto jogava!<br>
+              Agradecemos por nos ajudar nesse estudo.<br>
+              Continue jogando e tente diminuir ainda mais o seu tempo!
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button *ngIf="mobile" expand="block" (click)="voltar()">Voltar</ion-button>
+
+
+</ion-content>

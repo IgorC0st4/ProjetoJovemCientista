@@ -47,13 +47,14 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var idade_1 = require("../validators/idade");
 var LoginPage = /** @class */ (function () {
-    function LoginPage(formBuilder, platform, usuarioHttpService, usuarioLocalService, navCtrl, toastController) {
+    function LoginPage(formBuilder, platform, usuarioHttpService, usuarioLocalService, navCtrl, toastController, resultadoLocalService) {
         this.formBuilder = formBuilder;
         this.platform = platform;
         this.usuarioHttpService = usuarioHttpService;
         this.usuarioLocalService = usuarioLocalService;
         this.navCtrl = navCtrl;
         this.toastController = toastController;
+        this.resultadoLocalService = resultadoLocalService;
         this.tentativaDeCadastro = false;
         this.tentativaDeLogin = false;
         this.submissaoComSucesso = false;
@@ -63,14 +64,14 @@ var LoginPage = /** @class */ (function () {
         this.singupForm = formBuilder.group({
             nick: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
             idade: ['', idade_1.IdadeValidator.ehValido],
-            escolaridade: [''],
-            tipoEscola: [''],
-            genero: [''],
-            senha: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")]]
+            escolaridade: ['', forms_1.Validators.required],
+            tipoEscola: ['', forms_1.Validators.required],
+            genero: ['', forms_1.Validators.required],
+            senha: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^(?=.*?[a-z])(?=.*?[0-9]).{5,}$")]]
         });
         this.loginForm = formBuilder.group({
             nick: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^[a-zA-Z0-9_-]{5,10}$")]],
-            senha: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")]]
+            senha: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^(?=.*?[a-z])(?=.*?[0-9]).{5,}$")]]
         });
     }
     LoginPage.prototype.ngOnInit = function () {
@@ -94,12 +95,12 @@ var LoginPage = /** @class */ (function () {
                 this.usuarioHttpService.efetuarCadastro(JSON.stringify(this.singupForm.value)).subscribe(function (response) {
                     _this.usuarioLocalService.inserir(response).then(function () {
                         _this.submissaoComSucesso = true;
+                        _this.resultadoLocalService.setTesteFinalizado(false);
                         _this.navCtrl.navigateRoot('/home');
                     })["catch"](function (error) {
                         alert(error);
                     });
                 }, function (error) {
-                    console.error('ERRO CADASTRO');
                     console.error(error);
                 });
                 return [2 /*return*/];
@@ -117,12 +118,18 @@ var LoginPage = /** @class */ (function () {
                 this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value)).subscribe(function (response) {
                     _this.usuarioLocalService.inserir(response).then(function () {
                         _this.submissaoComSucesso = true;
+                        _this.resultadoLocalService.setTesteFinalizado(false);
                         _this.navCtrl.navigateRoot('/home');
                     })["catch"](function (error) {
                         alert(error);
                     });
                 }, function (error) {
-                    console.error('ERRO LOGIN');
+                    if (typeof error.error == typeof "") {
+                        alert(error.error);
+                    }
+                    else {
+                        alert(error.error.message);
+                    }
                     console.error(error);
                 });
                 return [2 /*return*/];

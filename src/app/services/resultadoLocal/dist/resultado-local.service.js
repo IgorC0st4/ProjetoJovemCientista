@@ -97,6 +97,20 @@ var ResultadoLocalService = /** @class */ (function () {
             });
         });
     };
+    ResultadoLocalService.prototype.setTesteFinalizado = function (value) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.storage.set('finalizou-teste', value)];
+            });
+        });
+    };
+    ResultadoLocalService.prototype.getSeJaFinalizouAntes = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.storage.get('finalizou-teste')];
+            });
+        });
+    };
     ResultadoLocalService.prototype.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
             var resultados;

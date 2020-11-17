@@ -43,12 +43,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.FasePage = void 0;
+var parabens_modal_page_1 = require("./../parabens-modal/parabens-modal.page");
 var resultado_1 = require("./../models/resultado");
 var stopwatch_service_1 = require("./../services/stopwatch/stopwatch.service");
 var resultado_modal_page_1 = require("./../resultado-modal/resultado-modal.page");
 var core_1 = require("@angular/core");
 var FasePage = /** @class */ (function () {
-    function FasePage(alertController, modalController, timerService, stopwatchService, platform, audioService, route, navController, usuarioLocalService, nivelLocalService) {
+    function FasePage(alertController, modalController, timerService, stopwatchService, platform, audioService, route, navController, usuarioLocalService, nivelLocalService, resultadoLocalService) {
         this.alertController = alertController;
         this.modalController = modalController;
         this.timerService = timerService;
@@ -59,6 +60,7 @@ var FasePage = /** @class */ (function () {
         this.navController = navController;
         this.usuarioLocalService = usuarioLocalService;
         this.nivelLocalService = nivelLocalService;
+        this.resultadoLocalService = resultadoLocalService;
         this.classesCss = [
             'fundo-azul',
             'fundo-verde',
@@ -88,6 +90,7 @@ var FasePage = /** @class */ (function () {
         this.imagensProcuradas = [];
         this.tabuleiro = [];
         this.tempos = [];
+        this.testeFinalizadoAntes = false;
     }
     FasePage.prototype.ionViewWillLeave = function () {
         this.audioService.stop(this.contadorFase.toString());
@@ -107,6 +110,7 @@ var FasePage = /** @class */ (function () {
     FasePage.prototype.inicializarJogo = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
+                this.verificarSeJaFinalizouAntes();
                 this.audioService.playMusic(this.contadorFase.toString());
                 this.fimDeJogo = false;
                 this.imagensEncontradas = 0;
@@ -118,6 +122,24 @@ var FasePage = /** @class */ (function () {
                 if (!this.stopwatchService.running) {
                     this.stopwatchService.start();
                 }
+                return [2 /*return*/];
+            });
+        });
+    };
+    FasePage.prototype.verificarSeJaFinalizouAntes = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.resultadoLocalService.getSeJaFinalizouAntes().then(function (result) {
+                    if (result) {
+                        _this.testeFinalizadoAntes = result;
+                    }
+                    else {
+                        _this.resultadoLocalService.setTesteFinalizado(true);
+                    }
+                })["catch"](function (error) {
+                    console.error(error);
+                });
                 return [2 /*return*/];
             });
         });
@@ -248,11 +270,17 @@ var FasePage = /** @class */ (function () {
                     case 2:
                         modal = _a.sent();
                         modal.onDidDismiss().then(function (data) {
-                            if (data['data'].comando === 'voltar') {
+                            if (_this.contadorFase == 7) {
+                                _this.apresentarParabens();
                                 _this.navController.back();
                             }
                             else {
-                                _this.proximaFase();
+                                if (data['data'].comando === 'voltar') {
+                                    _this.navController.back();
+                                }
+                                else {
+                                    _this.proximaFase();
+                                }
                             }
                         });
                         return [4 /*yield*/, modal.present()];
@@ -296,6 +324,26 @@ var FasePage = /** @class */ (function () {
         this.stopwatchService = new stopwatch_service_1.StopwatchService();
         this.tempos = [];
         this.inicializarJogo();
+    };
+    FasePage.prototype.apresentarParabens = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var modal;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.modalController.create({
+                            component: parabens_modal_page_1.ParabensModalPage
+                        })];
+                    case 1:
+                        modal = _a.sent();
+                        modal.onDidDismiss().then(function (data) {
+                            _this.navController.back();
+                        });
+                        return [4 /*yield*/, modal.present()];
+                    case 2: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
     };
     FasePage = __decorate([
         core_1.Component({

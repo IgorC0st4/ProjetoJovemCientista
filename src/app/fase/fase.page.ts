@@ -1,3 +1,5 @@
+import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
+import { ParabensModalPage } from './../parabens-modal/parabens-modal.page';
 import { NivelLocalService } from './../services/nivelLocal/nivel-local.service';
 import { UsuarioLocalService } from './../services/usuarioLocal/usuario-local.service';
 import { Resultado } from './../models/resultado';
@@ -45,6 +47,7 @@ export class FasePage implements OnInit {
   imagensProcuradas: any[] = [];
   tabuleiro: any[] = [];
   tempos: any[] = [];
+  testeFinalizadoAntes:boolean = false;
 
   constructor(
     private alertController: AlertController,
@@ -56,7 +59,8 @@ export class FasePage implements OnInit {
     private route: ActivatedRoute,
     private navController: NavController,
     private usuarioLocalService: UsuarioLocalService,
-    private nivelLocalService: NivelLocalService) {
+    private nivelLocalService: NivelLocalService,
+    private resultadoLocalService: ResultadoLocalService) {
 
   }
 
@@ -77,6 +81,7 @@ export class FasePage implements OnInit {
   }
 
   async inicializarJogo() {
+    this.verificarSeJaFinalizouAntes();
     this.audioService.playMusic(this.contadorFase.toString());
 
     this.fimDeJogo = false;
@@ -93,6 +98,18 @@ export class FasePage implements OnInit {
       this.stopwatchService.start();
     }
 
+  }
+
+  async verificarSeJaFinalizouAntes(){
+    this.resultadoLocalService.getSeJaFinalizouAntes().then((result)=>{
+      if(result){
+        this.testeFinalizadoAntes = result;
+      }else{
+        this.resultadoLocalService.setTesteFinalizado(true);
+      }
+    }).catch((error)=>{
+      console.error(error);
+    });
   }
 
   inicializarImagensFase() {
@@ -205,10 +222,15 @@ export class FasePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data) => {
-      if (data['data'].comando === 'voltar') {
+      if(this.contadorFase==7){
+        this.apresentarParabens();
         this.navController.back();
-      } else {
-        this.proximaFase();
+      }else{
+        if (data['data'].comando === 'voltar') {
+          this.navController.back();
+        } else {
+          this.proximaFase();
+        }
       }
     });
     return await modal.present();
@@ -239,4 +261,13 @@ export class FasePage implements OnInit {
     this.inicializarJogo();
   }
 
+  async apresentarParabens() {
+    const modal = await this.modalController.create({
+      component: ParabensModalPage
+    });
+    modal.onDidDismiss().then((data) => {
+      this.navController.back();
+    });
+    return await modal.present();
+  }
 }

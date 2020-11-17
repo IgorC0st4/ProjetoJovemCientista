@@ -35,6 +35,10 @@ const routes: Routes = [
     path: 'creditos-modal',
     loadChildren: () => import('./creditos-modal/creditos-modal.module').then( m => m.CreditosModalPageModule)
   },
+  {
+    path: 'parabens-modal',
+    loadChildren: () => import('./parabens-modal/parabens-modal.module').then( m => m.ParabensModalPageModule)
+  },
 ];
 
 @NgModule({
