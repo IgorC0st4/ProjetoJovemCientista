@@ -48,13 +48,12 @@ var resultado_1 = require("./../models/resultado");
 var resultado_modal_page_1 = require("./../resultado-modal/resultado-modal.page");
 var core_1 = require("@angular/core");
 var FasePage = /** @class */ (function () {
-    function FasePage(modalController, timerService, stopwatchService, platform, audioService, route, navController, usuarioLocalService, nivelLocalService, resultadoLocalService, resultadoHttpService) {
+    function FasePage(modalController, timerService, stopwatchService, platform, audioService, navController, usuarioLocalService, nivelLocalService, resultadoLocalService, resultadoHttpService) {
         this.modalController = modalController;
         this.timerService = timerService;
         this.stopwatchService = stopwatchService;
         this.platform = platform;
         this.audioService = audioService;
-        this.route = route;
         this.navController = navController;
         this.usuarioLocalService = usuarioLocalService;
         this.nivelLocalService = nivelLocalService;
@@ -94,13 +93,7 @@ var FasePage = /** @class */ (function () {
         this.stopwatchService.reset();
     };
     FasePage.prototype.ngOnInit = function () {
-        var _this = this;
-        this.route.queryParams.subscribe(function (params) {
-            if (params && params.numero) {
-                _this.contadorFase = params.numero;
-                _this.inicializarJogo();
-            }
-        });
+        this.inicializarJogo();
         this.ios = this.platform.is('ios');
     };
     FasePage.prototype.inicializarJogo = function () {

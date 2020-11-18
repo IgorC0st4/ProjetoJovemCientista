@@ -5,8 +5,7 @@ import { NivelHttpService } from './../services/nivelHttp/nivel-http.service';
 import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
 import { InstrucoesModalPage } from './../instrucoes-modal/instrucoes-modal.page';
 import { ModalController, NavController } from '@ionic/angular';
-import { Component, AfterViewInit, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { AudioService } from '../services/audio/audio.service';
 import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.service';
 
@@ -21,7 +20,6 @@ export class HomePage implements OnInit {
 
   constructor(
     public modalController: ModalController,
-    private router: Router,
     private audioService: AudioService,
     public usuarioLocalService: UsuarioLocalService,
     private navController: NavController,
@@ -90,6 +88,7 @@ export class HomePage implements OnInit {
   async generateDesempenho() {
     this.desempenho = [];
     this.resultadoLocalService.getAll().then((result) => {
+      console.log(result);
       if (result.length > 0) {
         result.forEach((item) => {
           if (item.key.includes(this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
@@ -100,6 +99,7 @@ export class HomePage implements OnInit {
     }).catch((error) => {
       console.error(error);
     });
+    console.log(this.desempenho)
   }
 
   async instrucoes() {
@@ -123,13 +123,8 @@ export class HomePage implements OnInit {
     return await modal.present();
   }
 
-  iniciarFase(numeroFase) {
-    let navigationExtras: NavigationExtras = {
-      queryParams: {
-        numero: numeroFase
-      }
-    };
-    this.router.navigate(['fase'], navigationExtras);
+  iniciarFase() {
+    this.navController.navigateForward('/fase');
   }
 
   sair() {

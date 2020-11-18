@@ -47,13 +47,12 @@ var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var idade_1 = require("../validators/idade");
 var LoginPage = /** @class */ (function () {
-    function LoginPage(formBuilder, platform, usuarioHttpService, usuarioLocalService, navCtrl, toastController, resultadoLocalService) {
+    function LoginPage(formBuilder, platform, usuarioHttpService, usuarioLocalService, navCtrl, resultadoLocalService) {
         this.formBuilder = formBuilder;
         this.platform = platform;
         this.usuarioHttpService = usuarioHttpService;
         this.usuarioLocalService = usuarioLocalService;
         this.navCtrl = navCtrl;
-        this.toastController = toastController;
         this.resultadoLocalService = resultadoLocalService;
         this.tentativaDeCadastro = false;
         this.tentativaDeLogin = false;
@@ -143,25 +142,7 @@ var LoginPage = /** @class */ (function () {
         if (!this.aceitouTermos) {
             this.slides.lockSwipeToNext(false);
             this.slides.slidePrev();
-            this.showToast('Aceite os termos de uso para continuar.');
         }
-    };
-    LoginPage.prototype.showToast = function (msg) {
-        return __awaiter(this, void 0, void 0, function () {
-            var toast;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.toastController.create({
-                            message: msg,
-                            duration: 1500
-                        })];
-                    case 1:
-                        toast = _a.sent();
-                        toast.present();
-                        return [2 /*return*/];
-                }
-            });
-        });
     };
     __decorate([
         core_1.ViewChild('mySlider')

@@ -54,7 +54,6 @@ export class FasePage implements OnInit {
     public stopwatchService: StopwatchService,
     public platform: Platform,
     private audioService: AudioService,
-    private route: ActivatedRoute,
     private navController: NavController,
     private usuarioLocalService: UsuarioLocalService,
     private nivelLocalService: NivelLocalService,
@@ -69,12 +68,7 @@ export class FasePage implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      if (params && params.numero) {
-        this.contadorFase = params.numero;
-        this.inicializarJogo();
-      }
-    });
+    this.inicializarJogo();
     this.ios = this.platform.is('ios');
   }
 

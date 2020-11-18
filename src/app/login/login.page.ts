@@ -1,5 +1,5 @@
 import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
-import { IonSlides, NavController, Platform, ToastController } from '@ionic/angular';
+import { IonSlides, NavController, Platform } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IdadeValidator } from '../validators/idade';
@@ -33,7 +33,6 @@ export class LoginPage implements OnInit {
     public usuarioHttpService: UsuarioHttpService,
     public usuarioLocalService: UsuarioLocalService,
     public navCtrl: NavController,
-    private toastController: ToastController,
     private resultadoLocalService:ResultadoLocalService) {
     this.ehMobile = this.platform.is("mobile");
 
@@ -116,15 +115,7 @@ export class LoginPage implements OnInit {
     if (!this.aceitouTermos) {
       this.slides.lockSwipeToNext(false);
       this.slides.slidePrev();
-      this.showToast('Aceite os termos de uso para continuar.');
     }
   }
 
-  async showToast(msg:string){
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 1500
-    });
-    toast.present();
-  }
 }

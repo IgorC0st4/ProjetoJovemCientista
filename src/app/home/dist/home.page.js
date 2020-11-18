@@ -48,9 +48,8 @@ var sobre_modal_page_1 = require("./../sobre-modal/sobre-modal.page");
 var instrucoes_modal_page_1 = require("./../instrucoes-modal/instrucoes-modal.page");
 var core_1 = require("@angular/core");
 var HomePage = /** @class */ (function () {
-    function HomePage(modalController, router, audioService, usuarioLocalService, navController, nivelHttpService, nivelLocalService, resultadoLocalService) {
+    function HomePage(modalController, audioService, usuarioLocalService, navController, nivelHttpService, nivelLocalService, resultadoLocalService) {
         this.modalController = modalController;
-        this.router = router;
         this.audioService = audioService;
         this.usuarioLocalService = usuarioLocalService;
         this.navController = navController;
@@ -145,6 +144,7 @@ var HomePage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.desempenho = [];
                 this.resultadoLocalService.getAll().then(function (result) {
+                    console.log(result);
                     if (result.length > 0) {
                         result.forEach(function (item) {
                             if (item.key.includes(_this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
@@ -155,6 +155,7 @@ var HomePage = /** @class */ (function () {
                 })["catch"](function (error) {
                     console.error(error);
                 });
+                console.log(this.desempenho);
                 return [2 /*return*/];
             });
         });
@@ -207,13 +208,8 @@ var HomePage = /** @class */ (function () {
             });
         });
     };
-    HomePage.prototype.iniciarFase = function (numeroFase) {
-        var navigationExtras = {
-            queryParams: {
-                numero: numeroFase
-            }
-        };
-        this.router.navigate(['fase'], navigationExtras);
+    HomePage.prototype.iniciarFase = function () {
+        this.navController.navigateForward('/fase');
     };
     HomePage.prototype.sair = function () {
         var _this = this;
