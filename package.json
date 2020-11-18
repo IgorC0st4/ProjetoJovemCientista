@@ -1,8 +1,8 @@
 {
   "name": "projeto-jovem-cientista",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "Projeto Jovem Cientista",
-  "homepage": "https://ionicframework.com/",
+  "homepage": "http://jovemcientista.castelo.com.br/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -28,7 +28,6 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.3.1",
     "cordova-plugin-nativeaudio": "^3.0.9",
-    "ionic-tooltips": "^3.1.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
