@@ -88,7 +88,6 @@ export class HomePage implements OnInit {
   async generateDesempenho() {
     this.desempenho = [];
     this.resultadoLocalService.getAll().then((result) => {
-      console.log(result);
       if (result.length > 0) {
         result.forEach((item) => {
           if (item.key.includes(this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
@@ -99,7 +98,6 @@ export class HomePage implements OnInit {
     }).catch((error) => {
       console.error(error);
     });
-    console.log(this.desempenho)
   }
 
   async instrucoes() {

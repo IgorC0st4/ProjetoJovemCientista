@@ -144,7 +144,6 @@ var HomePage = /** @class */ (function () {
             return __generator(this, function (_a) {
                 this.desempenho = [];
                 this.resultadoLocalService.getAll().then(function (result) {
-                    console.log(result);
                     if (result.length > 0) {
                         result.forEach(function (item) {
                             if (item.key.includes(_this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
@@ -155,7 +154,6 @@ var HomePage = /** @class */ (function () {
                 })["catch"](function (error) {
                     console.error(error);
                 });
-                console.log(this.desempenho);
                 return [2 /*return*/];
             });
         });
