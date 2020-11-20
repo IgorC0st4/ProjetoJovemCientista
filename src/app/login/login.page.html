@@ -207,7 +207,7 @@
                 <ion-card-title>Cadastro</ion-card-title>
               </ion-card-header>
               <ion-card-content>
-                <p *ngIf="tentativaDeCadastro  && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha
+                <p *ngIf="(tentativaDeCadastro  && !submissaoComSucesso)" style="color: #ea6153;">Por favor preencha
                   todos os
                   dados corretamente.
                 </p>
@@ -223,7 +223,7 @@
 
                     <ion-item
                       *ngIf="!singupForm.controls.nick.valid  && (singupForm.controls.nick.dirty || tentativaDeCadastro)">
-                      <p>Por favor entre um nick válido.</p>
+                      <p  style="color: #ea6153;">Por favor entre um nick válido.</p>
                     </ion-item>
 
                     <ion-item>
@@ -233,7 +233,7 @@
 
                     <ion-item
                       *ngIf="!singupForm.controls.idade.valid  && (singupForm.controls.idade.dirty || tentativaDeCadastro)">
-                      <p>Por favor entre uma idade válida.</p>
+                      <p  style="color: #ea6153;">Por favor entre uma idade válida.</p>
                     </ion-item>
 
                     <ion-item>
@@ -275,7 +275,7 @@
                       <ion-label position="floating">Senha</ion-label>
                       <ion-input formControlName="senha" type="password" tooltip="teste"></ion-input>
                     </ion-item>
-                    <span><b>Utilize letras e números</b></span>
+                    <span><b>Utilize letras e números (Mín: 5 dígitos)</b></span>
 
                     <ion-item
                       *ngIf="!singupForm.controls.senha.valid  && (singupForm.controls.senha.dirty || tentativaDeCadastro)">

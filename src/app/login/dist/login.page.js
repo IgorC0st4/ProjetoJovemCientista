@@ -100,7 +100,7 @@ var LoginPage = /** @class */ (function () {
                         alert(error);
                     });
                 }, function (error) {
-                    console.error(error);
+                    alert(error.error.message);
                 });
                 return [2 /*return*/];
             });
@@ -129,7 +129,6 @@ var LoginPage = /** @class */ (function () {
                     else {
                         alert(error.error.message);
                     }
-                    console.error(error);
                 });
                 return [2 /*return*/];
             });

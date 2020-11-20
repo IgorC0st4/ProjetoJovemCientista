@@ -77,7 +77,7 @@ export class LoginPage implements OnInit {
         alert(error);
       });
     }, (error) => {
-      console.error(error);
+      alert(error.error.message);
     });
 
   }
@@ -102,7 +102,6 @@ export class LoginPage implements OnInit {
       }else{   
         alert(error.error.message);
       }
-      console.error(error);
     });
 
   }
