@@ -236,8 +236,8 @@ var FasePage = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         this.resultadoLocalService.get(resultado.nivel.numero).then(function (result) {
-                            if (result != '-1') {
-                                if (_this.compararSeEhMenor(resultado.tempoFinal, result)) {
+                            if (result.tempo !== "-1") {
+                                if (_this.compararSeEhMenor(resultado.tempoFinal, result.tempo)) {
                                     _this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
                                 }
                             }

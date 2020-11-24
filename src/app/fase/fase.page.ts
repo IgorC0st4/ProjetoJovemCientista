@@ -196,8 +196,8 @@ export class FasePage implements OnInit {
 
 
     this.resultadoLocalService.get(resultado.nivel.numero).then((result) => {
-      if (result != '-1') {
-        if (this.compararSeEhMenor(resultado.tempoFinal, result)) {
+      if (result.tempo !== "-1") {
+        if (this.compararSeEhMenor(resultado.tempoFinal, result.tempo)) {
           this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
         }
       } else {
