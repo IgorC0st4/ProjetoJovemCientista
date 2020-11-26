@@ -66,6 +66,7 @@ var LoginPage = /** @class */ (function () {
             escolaridade: ['', forms_1.Validators.required],
             tipoEscola: ['', forms_1.Validators.required],
             genero: ['', forms_1.Validators.required],
+            transtorno: ['', forms_1.Validators.required],
             senha: ['', [forms_1.Validators.required, forms_1.Validators.pattern("^(?=.*?[a-z])(?=.*?[0-9]).{5,}$")]]
         });
         this.loginForm = formBuilder.group({

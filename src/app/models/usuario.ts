@@ -4,5 +4,6 @@ export class Usuario {
     genero: string;
     escolaridade: number;
     tipoEscola: string;
+    transtorno: string;
     senha: string;
- }
+}

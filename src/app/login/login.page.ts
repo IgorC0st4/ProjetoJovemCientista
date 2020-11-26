@@ -42,6 +42,7 @@ export class LoginPage implements OnInit {
       escolaridade: ['', Validators.required],
       tipoEscola: ['', Validators.required],
       genero: ['', Validators.required],
+      transtorno: ['', Validators.required],
       senha: ['', [Validators.required, Validators.pattern(`^(?=.*?[a-z])(?=.*?[0-9]).{5,}$`)]]
     });
 
