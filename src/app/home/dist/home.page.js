@@ -101,7 +101,7 @@ var HomePage = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.nivelHttpService.listarNiveis().subscribe(function (response) {
-                    _this.salvarNiveis(response['_embedded']['nivelList']);
+                    _this.salvarNiveis(response);
                 }, function (error) {
                     console.error(error);
                 });

@@ -60,7 +60,7 @@ export class HomePage implements OnInit {
 
   async carregarNiveis() {
     this.nivelHttpService.listarNiveis().subscribe((response) => {
-      this.salvarNiveis(response['_embedded']['nivelList']);
+      this.salvarNiveis(response);
     }, (error) => {
       console.error(error)
     });

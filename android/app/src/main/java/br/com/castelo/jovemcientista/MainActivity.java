@@ -1,4 +1,4 @@
-package br.edu.fsma.projetojovemcientista;
+package br.com.castelo.jovemcientista;
 
 import android.os.Bundle;
 

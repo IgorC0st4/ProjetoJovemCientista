@@ -56,7 +56,7 @@ var LoginPage = /** @class */ (function () {
         this.resultadoLocalService = resultadoLocalService;
         this.tentativaDeCadastro = false;
         this.tentativaDeLogin = false;
-        this.submissaoComSucesso = false;
+        this.submissaoComSucesso = true;
         this.ehMobile = false;
         this.aceitouTermos = false;
         this.ehMobile = this.platform.is("mobile");
@@ -98,10 +98,12 @@ var LoginPage = /** @class */ (function () {
                         _this.resultadoLocalService.setTesteFinalizado(false);
                         _this.navCtrl.navigateRoot('/home');
                     })["catch"](function (error) {
-                        alert(error);
+                        _this.submissaoComSucesso = false;
+                        console.error(error);
                     });
                 }, function (error) {
-                    alert(error.error.message);
+                    _this.submissaoComSucesso = false;
+                    alert("Já existe um usuário cadastrado com o nick fornecido");
                 });
                 return [2 /*return*/];
             });
@@ -121,14 +123,13 @@ var LoginPage = /** @class */ (function () {
                         _this.resultadoLocalService.setTesteFinalizado(false);
                         _this.navCtrl.navigateRoot('/home');
                     })["catch"](function (error) {
-                        alert(error);
+                        _this.submissaoComSucesso = false;
+                        console.error(error);
                     });
                 }, function (error) {
-                    if (typeof error.error == typeof "") {
-                        alert(error.error);
-                    }
-                    else {
-                        alert(error.error.message);
+                    _this.submissaoComSucesso = false;
+                    if (error.status == 404) {
+                        alert("Nick não encontrado!");
                     }
                 });
                 return [2 /*return*/];

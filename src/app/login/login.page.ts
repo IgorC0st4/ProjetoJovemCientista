@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
   public tentativaDeCadastro: boolean = false;
   public tentativaDeLogin: boolean = false;
 
-  public submissaoComSucesso: boolean = false;
+  public submissaoComSucesso: boolean = true;
 
   public ehMobile: boolean = false;
 
@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
     public usuarioHttpService: UsuarioHttpService,
     public usuarioLocalService: UsuarioLocalService,
     public navCtrl: NavController,
-    private resultadoLocalService:ResultadoLocalService) {
+    private resultadoLocalService: ResultadoLocalService) {
     this.ehMobile = this.platform.is("mobile");
 
     this.singupForm = formBuilder.group({
@@ -75,10 +75,12 @@ export class LoginPage implements OnInit {
         this.resultadoLocalService.setTesteFinalizado(false);
         this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
-        alert(error);
+        this.submissaoComSucesso = false;
+        console.error(error);
       });
     }, (error) => {
-      alert(error.error.message);
+      this.submissaoComSucesso = false;
+      alert("Já existe um usuário cadastrado com o nick fornecido");
     });
 
   }
@@ -95,19 +97,19 @@ export class LoginPage implements OnInit {
         this.resultadoLocalService.setTesteFinalizado(false);
         this.navCtrl.navigateRoot('/home');
       }).catch((error) => {
-        alert(error);
+        this.submissaoComSucesso = false;
+        console.error(error);
       });
     }, (error) => {
-      if(typeof error.error == typeof ""){
-        alert(error.error);
-      }else{   
-        alert(error.error.message);
+      this.submissaoComSucesso = false;
+      if(error.status == 404){
+        alert("Nick não encontrado!");
       }
     });
 
   }
 
-  habilitarTransicao(){
+  habilitarTransicao() {
     this.slides.lockSwipeToNext(true);
   }
 
