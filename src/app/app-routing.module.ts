@@ -38,7 +38,11 @@ const routes: Routes = [
   {
     path: 'parabens-modal',
     loadChildren: () => import('./parabens-modal/parabens-modal.module').then( m => m.ParabensModalPageModule)
+  },  {
+    path: 'error-modal',
+    loadChildren: () => import('./error-modal/error-modal.module').then( m => m.ErrorModalPageModule)
   },
+
 ];
 
 @NgModule({

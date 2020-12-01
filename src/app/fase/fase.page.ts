@@ -10,7 +10,6 @@ import { TimerService } from './../services/timer/timer.service';
 import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, Platform, NavController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-fase',
@@ -47,6 +46,7 @@ export class FasePage implements OnInit {
   tabuleiro: any[] = [];
   tempos: any[] = [];
   testeFinalizadoAntes: boolean = false;
+  usuarioId: number = 0;
 
   constructor(
     public modalController: ModalController,
@@ -70,6 +70,11 @@ export class FasePage implements OnInit {
   ngOnInit() {
     this.inicializarJogo();
     this.ios = this.platform.is('ios');
+    this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
+      this.usuarioId = JSON.parse(result).id;
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   async inicializarJogo() {
@@ -194,7 +199,6 @@ export class FasePage implements OnInit {
       console.error(error);
     });
 
-
     this.resultadoLocalService.get(resultado.nivel.numero).then((result) => {
       if (result.tempo !== "-1") {
         if (this.compararSeEhMenor(resultado.tempoFinal, result.tempo)) {
@@ -207,28 +211,35 @@ export class FasePage implements OnInit {
       console.error(error);
     });
 
-    this.resultadoHttpService.enviarResultado(resultado).subscribe((response) => {
-    }, (error) => {
-      console.error(error);
-    })
+    if (this.platform.is('android')) {
+      this.resultadoHttpService.http.post(
+        this.resultadoHttpService.basePath + "/" + this.usuarioId,
+        resultado,
+        this.resultadoHttpService.http.getHeaders('*'))
+        .catch((error) => {
+          console.error(error);
+          console.error(JSON.stringify(error));
+        });
+    } else {
+      this.resultadoHttpService.enviarResultado(resultado).subscribe((response) => {
+      }, (error) => {
+        console.error(error);
+      })
+    }
   }
 
-  async encapsularResultado(): Promise<Resultado> {
+  async encapsularResultado() {
     this.stopwatchService.stop();
 
     let resultado = new Resultado();
-    this.nivelLocalService.get(this.contadorFase).then((result) => {
+    await this.nivelLocalService.get(this.contadorFase).then((result) => {
       resultado.nivel = result;
     }).catch((error) => {
       console.error(error);
+      console.error(JSON.stringify(error));
     });
     resultado.tempoFinal = this.stopwatchService.time;
     resultado.erros = this.contadorErros;
-    await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
-      resultado.usuario = result;
-    }).catch((error) => {
-      console.error(error);
-    });
     return resultado;
   }
 

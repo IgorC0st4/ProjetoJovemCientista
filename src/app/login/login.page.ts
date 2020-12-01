@@ -1,5 +1,6 @@
+import { ErrorModalPage } from './../error-modal/error-modal.page';
 import { ResultadoLocalService } from './../services/resultadoLocal/resultado-local.service';
-import { IonSlides, NavController, Platform } from '@ionic/angular';
+import { IonSlides, NavController, Platform, ModalController } from '@ionic/angular';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IdadeValidator } from '../validators/idade';
@@ -33,7 +34,8 @@ export class LoginPage implements OnInit {
     public usuarioHttpService: UsuarioHttpService,
     public usuarioLocalService: UsuarioLocalService,
     public navCtrl: NavController,
-    private resultadoLocalService: ResultadoLocalService) {
+    private resultadoLocalService: ResultadoLocalService,
+    private modalController: ModalController) {
     this.ehMobile = this.platform.is("mobile");
 
     this.singupForm = formBuilder.group({
@@ -69,19 +71,26 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    this.usuarioHttpService.efetuarCadastro(JSON.stringify(this.singupForm.value)).subscribe((response) => {
-      this.usuarioLocalService.inserir(response).then(() => {
-        this.submissaoComSucesso = true;
-        this.resultadoLocalService.setTesteFinalizado(false);
-        this.navCtrl.navigateRoot('/home');
+    this.usuarioHttpService.http.post(
+      this.usuarioHttpService.basePath + '/cadastro',
+      this.singupForm.value,
+      this.usuarioHttpService.http.getHeaders('*'))
+      .then((response) => {
+        this.usuarioLocalService.inserir(response.data).then(() => {
+          this.submissaoComSucesso = true;
+          this.resultadoLocalService.setTesteFinalizado(false);
+          this.navCtrl.navigateRoot('/home');
+        }).catch((error) => {
+          this.submissaoComSucesso = false;
+          console.error(error);
+        });
       }).catch((error) => {
         this.submissaoComSucesso = false;
-        console.error(error);
+
+        this.exibirErro(error);
+
+        //alert("Já existe um usuário cadastrado com o nick fornecido");
       });
-    }, (error) => {
-      this.submissaoComSucesso = false;
-      alert("Já existe um usuário cadastrado com o nick fornecido");
-    });
 
   }
 
@@ -91,22 +100,45 @@ export class LoginPage implements OnInit {
       return;
     }
 
-    this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value)).subscribe((response) => {
-      this.usuarioLocalService.inserir(response).then(() => {
-        this.submissaoComSucesso = true;
-        this.resultadoLocalService.setTesteFinalizado(false);
-        this.navCtrl.navigateRoot('/home');
-      }).catch((error) => {
-        this.submissaoComSucesso = false;
-        console.error(error);
-      });
-    }, (error) => {
-      this.submissaoComSucesso = false;
-      if(error.status == 404){
-        alert("Nick não encontrado!");
-      }
-    });
-
+    if (this.platform.is('android')) {
+      this.usuarioHttpService.http.post(
+        this.usuarioHttpService.basePath + '/login',
+        this.loginForm.value,
+        this.usuarioHttpService.http.getHeaders('*'))
+        .then((response) => {
+          this.usuarioLocalService.inserir(response.data).then(() => {
+            this.submissaoComSucesso = true;
+            this.resultadoLocalService.setTesteFinalizado(false);
+            this.navCtrl.navigateRoot('/home');
+          }).catch((error) => {
+            this.submissaoComSucesso = false;
+            console.error(error);
+          });
+        }).catch((error) => {
+          console.error(JSON.stringify(error));
+          this.submissaoComSucesso = false;
+          if (error.status == 404) {
+            alert("Nick não encontrado!");
+          }
+        });
+    } else {
+      this.usuarioHttpService.efetuarLogin(JSON.stringify(this.loginForm.value))
+        .subscribe((response) => {
+          this.usuarioLocalService.inserir(response).then(() => {
+            this.submissaoComSucesso = true;
+            this.resultadoLocalService.setTesteFinalizado(false);
+            this.navCtrl.navigateRoot('/home');
+          }).catch((error) => {
+            this.submissaoComSucesso = false;
+            console.error(error);
+          });
+        }, (error) => {
+          this.submissaoComSucesso = false;
+          if (error.status == 404) {
+            alert("Nick não encontrado!");
+          }
+        });
+    }
   }
 
   habilitarTransicao() {
@@ -120,4 +152,13 @@ export class LoginPage implements OnInit {
     }
   }
 
+  async exibirErro(erro) {
+    const modal = await this.modalController.create({
+      component: ErrorModalPage,
+      componentProps: {
+        erro: erro
+      }
+    });
+    return await modal.present();
+  }
 }

@@ -13,8 +13,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
-
-
+import { HTTP } from '@ionic-native/http/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -28,6 +27,7 @@ import { IonicStorageModule } from '@ionic/storage';
   providers: [
     StatusBar,
     NativeAudio,
+    HTTP,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
