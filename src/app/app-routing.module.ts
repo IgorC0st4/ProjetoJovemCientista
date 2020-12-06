@@ -12,10 +12,6 @@ const routes: Routes = [
     loadChildren: () => import('./fase/fase.module').then( m => m.FasePageModule)
   },
   {
-    path: 'resultado-modal',
-    loadChildren: () => import('./resultado-modal/resultado-modal.module').then( m => m.ResultadoModalPageModule)
-  },
-  {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
@@ -38,11 +34,7 @@ const routes: Routes = [
   {
     path: 'parabens-modal',
     loadChildren: () => import('./parabens-modal/parabens-modal.module').then( m => m.ParabensModalPageModule)
-  },  {
-    path: 'error-modal',
-    loadChildren: () => import('./error-modal/error-modal.module').then( m => m.ErrorModalPageModule)
-  },
-
+  }
 ];
 
 @NgModule({

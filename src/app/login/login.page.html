@@ -1,4 +1,4 @@
-<ion-content class="padding">
+<ion-content class="padding" [scrollEvents]="true">
 
   <ion-slides pager="true" scrollbar="true" (ionSlideTransitionEnd)="ionSlideTransitionEnd($event)" #mySlider>
 
@@ -36,7 +36,7 @@
                   <ion-item>
                     <div class="ion-text-justify">
                       <p>
-                        O aplicativo foi desenvolvido como um jogo com o intuito de medir a velocidade de raciocínio e
+                        Trata-se de um jogo com o intuito de medir a velocidade de raciocínio e
                         o tempo que o jogador consegue manter a atenção em uma atividade. Os dados coletados serão
                         utilizados para futura análise com base na idade, escolaridade e gênero do jogador. <br>
                         Os resultados serão mantidos em sigilo, sendo destinados apenas para fins científicos. <br>
@@ -104,7 +104,7 @@
 
                   <ion-item-divider color="secondary">
                     <ion-label>
-                      INSG Castelo
+                      Instituto Nossa Senhora da Glória - Macaé
                     </ion-label>
                   </ion-item-divider>
 
@@ -112,7 +112,7 @@
                     <ion-label>Prof. Julio Cesar Vasconcelos Da Silva</ion-label>
                   </ion-item>
                   <ion-item>
-                    <ion-label>Julia Abreu Gazire</ion-label>
+                    <ion-label>Isabella Bonfim Ramos Affonso</ion-label>
                   </ion-item>
                   <ion-item>
                     <ion-label>Larissa Machado da Silva</ion-label>
@@ -129,7 +129,7 @@
 
                   <ion-item-divider color="secondary">
                     <ion-label>
-                      FSMA
+                      Faculdade Católica Salesiana - Macaé
                     </ion-label>
                   </ion-item-divider>
 
@@ -153,53 +153,6 @@
 
     <ion-slide>
       <ion-grid>
-        <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>Login</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <p *ngIf="tentativaDeLogin && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos
-                  os dados
-                  corretamente.
-                </p>
-
-                <ion-list lines="none">
-
-                  <form [formGroup]="loginForm">
-
-                    <ion-item>
-                      <ion-label position="floating">Nick</ion-label>
-                      <ion-input formControlName="nick" type="text"></ion-input>
-                    </ion-item>
-
-                    <ion-item
-                      *ngIf="!loginForm.controls.nick.valid  && (loginForm.controls.nick.dirty || tentativaDeLogin)">
-                      <p style="color: #ea6153;">Por favor entre um nick válido.</p>
-                    </ion-item>
-
-
-                    <ion-item>
-                      <ion-label position="floating">Senha</ion-label>
-                      <ion-input formControlName="senha" type="password"></ion-input>
-                    </ion-item>
-
-                    <ion-item
-                      *ngIf="!loginForm.controls.senha.valid  && (loginForm.controls.senha.dirty || tentativaDeLogin)">
-                      <p style="color: #ea6153;">Por favor entre uma senha válida.</p>
-                    </ion-item>
-                  </form>
-
-                </ion-list>
-                <ion-button expand="full" color="primary" (click)="efetuarLogin()">Login</ion-button>
-
-              </ion-card-content>
-            </ion-card>
-
-          </ion-col>
-        </ion-row>
-
         <ion-row>
           <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
             <ion-card>
@@ -264,8 +217,8 @@
                     </ion-item>
 
                     <ion-item>
-                      <ion-label>Gênero</ion-label>
-                      <ion-select formControlName="genero" placeholder="Selecione um">
+                      <ion-label>Sexo</ion-label>
+                      <ion-select formControlName="sexo" placeholder="Selecione um">
                         <ion-select-option value="F">Feminino</ion-select-option>
                         <ion-select-option value="M">Masculino</ion-select-option>
                       </ion-select>
@@ -275,9 +228,10 @@
                       <ion-label>Transtorno atencional</ion-label>
                       <ion-select formControlName="transtorno" placeholder="Selecione um">
                         <ion-select-option value="Nenhum">Nenhum</ion-select-option>
+                        <ion-select-option value="Hiperatividade">Hiperatividade</ion-select-option>
                         <ion-select-option value="TDA">TDA</ion-select-option>
                         <ion-select-option value="TDAH">TDAH</ion-select-option>
-                        <ion-select-option value="TDAHI">TDAHI</ion-select-option>
+                        <ion-select-option value="Dislexia">Dislexia</ion-select-option>
                       </ion-select>
                     </ion-item>
 
@@ -301,8 +255,99 @@
 
           </ion-col>
         </ion-row>
+
+        <ion-row>
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>
+                  Siglas
+                </ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-list lines="none">
+                  <ion-item-divider color="primary">
+                    <ion-label>
+                      TDA
+                    </ion-label>
+                  </ion-item-divider>
+                  <ion-item>
+                    Transtorno do déficit de atenção
+                  </ion-item>
+                  <ion-item-divider color="primary">
+                    <ion-label>
+                      TDAH
+                    </ion-label>
+                  </ion-item-divider>
+                  <ion-item>
+                    Transtorno do déficit de atenção com hiperatividade
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+
       </ion-grid>
     </ion-slide>
 
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Login</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p *ngIf="tentativaDeLogin && !submissaoComSucesso" style="color: #ea6153;">Por favor preencha todos
+                  os dados
+                  corretamente.
+                </p>
+
+                <ion-list lines="none">
+
+                  <form [formGroup]="loginForm">
+
+                    <ion-item>
+                      <ion-label position="floating">Nick</ion-label>
+                      <ion-input formControlName="nick" type="text"></ion-input>
+                    </ion-item>
+
+                    <ion-item
+                      *ngIf="!loginForm.controls.nick.valid  && (loginForm.controls.nick.dirty || tentativaDeLogin)">
+                      <p style="color: #ea6153;">Por favor entre um nick válido.</p>
+                    </ion-item>
+
+
+                    <ion-item>
+                      <ion-label position="floating">Senha</ion-label>
+                      <ion-input formControlName="senha" type="password"></ion-input>
+                    </ion-item>
+
+                    <ion-item
+                      *ngIf="!loginForm.controls.senha.valid  && (loginForm.controls.senha.dirty || tentativaDeLogin)">
+                      <p style="color: #ea6153;">Por favor entre uma senha válida.</p>
+                    </ion-item>
+                  </form>
+
+                </ion-list>
+                <ion-button expand="full" color="primary" (click)="efetuarLogin()">Login</ion-button>
+
+              </ion-card-content>
+            </ion-card>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-slide>
   </ion-slides>
+
+  <ion-fab *ngIf="!ultimoSlide" vertical="center" horizontal="end" slot="fixed" (click)="proximoSlide()">
+    <ion-fab-button>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

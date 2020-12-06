@@ -1,7 +1,7 @@
 export class Usuario {
     id: number;
     nick: string;
-    genero: string;
+    sexo: string;
     escolaridade: number;
     tipoEscola: string;
     transtorno: string;

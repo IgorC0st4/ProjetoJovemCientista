@@ -12,8 +12,8 @@ export class StopwatchService {
   public stoppedDuration: any = 0;
   public started = null;
   public running = false;
-  public blankTime = "00:00"
-  public time = "00:00";
+  public blankTime = 0;
+  public time = 0;
 
   start() {
     if (this.running) return;
@@ -57,6 +57,6 @@ export class StopwatchService {
     let timeElapsed: any = new Date(currentTime - this.timeBegan - this.stoppedDuration);
     let min = timeElapsed.getUTCMinutes();
     let sec = timeElapsed.getUTCSeconds();
-    this.time = this.zeroPrefix(min, 2) + ":" + this.zeroPrefix(sec, 2);
+    this.time = sec + (min*60);
   }
 }

@@ -7,7 +7,6 @@ import { Resultado } from './../models/resultado';
 import { StopwatchService } from './../services/stopwatch/stopwatch.service';
 import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
-import { ResultadoModalPage } from './../resultado-modal/resultado-modal.page';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, Platform, NavController } from '@ionic/angular';
 
@@ -200,8 +199,10 @@ export class FasePage implements OnInit {
     });
 
     this.resultadoLocalService.get(resultado.nivel.numero).then((result) => {
-      if (result.tempo !== "-1") {
-        if (this.compararSeEhMenor(resultado.tempoFinal, result.tempo)) {
+      console.error(JSON.stringify(result.tempo));
+      console.error(JSON.stringify(resultado.tempoFinal));
+      if (result.tempo != -1) {
+        if (resultado.tempoFinal < result.tempo) {
           this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
         }
       } else {
@@ -211,7 +212,10 @@ export class FasePage implements OnInit {
       console.error(error);
     });
 
-    if (this.platform.is('android')) {
+    if (
+      this.platform.is('android') &&
+      this.platform.is('capacitor') &&
+      this.platform.is('cordova')) {
       this.resultadoHttpService.http.post(
         this.resultadoHttpService.basePath + "/" + this.usuarioId,
         resultado,
@@ -241,56 +245,6 @@ export class FasePage implements OnInit {
     resultado.tempoFinal = this.stopwatchService.time;
     resultado.erros = this.contadorErros;
     return resultado;
-  }
-
-  compararSeEhMenor(tempoFinal: string, tempoMaisRapido: string): boolean {
-    let tempoFinalSplit = tempoFinal.split(':');
-    let tempoMaisRapidoSplit = tempoMaisRapido.split(':');
-
-    if (parseInt(tempoFinalSplit[0]) <= parseInt(tempoMaisRapidoSplit[0])) {
-      return (parseInt(tempoFinalSplit[1]) < parseInt(tempoMaisRapidoSplit[1]));
-    } else {
-      return false;
-    }
-
-  }
-
-  async apresentarResultado() {
-    this.stopwatchService.stop();
-
-    let resultado = new Resultado();
-    this.nivelLocalService.get(this.contadorFase).then((result) => {
-      resultado.nivel = result;
-    }).catch((error) => {
-      console.error(error);
-    });
-    resultado.tempoFinal = this.stopwatchService.time;
-    resultado.erros = this.contadorErros;
-    await this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
-      resultado.usuario = result;
-    }).catch((error) => {
-      console.error(error);
-    });
-
-    const modal = await this.modalController.create({
-      component: ResultadoModalPage,
-      componentProps: {
-        'resultado': resultado
-      }
-    });
-    modal.onDidDismiss().then((data) => {
-      if (this.contadorFase == 7) {
-        this.apresentarParabens();
-        this.navController.back();
-      } else {
-        if (data['data'].comando === 'voltar') {
-          this.navController.back();
-        } else {
-          this.proximaFase();
-        }
-      }
-    });
-    return await modal.present();
   }
 
   async apresentarParabens() {

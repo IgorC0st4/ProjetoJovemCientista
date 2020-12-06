@@ -5,7 +5,7 @@ import { NivelHttpService } from './../services/nivelHttp/nivel-http.service';
 import { SobreModalPage } from './../sobre-modal/sobre-modal.page';
 import { InstrucoesModalPage } from './../instrucoes-modal/instrucoes-modal.page';
 import { ModalController, NavController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { AudioService } from '../services/audio/audio.service';
 import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.service';
 
@@ -14,7 +14,7 @@ import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.serv
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements AfterViewInit {
 
   desempenho: ResultadoList[] = [];
 
@@ -27,6 +27,13 @@ export class HomePage implements OnInit {
     private nivelLocalService: NivelLocalService,
     private resultadoLocalService: ResultadoLocalService) { }
 
+  ngAfterViewInit(): void {
+    this.carregarNiveis();
+    this.carregarSons();
+    this.inicializarResultados();
+    this.generateDesempenho();
+  }
+
   ngOnInit(): void {
     this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
       if (!result) {
@@ -35,11 +42,6 @@ export class HomePage implements OnInit {
     }).catch((error) => {
       console.error(error);
     });
-
-    this.carregarNiveis();
-    this.carregarSons();
-    this.inicializarResultados();
-    this.generateDesempenho();
   }
 
   async doRefresh(event) {
@@ -78,8 +80,7 @@ export class HomePage implements OnInit {
 
   async salvarNiveis(niveis) {
     niveis.forEach((nivel) => {
-      this.nivelLocalService.inserir(nivel).then((result) => {
-      }).catch((error) => {
+      this.nivelLocalService.inserir(nivel).catch((error) => {
         console.error(error);
       });
     });
@@ -90,7 +91,7 @@ export class HomePage implements OnInit {
     this.resultadoLocalService.getAll().then((result) => {
       if (result.length > 0) {
         result.forEach((item) => {
-          if (item.key.includes(this.resultadoLocalService.key) && item.resultado.tempo !== "-1") {
+          if (item.key.includes(this.resultadoLocalService.key) && item.resultado.tempo != -1) {
             this.desempenho.push(item);
           }
         });

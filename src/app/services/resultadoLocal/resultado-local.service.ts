@@ -9,19 +9,19 @@ export class ResultadoLocalService {
   key = 'resultado_local'
 
   resultados:any[]= [
-    {'fase': 1, 'tempo':'-1', 'erros': 0},
-    {'fase': 2, 'tempo':'-1', 'erros': 0},
-    {'fase': 3, 'tempo':'-1', 'erros': 0},
-    {'fase': 4, 'tempo':'-1', 'erros': 0},
-    {'fase': 5, 'tempo':'-1', 'erros': 0},
-    {'fase': 6, 'tempo':'-1', 'erros': 0},
-    {'fase': 7, 'tempo':'-1', 'erros': 0},
+    {'fase': 1, 'tempo':-1, 'erros': 0},
+    {'fase': 2, 'tempo':-1, 'erros': 0},
+    {'fase': 3, 'tempo':-1, 'erros': 0},
+    {'fase': 4, 'tempo':-1, 'erros': 0},
+    {'fase': 5, 'tempo':-1, 'erros': 0},
+    {'fase': 6, 'tempo':-1, 'erros': 0},
+    {'fase': 7, 'tempo':-1, 'erros': 0},
   ];
 
 
   constructor(private storage: Storage) { }
 
-  public async inserir(numeroNivel:number, tempo:string, erros:number) {
+  public async inserir(numeroNivel:number, tempo:number, erros:number) {
     let value = {
       'tempo':tempo,
       'erros':erros
@@ -67,6 +67,6 @@ export class ResultadoLocalService {
 export class ResultadoList {
   key: string;
   resultado: {
-    'tempo':string,
+    'tempo':number,
     'erros':number};
 }
