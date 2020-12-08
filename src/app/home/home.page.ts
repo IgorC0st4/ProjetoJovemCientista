@@ -35,6 +35,7 @@ export class HomePage implements AfterViewInit {
   }
 
   ngOnInit(): void {
+
     this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
       if (!result) {
         this.sair();
@@ -42,6 +43,7 @@ export class HomePage implements AfterViewInit {
     }).catch((error) => {
       console.error(error);
     });
+
   }
 
   async doRefresh(event) {

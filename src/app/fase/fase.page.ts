@@ -69,11 +69,13 @@ export class FasePage implements OnInit {
   ngOnInit() {
     this.inicializarJogo();
     this.ios = this.platform.is('ios');
+
     this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
       this.usuarioId = JSON.parse(result).id;
     }).catch((error) => {
       console.error(error);
     });
+
   }
 
   async inicializarJogo() {

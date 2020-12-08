@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ResultadoHttpService {
 
-  basePath = 'http://186.219.4.245:8080/resultado'
+  basePath = 'http://200.141.166.245:8080/resultado'
   //basePath = 'http://localhost:8080/resultado'
 
   httpOptions = {

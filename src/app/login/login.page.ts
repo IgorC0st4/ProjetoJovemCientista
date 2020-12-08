@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IdadeValidator } from '../validators/idade';
 import { UsuarioHttpService } from '../services/usuarioHttp/usuario-http.service';
 import { UsuarioLocalService } from '../services/usuarioLocal/usuario-local.service';
+import { Usuario } from '../models/usuario';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class LoginPage implements OnInit {
   public ehMobile: boolean = false;
   public aceitouTermos: boolean = false;
   public ultimoSlide: boolean = false;
+  private transtorno: string = "";
 
   constructor(
     public formBuilder: FormBuilder,
@@ -160,4 +162,5 @@ export class LoginPage implements OnInit {
     this.slides.slideNext();
 
   }
+
 }

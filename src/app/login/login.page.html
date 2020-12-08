@@ -1,20 +1,37 @@
-<ion-content class="padding" [scrollEvents]="true">
+<ion-content [scrollEvents]="true">
 
   <ion-slides pager="true" scrollbar="true" (ionSlideTransitionEnd)="ionSlideTransitionEnd($event)" #mySlider>
 
     <ion-slide>
       <ion-grid>
         <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
+            <ion-card>
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row class="ion-align-items-center">
+                    <ion-col>
+                      <img style="border-radius: 50%; width: 75%;" src="../../assets/imgs/logo-foco.png"/>
+                    </ion-col>
+                    <ion-col>
+                      <ion-card-title><b>Projeto Jovem Cientista</b></ion-card-title>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
             <ion-card>
               <ion-card-header>
-                <ion-card-title>Bem-vindo!</ion-card-title>
-                <ion-card-subtitle>Projeto Jovem Cientista</ion-card-subtitle>
+                <ion-card-title><b>Bem-vindo!</b></ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 <ion-list lines="none">
                   <ion-item-divider color="primary">
-                    <ion-label>
+                    <ion-label style="font-size: 20px;">
                       O Projeto
                     </ion-label>
                   </ion-item-divider>
@@ -29,7 +46,7 @@
 
                   </ion-item>
                   <ion-item-divider color="primary">
-                    <ion-label>
+                    <ion-label  style="font-size: 20px;">
                       O Aplicativo
                     </ion-label>
                   </ion-item-divider>
@@ -52,10 +69,10 @@
         </ion-row>
 
         <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
-            <ion-card>
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
+            <ion-card class="termos">
               <ion-card-header>
-                <ion-card-title>Termos e condições de uso</ion-card-title>
+                <ion-card-title><b>Termos e condições de uso</b></ion-card-title>
               </ion-card-header>
 
               <ion-card-content>
@@ -65,7 +82,8 @@
                       <div class="ion-text-center">
                         <p>
                           <ion-text color="dark">
-                            <a href="../../assets/docs/Termos e condições.pdf">Clique aqui para ter acesso aos termos por completo.</a>
+                            <a href="../../assets/docs/Termos e condições.pdf">Clique aqui para ter acesso aos termos
+                              por completo.</a>
                           </ion-text>
                         </p>
                       </div>
@@ -89,23 +107,24 @@
         </ion-row>
 
         <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
             <ion-card>
               <ion-card-header>
-                <ion-card-title>Projeto Jovem Cientista</ion-card-title>
+                <ion-card-title><b>Participantes</b></ion-card-title>
               </ion-card-header>
               <ion-card-content>
                 <ion-list lines="none">
-                  <ion-item-divider color="primary">
-                    <ion-label>
-                      Participantes
-                    </ion-label>
-                  </ion-item-divider>
 
-                  <ion-item-divider color="secondary">
-                    <ion-label>
-                      Instituto Nossa Senhora da Glória - Macaé
-                    </ion-label>
+                  <ion-item-divider color="primary">
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col>
+                          <ion-img style="width: 50%;" src="../../assets/imgs/logo-castelo.png">
+                          </ion-img>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+
                   </ion-item-divider>
 
                   <ion-item>
@@ -127,10 +146,14 @@
                     <ion-label>Vinicius Fonseca Gorito Adriano</ion-label>
                   </ion-item>
 
-                  <ion-item-divider color="secondary">
-                    <ion-label>
-                      Faculdade Católica Salesiana - Macaé
-                    </ion-label>
+                  <ion-item-divider color="primary">
+                    <ion-grid>
+                      <ion-row class="ion-align-items-center">
+                        <ion-col>
+                          <ion-img  style="width: 50%;" src="../../assets/imgs/logo-fsma.png"></ion-img>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
                   </ion-item-divider>
 
                   <ion-item>
@@ -142,7 +165,7 @@
                   <ion-item>
                     <ion-label>Lucas Rodrigues dos Santos</ion-label>
                   </ion-item>
-                  
+
                 </ion-list>
               </ion-card-content>
             </ion-card>
@@ -154,7 +177,7 @@
     <ion-slide>
       <ion-grid>
         <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>Cadastro</ion-card-title>
@@ -176,7 +199,7 @@
 
                     <ion-item
                       *ngIf="!singupForm.controls.nick.valid  && (singupForm.controls.nick.dirty || tentativaDeCadastro)">
-                      <p  style="color: #ea6153;">Por favor entre um nick válido.</p>
+                      <p style="color: #ea6153;">Por favor entre um nick válido.</p>
                     </ion-item>
 
                     <ion-item>
@@ -186,7 +209,7 @@
 
                     <ion-item
                       *ngIf="!singupForm.controls.idade.valid  && (singupForm.controls.idade.dirty || tentativaDeCadastro)">
-                      <p  style="color: #ea6153;">Por favor entre uma idade válida.</p>
+                      <p style="color: #ea6153;">Por favor entre uma idade válida.</p>
                     </ion-item>
 
                     <ion-item>
@@ -225,7 +248,39 @@
                     </ion-item>
 
                     <ion-item>
-                      <ion-label>Transtorno atencional</ion-label>
+                      <ion-radio-group value="Nenhum" formControlName="transtorno">
+                        <ion-label>Possui transtorno atencional?</ion-label>
+                        <ion-grid>
+                          <ion-row>
+                            <ion-col size-lg="6" size-md="12" size-sm="12">
+                              <ion-item>
+                                <ion-label>Nenhum</ion-label>
+                                <ion-radio slot="start" value="Nenhum"></ion-radio>
+                              </ion-item>
+                            </ion-col>
+                            <ion-col size-lg="6" size-md="12" size-sm="12">
+                              <ion-item>
+                                <ion-label>TDA</ion-label>
+                                <ion-radio slot="start" value="TDA"></ion-radio>
+                              </ion-item>
+                            </ion-col>
+                            <ion-col size-lg="6" size-md="12" size-sm="12">
+                              <ion-item>
+                                <ion-label>TDAH</ion-label>
+                                <ion-radio slot="start" value="TDAH"></ion-radio>
+                              </ion-item>
+                            </ion-col>
+                            <ion-col size-lg="6" size-md="12" size-sm="12">
+                              <ion-item>
+                                <ion-label>TDAHI</ion-label>
+                                <ion-radio slot="start" value="TDAHI"></ion-radio>
+                              </ion-item>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </ion-radio-group>
+
+                      <!--
                       <ion-select formControlName="transtorno" placeholder="Selecione um">
                         <ion-select-option value="Nenhum">Nenhum</ion-select-option>
                         <ion-select-option value="Hiperatividade">Hiperatividade</ion-select-option>
@@ -233,6 +288,7 @@
                         <ion-select-option value="TDAH">TDAH</ion-select-option>
                         <ion-select-option value="Dislexia">Dislexia</ion-select-option>
                       </ion-select>
+                      -->
                     </ion-item>
 
                     <ion-item>
@@ -257,7 +313,7 @@
         </ion-row>
 
         <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>
@@ -272,7 +328,7 @@
                     </ion-label>
                   </ion-item-divider>
                   <ion-item>
-                    Transtorno do déficit de atenção
+                    Transtorno de Déficit de Atenção
                   </ion-item>
                   <ion-item-divider color="primary">
                     <ion-label>
@@ -280,7 +336,15 @@
                     </ion-label>
                   </ion-item-divider>
                   <ion-item>
-                    Transtorno do déficit de atenção com hiperatividade
+                    Transtorno de Déficit de Atenção com Hiperatividade
+                  </ion-item>
+                  <ion-item-divider color="primary">
+                    <ion-label>
+                      TDAHI
+                    </ion-label>
+                  </ion-item-divider>
+                  <ion-item>
+                    Transtorno de Déficit de Atenção com Hiperatividade e Impulsividade
                   </ion-item>
                 </ion-list>
               </ion-card-content>
@@ -294,7 +358,7 @@
     <ion-slide>
       <ion-grid>
         <ion-row>
-          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+          <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
             <ion-card>
               <ion-card-header>
                 <ion-card-title>Login</ion-card-title>
