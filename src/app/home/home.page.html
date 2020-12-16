@@ -9,14 +9,14 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <ion-grid>
     <ion-row>
-      <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+      <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
         <ion-card style="background-color: #CAE8A2;">
           <ion-card-header>
             <ion-card-title>Iniciar Jogo</ion-card-title>
@@ -30,10 +30,16 @@
     </ion-row>
 
     <ion-row>
-      <ion-col  size-lg="4" offset-lg="4" size-md="6" offset-md="3"  size-sm="12" offset-sm="0">
+      <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
+        <ion-button expand="full" color="primary" (click)="instrucoes()">Instruções</ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size-lg="4" offset-lg="4" size-md="6" offset-md="3" size-sm="12" offset-sm="0">
         <ion-card style="background-color: #BAE4E5;">
-          <ion-card-header>
-            <ion-card-title>Resumo</ion-card-title>
+          <ion-card-header class="ion-text-center">
+            <ion-card-title>Melhor tempo em cada fase</ion-card-title>
           </ion-card-header>
 
           <ion-card-content>
@@ -80,6 +86,9 @@
       </ion-fab-button>
       <ion-fab-button color="tertiary">
         <ion-icon name="link" (click)="creditos()"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light">
+        <ion-icon name="person" (click)="atualizarDados()"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

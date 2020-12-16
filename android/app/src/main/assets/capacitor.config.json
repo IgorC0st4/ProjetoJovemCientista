@@ -1,6 +1,6 @@
 {
   "appId": "br.com.castelo.jovemcientista",
-  "appName": "Jovem Cientista",
+  "appName": "Foco",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Conta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              Dados
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none">
+              <form [formGroup]="dadosForm">
+
+                <ion-item>
+                  <ion-label position="floating">Nick</ion-label>
+                  <ion-input [value]="usuario.nick" type="text" disabled></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="floating">Idade</ion-label>
+                  <ion-input formControlName="idade" type="number" [value]="usuario.idade"></ion-input>
+                </ion-item>
+
+                <ion-item *ngIf="!dadosForm.controls.idade.valid  && (dadosForm.controls.idade.dirty)">
+                  <p style="color: #ea6153;">Por favor entre uma idade válida.</p>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="floating">Escolaridade</ion-label>
+                  <ion-input [value]="escolaridades[usuario.escolaridade-1]" type="text" disabled></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="floating">Tipo de escola</ion-label>
+                  <ion-input [value]="usuario.tipoEscola" type="text" disabled></ion-input>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Sexo</ion-label>
+                  <ion-select [value]="usuario.sexo" disabled>
+                    <ion-select-option value="M">Masculino</ion-select-option>
+                    <ion-select-option value="F">Feminino</ion-select-option>
+                  </ion-select>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label position="floating">Possui transtorno atencional?</ion-label>
+                  <ion-input [value]="usuario.transtorno" type="text" disabled></ion-input>
+                </ion-item>
+                
+                <ion-item>
+                  <ion-label position="floating">Senha</ion-label>
+                  <ion-input formControlName="senha" type="password"></ion-input>
+                </ion-item>
+                <span><b>Utilize letras e números (Mín: 5 dígitos)</b></span>
+
+                <ion-item *ngIf="!dadosForm.controls.senha.valid  && (dadosForm.controls.senha.dirty)">
+                  <p style="color: #ea6153;">Por favor entre uma senha válida.</p>
+                </ion-item>
+                <ion-button expand="full" color="primary" (click)="atualizarDadosUsuario($event)">Salvar</ion-button>
+              </form>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+  <ion-fab *ngIf="ehMobile" vertical="bottom" horizontal="end" slot="fixed" size="large" (click)="sair($event)">
+    <ion-fab-button color="danger">
+      <ion-icon name="close"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

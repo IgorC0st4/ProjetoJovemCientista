@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Jovem Cientista</string>
-    <string name="title_activity_main">Jovem Cientista</string>
+    <string name="app_name">Foco</string>
+    <string name="title_activity_main">Foco</string>
     <string name="package_name">br.com.castelo.jovemcientista</string>
     <string name="custom_url_scheme">br.com.castelo.jovemcientista</string>
 </resources>

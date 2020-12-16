@@ -16,7 +16,7 @@ export class IdadeValidator {
             };
         }
 
-        if(control.value < 0){
+        if(control.value <= 0){
             return {
                 "Idade inválida": true
             };

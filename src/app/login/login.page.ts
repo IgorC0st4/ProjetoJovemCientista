@@ -26,7 +26,6 @@ export class LoginPage implements OnInit {
   public ehMobile: boolean = false;
   public aceitouTermos: boolean = false;
   public ultimoSlide: boolean = false;
-  private transtorno: string = "";
 
   constructor(
     public formBuilder: FormBuilder,
@@ -79,7 +78,7 @@ export class LoginPage implements OnInit {
         this.singupForm.value,
         this.usuarioHttpService.http.getHeaders('*'))
         .then((response) => {
-          this.salvarUsuarioLocalmente(response.data);
+          this.salvarUsuarioLocalmente(JSON.parse(response.data));
         }).catch((error) => {
           this.submissaoComSucesso = false;
           alert("Já existe um usuário cadastrado com o nick fornecido");
@@ -110,7 +109,7 @@ export class LoginPage implements OnInit {
         this.loginForm.value,
         this.usuarioHttpService.http.getHeaders('*'))
         .then((response) => {
-          this.salvarUsuarioLocalmente(response.data);
+          this.salvarUsuarioLocalmente(JSON.parse(response.data));
         }).catch((error) => {
           this.submissaoComSucesso = false;
           if (error.status == 404) {
@@ -136,7 +135,11 @@ export class LoginPage implements OnInit {
     this.usuarioLocalService.inserir(usuario).then(() => {
       this.submissaoComSucesso = true;
       this.resultadoLocalService.setTesteFinalizado(false);
-      this.navCtrl.navigateRoot('/home');
+      if (this.tentativaDeCadastro) {
+        this.navCtrl.navigateRoot('/primeiros-passos');
+      } else {
+        this.navCtrl.navigateRoot('/home');
+      }
     }).catch((error) => {
       this.submissaoComSucesso = false;
       console.error(error);

@@ -35,4 +35,8 @@ export class UsuarioHttpService {
     return this.httpClient.post<Usuario>(this.basePath + '/login', postData, this.httpOptions)
       .pipe();
   }
+
+  atualizarDados(putData):Observable<Usuario>{
+    return this.httpClient.put<Usuario>(this.basePath + `/${putData.id}`, putData, this.httpOptions);
+  }
 }

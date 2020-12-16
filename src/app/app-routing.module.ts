@@ -34,7 +34,15 @@ const routes: Routes = [
   {
     path: 'parabens-modal',
     loadChildren: () => import('./parabens-modal/parabens-modal.module').then( m => m.ParabensModalPageModule)
+  },  {
+    path: 'primeiros-passos',
+    loadChildren: () => import('./primeiros-passos/primeiros-passos.module').then( m => m.PrimeirosPassosPageModule)
+  },
+  {
+    path: 'atualizar-dados-modal',
+    loadChildren: () => import('./atualizar-dados-modal/atualizar-dados-modal.module').then( m => m.AtualizarDadosModalPageModule)
   }
+
 ];
 
 @NgModule({

@@ -1,3 +1,4 @@
+import { AtualizarDadosModalPage } from './../atualizar-dados-modal/atualizar-dados-modal.page';
 import { CreditosModalPage } from './../creditos-modal/creditos-modal.page';
 import { ResultadoLocalService, ResultadoList } from './../services/resultadoLocal/resultado-local.service';
 import { NivelLocalService } from './../services/nivelLocal/nivel-local.service';
@@ -39,6 +40,10 @@ export class HomePage implements AfterViewInit {
     this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
       if (!result) {
         this.sair();
+      }else{
+        if(result.idade == 0){
+          alert("Por favor atualize as suas informações clicando no botão no canto inferior direito e depois no ícone com uma sombra.")
+        }
       }
     }).catch((error) => {
       console.error(error);
@@ -120,6 +125,13 @@ export class HomePage implements AfterViewInit {
   async creditos() {
     const modal = await this.modalController.create({
       component: CreditosModalPage
+    });
+    return await modal.present();
+  }
+
+  async atualizarDados(){
+    const modal = await this.modalController.create({
+      component: AtualizarDadosModalPage
     });
     return await modal.present();
   }

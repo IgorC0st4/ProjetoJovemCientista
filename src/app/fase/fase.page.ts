@@ -9,6 +9,8 @@ import { AudioService } from './../services/audio/audio.service';
 import { TimerService } from './../services/timer/timer.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, Platform, NavController } from '@ionic/angular';
+import { Usuario } from '../models/usuario';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-fase',
@@ -45,7 +47,8 @@ export class FasePage implements OnInit {
   tabuleiro: any[] = [];
   tempos: any[] = [];
   testeFinalizadoAntes: boolean = false;
-  usuarioId: number = 0;
+  usuario: Usuario = null;
+  ehNovoUsuario = false;
 
   constructor(
     public modalController: ModalController,
@@ -57,7 +60,9 @@ export class FasePage implements OnInit {
     private usuarioLocalService: UsuarioLocalService,
     private nivelLocalService: NivelLocalService,
     private resultadoLocalService: ResultadoLocalService,
-    private resultadoHttpService: ResultadoHttpService) {
+    private resultadoHttpService: ResultadoHttpService,
+    private route: ActivatedRoute,
+    private router: Router) {
 
   }
 
@@ -67,15 +72,20 @@ export class FasePage implements OnInit {
   }
 
   ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {
+      if (this.router.getCurrentNavigation().extras.state) {
+        this.ehNovoUsuario = this.router.getCurrentNavigation().extras.state.novoUsuario;
+      }
+    })
     this.inicializarJogo();
     this.ios = this.platform.is('ios');
 
     this.usuarioLocalService.get(this.usuarioLocalService.key).then((result) => {
-      this.usuarioId = JSON.parse(result).id;
+      this.usuario = result;
     }).catch((error) => {
       console.error(error);
     });
-
   }
 
   async inicializarJogo() {
@@ -201,8 +211,6 @@ export class FasePage implements OnInit {
     });
 
     this.resultadoLocalService.get(resultado.nivel.numero).then((result) => {
-      console.error(JSON.stringify(result.tempo));
-      console.error(JSON.stringify(resultado.tempoFinal));
       if (result.tempo != -1) {
         if (resultado.tempoFinal < result.tempo) {
           this.resultadoLocalService.inserir(resultado.nivel.numero, resultado.tempoFinal, resultado.erros);
@@ -214,12 +222,9 @@ export class FasePage implements OnInit {
       console.error(error);
     });
 
-    if (
-      this.platform.is('android') &&
-      this.platform.is('capacitor') &&
-      this.platform.is('cordova')) {
+    if (this.platform.is('android') && this.platform.is('capacitor') && this.platform.is('cordova')) {
       this.resultadoHttpService.http.post(
-        this.resultadoHttpService.basePath + "/" + this.usuarioId,
+        this.resultadoHttpService.basePath + "/" + JSON.parse(JSON.stringify(this.usuario)).id,
         resultado,
         this.resultadoHttpService.http.getHeaders('*'))
         .catch((error) => {
@@ -227,6 +232,7 @@ export class FasePage implements OnInit {
           console.error(JSON.stringify(error));
         });
     } else {
+      resultado.usuario = this.usuario;
       this.resultadoHttpService.enviarResultado(resultado).subscribe((response) => {
       }, (error) => {
         console.error(error);
@@ -254,7 +260,7 @@ export class FasePage implements OnInit {
       component: ParabensModalPage
     });
     modal.onDidDismiss().then((data) => {
-      this.navController.back();
+      this.ehNovoUsuario ? this.navController.navigateRoot("/home") : this.navController.back();
     });
     return await modal.present();
   }
