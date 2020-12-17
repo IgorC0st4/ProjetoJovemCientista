@@ -193,9 +193,10 @@
                   <form [formGroup]="singupForm">
 
                     <ion-item>
-                      <ion-label position="floating">Nome (caso prefira, você poderá escolher um "apelido")</ion-label>
+                      <ion-label position="floating">Nome</ion-label>
                       <ion-input formControlName="nick" type="text"></ion-input>
                     </ion-item>
+                    <span><b>(Caso prefira, você poderá escolher um "apelido")</b></span>
 
                     <ion-item
                       *ngIf="!singupForm.controls.nick.valid  && (singupForm.controls.nick.dirty || tentativaDeCadastro)">
